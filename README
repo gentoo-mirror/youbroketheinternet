@@ -61,6 +61,11 @@ app-arch/unzip. This one can handle spaces in filenames, can
 recognize ZIP compatible file formats such as ODT, APK or MAFF
 and recurses into directories by default.
 
+== app-emacs/company-mode ==
+== app-emacs/parinfer ==
+
+[ask ng0]
+
 == app-misc/merge ==
 
 A command that should be a basic unix tool or be integrated
@@ -68,6 +73,11 @@ into 'mv' and 'cp' as -m flag. The ability to merge folders
 from command line just like you can when drag+dropping folders
 into each other with a GUI file manager. How could we exist
 without this all these years?
+
+== app-text/lowdown ==
+== app-text/ssg3 ==
+
+[ask ng0]
 
 == dev-db/cayley ==
 
@@ -84,6 +94,10 @@ relational and graph data model at the same time that enables
 developers to integrate the legacy relational data model and 
 the flexible graph data model in one database. AgensGraph
 is written in C and has close to no dependencies.
+
+== dev-scheme/guile-git ==
+
+[ask ng0]
 
 == dev-lang/psyclpc ==
 
@@ -157,6 +171,10 @@ even have to disable `xpinstall.signatures.required` in
 about:config. Thank you Firefox for being paranoid against
 your own hard disk.
 
+== media-fonts/unscii ==
+
+[ask ng0]
+
 == media-libs/vid-stab ==
 
 Remove camera shaking from shaken videos. A plug-in for
@@ -226,6 +244,10 @@ patch tries to get as many old fragments as possible,
 reducing the number of hiccups and prolonging the skips
 in exchange. Would be best if this was a runtime option
 for ffmpeg, but so far it isn't.
+
+== net-im/gajim ==
+
+[ask ng0]
 
 == net-im/qtox ==
 
@@ -408,6 +430,10 @@ unexpected changes and warns of man-in-the-middle attacks.
 Torbrowser/Firefox add-on that circumvents Cloudflare CAPTCHAs
 and other nuisance of the broken web.
 
+== www-plugins/gnash ==
+
+[ask ng0]
+
 == www-plugins/exif_viewer ==
 
 Torbrowser/Firefox add-on to inspect EXIF image metadata while browsing
@@ -420,6 +446,10 @@ One more great ebuild from Poncho.
 == x11-misc/interrobang ==
 
 A tiny launcher menu packing a big bang (syntax).
+
+== x11-plugins/lurch ==
+
+[ask ng0]
 
 == x11-plugins/telegram-purple ==
 
