@@ -92,7 +92,9 @@ sub slurp {
 		    # accept some /etc/portage/package.* file as input
 		    or /^[<=>]*(\w\S+\/\w\S+?-\d\S+)$/
 		    # accept a simple list of packages
-		    or /^(\w\S+\/\w[^-]+)$/ ) {
+		    #or /^(\w\S+\/\w[^-]+)$/
+		    # not so good as it also matches slot conflict headlines
+		    ) {
 			&pushit($1);
 			next;
 		}
@@ -107,6 +109,8 @@ sub slurp {
 
 sub pushit {
 	$_ = shift;
+	# some matches have trailing newlines
+	chomp;
 	if ( $0 =~ /any/ ) {
 		s/-\d.*?$//;
 	} else {
