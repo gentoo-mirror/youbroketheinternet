@@ -7,6 +7,9 @@
 # to produce lossless extractions from encoded media like
 # mp3, mp4, opus, flv... you name it.
 #
+# Latest version available from the youbroketheinternet overlay:
+#	https://gnunet.org/git/youbroketheinternet-overlay.git/tree/media-video/ffcut/files/ffcut
+#
 # Search engine hints: Video Editing, Audio Editing, Unix CLI
 
 my $VERSION = "2.0";
@@ -30,7 +33,7 @@ my $MPARMS = '-quiet -fs';
 $MPARMS .= ' -ao null' if $opt_q;
 my $DEFLEN = 10;
 
-unless ( $output =~ /\.\w+$/ ) {
+if ( $output and not $output =~ /\.\w+$/ ) {
 	# attempt change of container if no output format is given
 	$output .= ".mp4" if $input =~ /\.(m4v|3gp|mov|flv)$/i;
 	# otherwise inherit from input
@@ -89,15 +92,12 @@ unless ( $end ) {
 	if ($start or $start eq '0') {
 		$end = $DEFLEN + $start;
 	} else {
-		$end   = "9999999";	# shows the available length of the file to edit
-		$start = "9999998";	# actually only MP4Box does that.. FIXME for ffmpeg
-		die <<X unless $has_mp4box;
-This function only works with GPAC installed, currently.
-X
-		undef $has_ffmpeg;
+		# shows the available length of the file to edit
+		$end   = "9999999";
+		$start = "9999998";
 	}
 }
-print GREEN, <<X, RESET unless $opt_q;
+print GREEN, <<X, RESET if $start ne "9999998" and not $opt_q;
 *** ffcutting from $start to $end into $output
 X
 
@@ -110,7 +110,8 @@ if ($has_ffmpeg and not $opt_b) {
 	# just with a different absurd and impractical syntax...
 	# The following line circumvents a bug in ffmpeg:
 	$start = "0:0.1" unless $start;
-	print STDERR "*** Start is $start, duration is ", $end - $start, "\n" if debug & 2;
+	print STDERR "*** Start is $start, duration is ", $end - $start, "\n"
+	    if debug & 2;
 	die "Cannot run ffmpeg: $!" unless $pid = open3($W,$F,$F,
 	    $has_ffmpeg, "-ss", $start, "-t", $end - $start,
 		         "-i", $input, "-c", "copy", "-y", $output);
@@ -141,7 +142,7 @@ while ( <$F> ) {
 		print CYAN, "*** Produced ";
 		print "$1 kB of video and " if $1;
 		print "$2 kB of audio.\n", RESET;
-	} elsif ( /^(Input|Output) #/ ) {
+	} elsif ( /^(Input|Output) #/ or /\s+Duration: \d+/ ) {
 		print YELLOW, $_, RESET;
 	} else {
 		print BLUE, $_, RESET if $opt_v;
@@ -149,6 +150,7 @@ while ( <$F> ) {
 }
 close $F;
 close $W;
+exit if $start eq "9999998";
 
 if ($tmp or not -s $output) {
 	die BOLD, RED, <<X, RESET unless $tmp;
