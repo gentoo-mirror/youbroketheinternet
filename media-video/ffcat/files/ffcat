@@ -23,8 +23,8 @@ my $MPARMS = '-quiet -fs';
 $MPARMS .= ' -ao null' if $opt_q;
 my $DEFLEN = 10;
 
-my $output = $opt_o or pop;
-die pod2usage if not @ARGV or not $output;
+my $output = $opt_o || pop;
+die pod2usage if $#ARGV < 0 or not $output;
 my $input = $ARGV[0];	# look at the first to extract file type
 if ( $output and not $output =~ /\.\w+$/ ) {
 #	if ( $input =~ /\.(m4v|3gp|mov|flv)$/i ) {
