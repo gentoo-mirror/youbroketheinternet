@@ -5,6 +5,8 @@
 
 EAPI=5
 
+inherit user eutils
+
 DESCRIPTION="The Nix functional package manager"
 HOMEPAGE="https://nixos.org"
 
@@ -51,7 +53,18 @@ src_install() {
 	fi
 }
 
-pkg_postinstall() {
+pkg_setup() {
+	enewgroup nixbld
+	for i in `seq -w 0 9`;
+	do
+		enewuser nixbld$i -1 -1 /var/empty nixbld;
+	done
+}
+
+pkg_postinst() {
+	einfo "Warning, this is a test package, thanks for participating"
+	einfo "in trying to get a functional Nix package manager into"
+	einfo "Gentoo."
 	if ! use etc_profile; then
 		ewarn "${EROOT}etc/profile.d/nix.sh was removed (due to USE=-etc_profile)."
 		ewarn "Please fix the ebuild by adding nix user/group handling."
