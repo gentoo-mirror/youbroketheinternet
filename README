@@ -410,6 +410,13 @@ to Truecrypt's command line syntax. Similar in functionality to Jaromil's
 Tomb, but with support for multiple file systems. Automates creation and 
 maintenance of encrypted volumes. A must have for privacy-aware humans.
 
+== www-client/chromium ==
+
+We received a contribution for a recent Chromium that compiles using
+clang. We don't recommend using Chromium as a browser, but if you've
+being doing so anyhow, then you might find this useful. Maybe it does
+not work with USE system-icu.
+
 == www-client/torbrowser ==
 
 By fulfilling most requirements of protocol standards, all web browsers
