@@ -24,8 +24,9 @@ ESVN_REPO_URI="https://gnunet.org/svn/gnunet"
 
 # if you're a gnunet developer, you can put a symlink to your local git here:
 EGIT_REPO_URI="/usr/local/src/${PN}
-	https://github.com/gnunet/${PN}"
-# otherwise version "9999" means fetching it from github rather than gnunet.org
+            https://gnunet.org/git/${PN}
+			https://github.com/gnunet/${PN}
+            git://gnunet.org/${PN}"
 
 case ${PV} in
 "9999")

@@ -14,8 +14,10 @@ ESVN_PROJECT="gnunet-gtk"
 ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
 
 # if you're a gnunet developer, you can put a symlink to your local git here:
-EGIT_REPO_URI="/usr/local/src/gnunet-gtk
-	   https://github.com/gnunet/gnunet-gtk"
+EGIT_REPO_URI="/usr/local/src/${PN}
+            https://gnunet.org/git/${PN}.git
+            git://gnunet.org/${PN}.git
+            https://github.com/gnunet/${PN}"
 # otherwise version "9999" means fetching it from github rather than gnunet.org
 
 IUSE="debug qr"
