@@ -157,9 +157,12 @@ contain malware now. The reason it is here is because it
 has a pretty good control API and no-one cared to rewrite
 the powerful psycmp3 player to use a free software API.
 
-== media-video/miro ==
+== media-video/flowblade ==
 
-Podcast TV.
+Multitrack video editor with straightforward UI. Probably
+not as powerful as kdenlive, but doesn't crash in exchange.
+Mirrored from jorgicio's overlay, which is hosted on an
+unreliable commercial cloud offering called github.
 
 == media-video/mp4cut ==
 
