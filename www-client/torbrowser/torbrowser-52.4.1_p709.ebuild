@@ -12,11 +12,12 @@ if [[ ${MOZ_ESR} == 1 ]]; then
 fi
 
 # see https://gitweb.torproject.org/builders/tor-browser-bundle.git/tree/gitian/versions?h=maint-7.0
-TOR_PV="7.0.6"
+TOR_PV="7.0.9"
 EGIT_COMMIT="tor-browser-${MOZ_PV}-7.0-1-build1"
+EGIT_COMMIT_HASH="be32e802ab73bbafeddd6b3a6d1a1eab36bda61b"
 
 # Patch version
-PATCH="${MY_PN}-52.4-patches-01"
+PATCH="${MY_PN}-52.4-patches-02"
 
 MOZCONFIG_OPTIONAL_GTK2ONLY=1
 MOZCONFIG_OPTIONAL_WIFI=1
@@ -89,8 +90,13 @@ src_unpack() {
 }
 
 src_prepare() {
+    # lynXified security check
+    elog "Checking if ${EGIT_COMMIT} matches ${EGIT_COMMIT_HASH}"
+    [ `git log --pretty=format:%H` == ${EGIT_COMMIT_HASH} ] || die
+
 	# Apply gentoo firefox patches
 	rm "${WORKDIR}/firefox/1002_add_gentoo_preferences.patch" || die
+	rm "${WORKDIR}/firefox/2003_fix_sandbox_prlimit64.patch" || die
 	eapply "${WORKDIR}/firefox"
 	eapply "${FILESDIR}/${PN}-52.1.2-add_gentoo_preferences.patch"
 
