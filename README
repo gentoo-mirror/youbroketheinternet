@@ -197,6 +197,18 @@ a command separator symbol as it would keep you from winking.
 
 Another fine item from MeisterP's torbrowser overlay.
 
+== net-p2p/cjdns ==
+
+An Internet overlay based on deterministic DHT-powered routing,
+similar to GNUnet's CADET, but less complicated and less secure.
+It maps the public key addresses of hosts to virtual IPv6
+addresses, which means that you either maintain a hosts file
+manually or you re-introduce attack vectors with the use of
+DNS. cjdns does not provide anonymity and is not resistant to
+fingerprinting users by traffic shaping. This ebuild has been
+adopted (= checked for consistency and safety) from the insecure
+(plaintext git!) emery overlay. Thank you, emery!
+
 == net-p2p/pybitmessage ==
 
 Cryptographic anonymizing text publication system. Not a lot better
