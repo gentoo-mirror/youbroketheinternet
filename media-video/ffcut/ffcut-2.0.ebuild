@@ -3,11 +3,11 @@
 
 EAPI=5
 
-DESCRIPTION="Lossless M4V Scene Extractor"
+DESCRIPTION="symlynX's Fast & Furious Lossless Media Cutting Tool"
 
 LICENSE="AGPL"
 SLOT="0"
-DEPEND="dev-lang/perl media-video/gpac"
+DEPEND="dev-lang/perl media-video/gpac media-video/ffmpeg"
 
 # isn't it pointless to have a list of architectures for architecture-independent packages?
 KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k mips ppc ppc64 s390 sh sparc x86 amd64-fbsd sparc-fbsd x86-fbsd"
@@ -19,3 +19,7 @@ src_install() {
 	doexe "${FILESDIR}"/${PN}
 }
 
+pkg_postinst() {
+	elog "ffcut works best with both media-video/ffmpeg and media-video/gpac"
+	elog "ffcut also makes use of either media-video/mplayer or media-video/mpv when installed"
+}
