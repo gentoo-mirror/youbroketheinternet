@@ -1,21 +1,17 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
+EAPI=6
 
-inherit autotools eutils multilib versionator
+inherit autotools versionator
 
 MY_PV="$(replace_version_separator 3 -)"
 MY_PF="${PN}-${MY_PV}"
 S=${WORKDIR}/${MY_PF}
 
 DESCRIPTION="Use most socks-friendly applications with Tor"
-HOMEPAGE="https://torproject.org"
-# This moved on to https://gitweb.torproject.org/torsocks.git but
-# someone needs to find the commit that was 1.2 release if it
-# exists in the new infrastructure.
-#HOMEPAGE="https://github.com/dgoulet/torsocks"
+HOMEPAGE="https://github.com/dgoulet/torsocks"
 SRC_URI="https://github.com/dgoulet/torsocks/archive/v${MY_PV}.tar.gz -> ${MY_PF}.tar.gz"
 
 LICENSE="GPL-2"
@@ -27,13 +23,12 @@ IUSE="static-libs"
 DEPEND=""
 RDEPEND="${DEPEND}"
 
+DOCS=( ChangeLog README.md doc/notes/DEBUG doc/socks/{SOCKS5,socks-extensions.txt} )
+
 src_prepare() {
 	sed -i -e "/dist_doc_DATA/s/^/#/" Makefile.am doc/Makefile.am || die
 
-	# Disable tests requiring network access.
-	sed -i -e '/^\.\/test_dns$/d' tests/test_list || \
-		die "failed to disable network tests"
-
+	default
 	eautoreconf
 }
 
@@ -44,9 +39,6 @@ src_configure() {
 src_install() {
 	default
 
-	dodoc ChangeLog README.md TODO doc/notes/DEBUG doc/socks/{SOCKS5,socks-extensions.txt}
-
-	#Remove libtool .la files
-	cd "${D}"/usr/$(get_libdir)/torsocks || die
-	rm -f *.la
+	# Remove libtool .la files
+	find "${D}" -name '*.la' -delete || die
 }

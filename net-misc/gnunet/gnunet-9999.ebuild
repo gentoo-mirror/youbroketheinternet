@@ -1,6 +1,6 @@
 # Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# Written by, in historic order: vminko, vonlynX, ng0.
+# Written by, in historic order: vonlynX, ng0
 # https://gnunet.org/gentoo-build is outdated, please ignore.
 
 EAPI=6
@@ -8,7 +8,7 @@ EAPI=6
 DESCRIPTION="Cryptographic GNU Mesh/Underlay Network Routing Layer"
 HOMEPAGE="https://gnunet.org/"
 LICENSE="GPL-3"
-# tests are not yet python3 compatible.
+# tests of gnunet <= 0.10.1 are using python 2.7, gnunet HEAD uses python 3.
 PYTHON_COMPAT=( python2_7 )
 KEYWORDS="~"
 SLOT="0"
@@ -71,7 +71,7 @@ IUSE="debug +httpd +sqlite postgres mysql nls nss +X +gnutls dane +bluetooth \
 	  +gnurl +curl curl_ssl_gnutls"
 
 # !!! TODO: Sort run depend, required use, build time use.
-REQUIRED_USE="?? ( mysql postgres sqlite )
+REQUIRED_USE="|| ( mysql postgres sqlite )
 		?? ( pulseaudio gstreamer )
 		experimental? ( || ( extra ) )
 		extra? ( || ( experimental ) )"

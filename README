@@ -264,6 +264,7 @@ GNU Guix is a package manager. It's also an operating system
 (GNU GuixSD). Guix might provide updates via a distributed network
 in the future. Currently this ebuild and sys-apps/guix-binary are
 open for debugging here, please provide us with input.
+(* sys-apps/guix is functional, the OpenRC service needs debugging.)
 
 == sys-apps/guix-bin ==
 

@@ -1,7 +1,5 @@
-# Copyright © 2016 ng0 <https://n0.is>
-# This files is part of the youbroketheinternet overlay, distributed by the
-# youbroketheinternet overlay team.
-# Distribution under the GPLv3 or later.
+# Copyright 1999-2016 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
@@ -77,30 +75,37 @@ src_install() {
 
 pkg_setup() {
 	enewgroup nixbld
-    g=0
+	g=0
 	for i in `seq -w 0 9`;
 	do
 		enewuser nixbld$i -1 -1 /var/empty nixbld;
-        if [ $g == 0 ]; then
+		if [ $g == 0 ]; then
 			g="nixbld$i"
-        else
+		else
 			g="$g,nixbld$i"
-        fi
+		fi
 	done
-    # For some strange reason all of the generated
-    # user ids need to be listed in /etc/group even though
-    # they were created with the correct group. This is a
-    # command that patches the /etc/group file accordingly,
-    # but it expects perl to be installed. If you don't have
-    # perl installed, you have to do this manually. Adding a
-    # dependency for this is inappropriate.
-    perl -pi~ -e 's/^(nixbld:\w+:\d+):$/\1:'$g'/' /etc/group
+	# For some strange reason all of the generated
+	# user ids need to be listed in /etc/group even though
+	# they were created with the correct group. This is a
+	# command that patches the /etc/group file accordingly,
+	# but it expects perl to be installed. If you don't have
+	# perl installed, you have to do this manually. Adding a
+	# dependency for this is inappropriate.
+	perl -pi~ -e 's/^(nixbld:\w+:\d+):$/\1:'$g'/' /etc/group
 }
 
 pkg_postinst() {
 	einfo "Warning, this is a test package, thanks for participating"
 	einfo "in trying to get a functional Nix package manager into"
 	einfo "Gentoo."
+        einfo "!!! It is required (read: mandatory) to read the"
+        einfo "!!! documentation for further understanding."
+        einfo "!!! Failing to read the documentation will break your"
+        einfo "!!! installed nix.  This is not a package which is"
+        einfo "!!! supposed to be upgraded or maintained through Gentoo,"
+        einfo "!!! this package was just an entry point."
+
 #	if ! use etc_profile; then
 #		ewarn "${EROOT}etc/profile.d/nix.sh was removed (due to USE=-etc_profile)."
 #		ewarn "Please fix the ebuild by adding nix user/group handling."
@@ -114,4 +119,3 @@ pkg_postinst() {
 
 # FIXME:
 # openrc script needed for launching the nix-daemon
-

@@ -1,5 +1,5 @@
-# Distributed under the terms of the GNU General Public License v3
-# Copyright (c) 2016 ng0
+# Copyright 1999-2016 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
@@ -54,25 +54,25 @@ DEPEND="!sys-apps/guix
 RDEPEND="${DEPEND}"
 
 pkg_setup() {
-    enewgroup guixbuild
-    g=0
-    for i in `seq -w 0 9`;
-    do
-        enewuser guixbld$i -1 -1 /var/empty guixbuild;
-        if [ $g == 0 ]; then
+	enewgroup guixbuild
+	g=0
+	for i in `seq -w 0 9`;
+	do
+		enewuser guixbld$i -1 -1 /var/empty guixbuild;
+		if [ $g == 0 ]; then
 			g="guixbld$i"
-        else
+		else
 			g="$g,guixbld$i"
-        fi
-    done
-    # For some strange reason all of the generated
-    # user ids need to be listed in /etc/group even though
-    # they were created with the correct group. This is a
-    # command that patches the /etc/group file accordingly,
-    # but it expects perl to be installed. If you don't have
-    # perl installed, you have to do this manually. Adding a
-    # dependency for this is inappropriate.
-    perl -pi~ -e 's/^(guixbuild:\w+:\d+):$/\1:'$g'/' /etc/group
+		fi
+	done
+	# For some strange reason all of the generated
+	# user ids need to be listed in /etc/group even though
+	# they were created with the correct group. This is a
+	# command that patches the /etc/group file accordingly,
+	# but it expects perl to be installed. If you don't have
+	# perl installed, you have to do this manually. Adding a
+	# dependency for this is inappropriate.
+	perl -pi~ -e 's/^(guixbuild:\w+:\d+):$/\1:'$g'/' /etc/group
 }
 
 src_unpack() {
@@ -122,4 +122,12 @@ pkg_postinst() {
 	einfo "guix pull ; guix package -i hello"
 	einfo ""
 	einfo "You have to consult the GNU Guix manual to finish the setup."
+        einfo ""
+        einfo "!!! It is required (read: mandatory) to read the"
+        einfo "!!! documentation for further understanding."
+        einfo "!!! Failing to read the documentation will break your"
+        einfo "!!! installed guix.  This is not a package which is"
+        einfo "!!! supposed to be upgraded or maintained through Gentoo,"
+        einfo "!!! this package was just an entry point."
+
 }
