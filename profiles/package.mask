@@ -1,3 +1,6 @@
+# only useful if you want to try out pybitmessage
+dev-libs/openssl
+
 # masked as it requires OpenRC service debugging,
 # this is experimental ebuild status.
 sys-apps/guix

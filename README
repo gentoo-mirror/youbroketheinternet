@@ -347,7 +347,8 @@ your torrc is configured. It would mostly hide the fact that you
 are using Bitmessage and increase your messaging anonymity only
 when you are posting to large subscription channels. For mere
 private conversation and passive consumption of public channels,
-Tor is not needed.
+Tor is not needed. You may need to unmask the openssl given in this
+overlay for pybitmessage to build successfully.
 
 == net-p2p/retroshare ==
 
