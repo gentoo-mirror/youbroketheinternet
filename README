@@ -69,6 +69,32 @@ from command line just like you can when drag+dropping folders
 into each other with a GUI file manager. How could we exist
 without this all these years?
 
+== dev-db/cayley ==
+
+A graph database written in Go. Borrowed the ebuild from
+jm-overlay. Version 0.5.0 looks sloppy and buggy.
+
+== dev-db/agensgraph ==
+
+A transactional graph database based on PostgreSQL. In fact
+it comes with its own version of postgresql so it probably
+cannot be installed on the same system with a regular pgsql.
+AgensGraph is a multi-model database, which supports the 
+relational and graph data model at the same time that enables 
+developers to integrate the legacy relational data model and 
+the flexible graph data model in one database. AgensGraph
+is written in C and has close to no dependencies.
+
+== dev-lang/psyclpc ==
+
+LPC bytecode interpreter used by psyced. Works also for
+implementing Multi-User Dungeon games (MUDs).
+
+== dev-libs/openssl ==
+
+The regular portage openssl files disallow the use of certain
+elliptic curve cryptography that pybitmessage happens to need.
+
 == dev-perl/Net-PSYC ==
 
 Perl implementation of the PSYC protocol together with
@@ -81,16 +107,6 @@ Perl implementation of the PSYC protocol together with
 
 and several more nifty tools for automation of
 notification and messaging.
-
-== dev-lang/psyclpc ==
-
-LPC bytecode interpreter used by psyced. Works also for
-implementing Multi-User Dungeon games (MUDs).
-
-== dev-libs/openssl ==
-
-The regular portage openssl files disallow the use of certain
-elliptic curve cryptography that pybitmessage happens to need.
 
 == dev-qt/qzxing ==
 
