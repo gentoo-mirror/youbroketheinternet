@@ -43,10 +43,15 @@ case ${PV} in
 	# last snapshot available via http
 	SRC_URI="http://www.psyced.org/files/${P}.tar.xz"
 	;;
+"20170107")
+	inherit git-r3 elisp-common
+	# this one has USE 'debug' fixed
+	EGIT_COMMIT="fdb1747099d8ee99adcb2bee4dd3e1a212e02399"
+	;;
 *)
 	inherit git-r3 elisp-common
 	# last seen change
-	EGIT_COMMIT="27f21a3bf0d140f0d2680c695e8df229b46a814b"
+	EGIT_COMMIT="fdb1747099d8ee99adcb2bee4dd3e1a212e02399"
 	# therefore, for security reasons "9999" doesn't actually
 	# emerge the latest version. please consult 'git log' and
 	# update the last EGIT_COMMIT to obtain a newer version.

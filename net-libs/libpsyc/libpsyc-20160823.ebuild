@@ -13,6 +13,7 @@ EGIT_REPO_URI="/usr/local/src/${PN}
 
 case ${PV} in
 "20160822")
+	inherit git-r3
 	EGIT_COMMIT="12080f60712b6d533b1f4b45788de8b4bcd2a3d9"
 	;;
 "20160823")
@@ -24,10 +25,14 @@ case ${PV} in
 	# EGIT_COMMIT="2e82f31f9d9281af0b3450d617458ca85dd12ee5"
 	SRC_URI="http://www.psyced.org/files/${P}.tar.xz"
 	;;
+"20170107")
+	inherit git-r3
+	EGIT_COMMIT="8fe9264b7ef3dbf457c99c5bbfd767cb7561a37d"
+	;;
 *)
 	inherit git-r3
 	# last seen change
-	EGIT_COMMIT="2e82f31f9d9281af0b3450d617458ca85dd12ee5"
+	EGIT_COMMIT="8fe9264b7ef3dbf457c99c5bbfd767cb7561a37d"
 	;;
 esac
 
