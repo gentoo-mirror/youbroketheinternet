@@ -73,7 +73,7 @@ AUTOTOOLS_IN_SOURCE_BUILD=1
 # installation, claiming that it will not be installed if it is missing from the
 # build environment. With current HEAD (Aug 28 2016) it seems that sudo is no
 # longer needed, neither is root. This warning must be fixed in gnunet.
-IUSE="debug +httpd +sqlite postgres mysql nls nss +X +gnutls dane +bluetooth \
+IUSE="debug +httpd +sqlite postgres mysql nls +nss +X +gnutls dane +bluetooth \
 	  ssl libressl experimental extra pulseaudio gstreamer qr tex test \
 	  +gnurl +curl curl_ssl_gnutls"
 
