@@ -31,6 +31,13 @@ have a look at our 'best current practice' recommendations at
 http://secushare.cheettyiapsyciew.onion/comparison.
 
 
+== app-arch/zipgrep ==
+
+A replacement for the zipgrep shell script that comes with
+app-arch/unzip. This one can handle spaces in filenames, can
+recognize ZIP compatible file formats such as ODT, APK or MAFF
+and recurses into directories by default.
+
 == dev-perl/Net-PSYC ==
 
 Perl implementation of the PSYC protocol together with
@@ -151,7 +158,8 @@ Person-to-person encrypted telephony application.
 == net-irc/psyced ==
 
 Server for federated messaging and chat using PSYC, IRC,
-XMPP and other protocols.
+XMPP and other protocols. Currently being adapted to work
+in a distributed manner over GNUnet.
 
 == net-libs/libpsyc ==
 
@@ -236,15 +244,18 @@ open for debugging here, please provide us with input.
 
 == sys-apps/oneshot ==
 
-Helper tool for Gentoo's emerge. Use it in ways that do not
-cut you bleeding. Partial slot conflict resolution automation
-included.
+Command line usability enhancement for Gentoo's emerge. It should in most 
+cases keep you from breaking your system by only allowing flags that make
+sense together. It also includes a partial slot conflict resolution
+automation and some other nifty tricks resulting from a decade of
+experience with Gentoo usage.
 
 == sys-fs/dmc ==
 
-Command line usability frontend to dm-crypt's cryptsetup, vaguely similar
-to truecrypt. Also similar to Jaromil's Tomb, but with support for multiple
-file systems. Automates creation and maintenance of encrypted volumes.
+Command line usability frontend to dm-crypt's cryptsetup, partly compatible
+to Truecrypt's command line syntax. Similar in functionality to Jaromil's
+Tomb, but with support for multiple file systems. Automates creation and 
+maintenance of encrypted volumes. A must have for privacy-aware humans.
 
 == www-client/torbrowser ==
 
@@ -252,9 +263,9 @@ By fulfilling most requirements of protocol standards, all web browsers
 are currently tuned to conspire with web servers to spy on you, even
 if you use them in combination with the Tor anonymization system.
 Torbrowser is the only instrument that separates your browsing activity
-tab by tab into separate Tor identities, disallowing big brother to
-correlate your activities. In other words, this is the only acceptable
-web browser in existence as of 2015-2016.
+tab by tab into separate Tor identities, making it significantly harder
+for Big Brother to correlate your activities. In other words, this is 
+the only politically acceptable web browser in existence as of 2015-2016.
 
 == www-plugins/certpatrol ==
 
