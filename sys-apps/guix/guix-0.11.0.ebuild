@@ -30,23 +30,21 @@ RDEPEND="${DEPEND}"
 
 pkg_setup() {
 	enewgroup guixbuild
-	for i in `seq -w 10 19`;
+	g=''
+	for i in `seq -w 0 9`;
 	do
-		enewuser guixbuilder$i -1 -1 /var/empty guixbuild;
+		# you may want to put -1 instead of /var/empty
+		enewuser guixbld$i -1 -1 /var/empty guixbuild;
+		g="$g:guixbld$i"
 	done
-	# this should replace this long sequence of adding users,
-	# refer to section 2.4.1 of `info guix`:
-	#	enewuser guixbuilder01 -1 /sbin/nologin "/var/empty" guixbuild or:
-	#	enewuser guixbuilder01 -1 -1 -1 guixbuild
-	#	enewuser guixbuilder02 -1 -1 -1 guixbuild
-	#	enewuser guixbuilder03 -1 -1 -1 guixbuild
-	#	enewuser guixbuilder04 -1 -1 -1 guixbuild
-	#	enewuser guixbuilder05 -1 -1 -1 guixbuild
-	#	enewuser guixbuilder06 -1 -1 -1 guixbuild
-	#	enewuser guixbuilder07 -1 -1 -1 guixbuild
-	#	enewuser guixbuilder08 -1 -1 -1 guixbuild
-	#	enewuser guixbuilder09 -1 -1 -1 guixbuild
-	#	enewuser guixbuilder10 -1 -1 -1 guixbuild
+	# For some strange reason all of the generated
+	# user ids need to be listed in /etc/group even though
+	# they were created with the correct group. This is a
+	# command that patches the /etc/group file accordingly,
+	# but it expects perl to be installed. If you don't have
+	# perl installed, you have to do this manually. Adding a
+	# dependency for this is inappropriate.
+	perl -pi~ -e 's/^(guixbuild:\w+:\d+):$/\1'$g'/' /etc/group
 }
 
 src_configure() {
@@ -73,21 +71,6 @@ src_install() {
 	fowners :guixbuild /run/guix
 
 }
-
-#FIXME: Merge OpenRC startup file into guix master ... once it is no longer absolutely horrible.
-#pkg_preinst() {
-#	enewgroup guixbuild
-#	enewuser guixbuilder01 -1 /sbin/nologin "/var/empty" guixbuild
-#	enewuser guixbuilder02 -1 /sbin/nologin "/var/empty" guixbuild
-#	enewuser guixbuilder03 -1 /sbin/nologin "/var/empty" guixbuild
-#	enewuser guixbuilder04 -1 /sbin/nologin "/var/empty" guixbuild
-#	enewuser guixbuilder05 -1 /sbin/nologin "/var/empty" guixbuild
-#	enewuser guixbuilder06 -1 /sbin/nologin "/var/empty" guixbuild
-#	enewuser guixbuilder07 -1 /sbin/nologin "/var/empty" guixbuild
-#	enewuser guixbuilder08 -1 /sbin/nologin "/var/empty" guixbuild
-#	enewuser guixbuilder09 -1 /sbin/nologin "/var/empty" guixbuild
-#	enewuser guixbuilder10 -1 /sbin/nologin "/var/empty" guixbuild
-#}
 
 # To use substitutes from hydra.gnu.org or one of its mirrors (see Substitutes), authorize them:
 # guix archive --authorize < ~root/.guix-profile/share/guix/hydra.gnu.org.pub
