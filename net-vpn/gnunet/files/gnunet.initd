@@ -64,6 +64,7 @@ start() {
 
 	ebegin "Starting ${SVCNAME}"
 	# shouldn't be necessary... but
+	modprobe tun
 	start-stop-daemon --start --user gnunet --name gnunet --pidfile ${PIDFILE} \
 	     --exec ${GNUNET_PATH}/lib/gnunet/libexec/gnunet-service-arm -- -d
 		# flags to be passed to the process appear after the double-dash
