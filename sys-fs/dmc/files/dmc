@@ -416,7 +416,8 @@ ADEU:
 sys2 '/sbin/cryptsetup', 'status', $mapper unless $opt_q;
 sys '/bin/df', '-Th', $mnt if -d $mnt;
 # -m(onitor) -(ignore)x(11) -n(oincrementalscan)
-sys '/usr/bin/recollindex', '-nmx', '-c', $recoll
+# apparently -n or -m don't do their jobs properly
+sys '/usr/bin/recollindex', '-mx', '-c', $recoll
     if not $opt_p and not $ro and -w $recoll and -r $recoll.'/recoll.conf';
 
 
@@ -472,9 +473,10 @@ Maybe you like my screen colors or flag UX.
 
 dmc will automatically fire up or shut down a recollindex process
 if a .recoll directory is found on the top level of the volume.
-This can be disabled with -p if you don't trust the volume. It is
-expected that no modifications were made to the volume while
-recoll wasn't running.
+This can be disabled with -p if you don't trust the volume.
+
+# It is expected that no modifications were made to the volume while
+# recoll wasn't running. <- Apparently that doesn't work.
 
 =head1 AUTHORS
 
