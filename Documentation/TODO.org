@@ -32,6 +32,11 @@ point it out in this file.
 
 - Make it functional.
 
+** sys-apps/nix
+
+- Add a service.
+- Debug it.
+
 ** www-plugins/*
 
 - Fix this: use() is wrong in the ebuilds.
@@ -45,10 +50,41 @@ point it out in this file.
 
 - patch it to remove default start page (which contains advertisment)
 - write an update fetcher - its home page is behind the Great Firewall of Cloudflare
-** www-client/torbrowser-bundle
+** DONE www-client/torbrowser-bundle
 
 - we do not actually use this or have tested
   this. for maintenance ease we should drop
   it.
 
+
+
+* TODO (packages to be moved to guix)
+
+** psyc
+*** psyclpc
+*** psyced
+** perl
+*** perl-extutils-h2pm
+*** perl-file-touch
+*** perl-ipc-run3-simple
+*** perl-linux-ext2-attributes
+*** perl-net-psyc
+*** perl-unix-mknod
+** qt
+*** qzxing
+** vid-stab
+** miro
+** tox
+*** qtox
+*** toxic
+*** utox
+** ricochet
+** onioncircuits
+** bitmessage
+*** pybitmessage
+** retroshare
+** palemoon
+** hiawatha
+** onionshare
+** interrobang
 

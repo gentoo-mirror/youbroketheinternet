@@ -110,7 +110,6 @@ RDEPEND="
 	)
 	bluetooth? ( net-wireless/bluez )
 	test? ( ${PYTHON_DEPS} )
-	net-misc/udpcast
 	sudo? ( app-admin/sudo )"
 #test? ( >=dev-lang/python-2.7:2.7 )
 
@@ -137,14 +136,14 @@ pkg_setup() {
 # Here we add and run what bootstrap would do.
 src_prepare() {
 	if [[ "${PV}" == "0.10.1_pre01021" ]]; then
-		subversion_src_prepare
+		#subversion_src_prepare
 		rm -rf libltdl || die
 		eautoreconf
 		./contrib/pogen.sh || die
 		default
 		eapply_user
 	elif [[ "${PV}" == "9999" ]]; then
-		subversion_src_prepare
+		#subversion_src_prepare
 		rm -rf libltdl || die
 		eautoreconf
 		./contrib/pogen.sh || die

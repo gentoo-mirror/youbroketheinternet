@@ -3,11 +3,26 @@
 <repositories xmlns="" version="1.0">
    <repo quality="experimental" status="unofficial">
       <name>youbroketheinternet</name>
-      <description>We'll make us a GNU one - Tools for a libre Internet</description>
+      <description lang="en">
+        This overlay is a collaborative maintained Gentoo developer overlay. Some of us are involved with SecuShare, but we try out all sorts of XKEYSCORE-resistant technology. Some of our unique ebuilds are the full GNUnet suite, a functional guile-2 and software around the psyced chatserver. Some ebuilds are experimental/testing - refer to the included README for more info and details. If you would like to get involved read https://wiki.gentoo.org/wiki/Overlay:Youbroketheinternet
+      </description>
       <homepage>http://youbroketheinternet.org/#overlay</homepage>
       <owner type="person">
          <name>carlo von lynX</name>
       </owner>
-      <source type="git">git://cheettyiapsyciew.onion/youbroketheinternet-overlay</source>
+      <owner type="person">
+        <name>ng0</name>
+      </owner>
+      <owner type="project">
+        <name>ybti overlay project</name>
+      </owner>
+      <source type="git">
+        git://cheettyiapsyciew.onion/youbroketheinternet-overlay
+      </source>
+      <source type="git">
+        git://git.far37qbrwiredyo5.onion/youbroketheinternet-overlay
+      </source>
+      <source type="git">https://git.n0.is/youbroketheinternet-overlay.git</source>
+      <source type="git">git://git.n0.is/youbroketheinternet-overlay</source>
    </repo>
 </repositories>

@@ -1,6 +1,9 @@
 # Distributed under the terms of the GNU General Public License v3
 # Copyright (c) 2016 ng0 <https://we.make.ritual.n0.is>
 
+# Something is horribly broken and I don't know if it's the service
+# or the way we package this. FIXME!
+
 EAPI=5
 inherit user eutils autotools
 
@@ -15,13 +18,6 @@ KEYWORDS="~amd64 ~x86 ~mips ~arm"
 IUSE="test"
 
 #FIXME: package dev-scheme/guile-json
-#BEWARE: ABSOLUTELY use guile from this overlay if
-#        you don't want to break your system.
-#        This is still experimental, but apparently
-#        more stable than the bug #355355
-#        celebrating its 6th anniversary this year.
-#        You will also need to use gnutls from this overlay,
-#        which links to guile here.
 DEPEND=">=dev-scheme/guile-2.0.12[networking]
 	dev-libs/libgcrypt
 	>=dev-db/sqlite-3.0
@@ -34,9 +30,9 @@ RDEPEND="${DEPEND}"
 
 pkg_setup() {
 	enewgroup guixbuild
-	for i in `seq -w 1 10`;
+	for i in `seq -w 10 19`;
 	do
-		enewuser guixbuilder$i -1 /sbin/nologin /var/empty guixbuild;
+		enewuser guixbuilder$i -1 -1 /var/empty guixbuild;
 	done
 	# this should replace this long sequence of adding users,
 	# refer to section 2.4.1 of `info guix`:

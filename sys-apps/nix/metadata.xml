@@ -4,13 +4,10 @@
   <maintainer type="person">
     <name>ng0</name>
     <email>ng0@we.make.ritual.n0.is</email>
-    <description>package maintainer</description>
+    <description>maintainer</description>
   </maintainer>
-  <upstream>
-    <bugs-to>https://gnunet.org/bugs</bugs-to>
-    <doc lang="en">https://gnunet.org</doc>
-  </upstream>
   <use>
-    <flag name='dane'>dane</flag>
+    <flag name='etc_profile'>Install /etc/profile.d/ entry to inject nix support for all users.</flag>
+    <flag name='gc'>Enable garbage collection in the Nix expression evaluator (use <pkg>dev-libs/boehm-gc</pkg>).</flag>
   </use>
 </pkgmetadata>
