@@ -242,10 +242,6 @@ reducing the number of hiccups and prolonging the skips
 in exchange. Would be best if this was a runtime option
 for ffmpeg, but so far it isn't.
 
-== net-im/gajim ==
-
-Multi-protocol messenger app.
-
 == net-im/qtox ==
 
 [migrated to gentoo portage]
@@ -255,6 +251,8 @@ Multi-protocol messenger app.
 [migrated to gentoo portage]
 
 == net-im/telegram-cli ==
+
+[would need to be updated to new source codes]
 
 Barebones API for remote controlling an account on telegram.org.
 Has no proper client interface but comes with enough command-line
@@ -299,6 +297,8 @@ That's why we also provide a 'cmdsep' flag to avoid making ";"
 a command separator symbol as it would keep you from winking.
 
 == net-p2p/cjdns ==
+
+[would need an update from emery]
 
 An Internet overlay based on deterministic DHT-powered routing,
 similar to GNUnet's CADET, but less complicated and less secure.
@@ -345,10 +345,6 @@ publication and sharing.
 While compiling from source works great, the ebuilds produce
 some mysterious error messages. Please help to figure out
 what the problem is. Luckily this package is optional.
-
-== net-vpn/onioncircuits ==
-
-Another fine item from MeisterP's torbrowser overlay.
 
 == sys-apps/guix ==
 
