@@ -36,14 +36,6 @@ case ${PV} in
 	;;
 esac
 
-SLOT="0"
+# see also https://wiki.gentoo.org/wiki/Debugging
 IUSE="debug"
-RDEPEND=""
-
-src_compile() {
-        use debug && {
-            append-flags -g -DDEBUG
-			RESTRICT="${RESTRICT} nostrip"
-        }
-}
 

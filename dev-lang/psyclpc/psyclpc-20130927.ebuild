@@ -113,8 +113,8 @@ src_compile() {
 			myopts="${myopts} --enable-use-pgsql"
 		}
 		use debug && {
+			# see also https://wiki.gentoo.org/wiki/Debugging
 			append-flags -O -ggdb -DDEBUG
-# old:		RESTRICT="${RESTRICT} nostrip"
 			myopts="${myopts} --enable-debug"
 		}
 		# this runs configure
