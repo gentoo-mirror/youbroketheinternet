@@ -578,10 +578,14 @@ git-r3_fetch() {
 	local r
 	for r in "${repos[@]}"; do
 		if [[ ${r} == git:* || ${r} == http:* ]]; then
-			ewarn "git-r3: ${r%%:*} protocol is completely unsecure and may render the ebuild"
-			ewarn "easily susceptible to MITM attacks (even if used only as fallback). Please"
-			ewarn "use https instead."
-			ewarn "[URI: ${r}]"
+			if [[ ${r} == *://*.onion/* ]]; then
+				einfo "Cool, you are using an extra secure Tor repository."
+			else
+				ewarn "git-r3: ${r%%:*} protocol is completely unsecure and may render the ebuild"
+				ewarn "easily susceptible to MITM attacks (even if used only as fallback). Please"
+				ewarn "use https instead."
+				ewarn "[URI: ${r}]"
+			fi
 		fi
 	done
 
