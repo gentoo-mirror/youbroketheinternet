@@ -137,6 +137,8 @@ sub unmount {
 				print "\t{shutting down recollindex $pid}\n";
 				kill 'INT', $pid;
 				sleep 2;
+			} else {
+				print STDERR RED, "\t{couldn't read recollindex pid}\n", RESET;
 			}
 		}
 	}
