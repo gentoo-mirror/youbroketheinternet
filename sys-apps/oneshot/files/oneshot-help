@@ -68,7 +68,8 @@ my %b = undef;
 my $emerge = '/usr/bin/emerge';
 
 sub say {
-        print STDERR "\t=== ", BOLD, MAGENTA, @_, RESET, "\n";
+	my $first = shift;
+        print STDERR "***\t", BOLD, MAGENTA, $first, RESET, @_, "\n";
 }
 
 sub emerge {
@@ -184,7 +185,7 @@ X
 	m%/([^/]+)$%;
 	say "I was called as $1 this time" if debug;
 	$_ = (grep { /^$1 - / } (split /\n/, $variations))[0];
-	print STDERR "\t=== ", BOLD, CYAN, $_, RESET, "\n" if /^\S+ - .*$/;
+	print STDERR "***\t", BOLD, CYAN, $_, RESET, "\n" if /^\S+ - .*$/;
 
 	# now we actually start doing something
 	$emerge = '/usr/bin/revdep-rebuild' if $0 =~ /revdep/;
@@ -206,7 +207,7 @@ X
 	# is --newrepo introducing unwelcome side effects?
 	$emerge .= " --alert --alphabetical --ask-enter-invalid --autounmask-write --buildpkg --buildpkg-exclude 'sys-kernel/*-sources' --keep-going --oneshot --verbose --verbose-conflicts";
 	# --verbose shows the USE flags in the ask listing
-	say "Command: $emerge" if verbose;
+	say "Command: ", $emerge if verbose;
 
 	if ($#a < 0) {
 		say "Expecting arguments on STDIN";

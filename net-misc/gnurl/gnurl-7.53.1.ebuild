@@ -8,8 +8,7 @@ HOMEPAGE="https://gnunet.org/gnurl"
 
 inherit autotools eutils prefix versionator
 
-MY_P=${PN}-$(replace_all_version_separators '_')
-SRC_URI="https://gnunet.org/sites/default/files/${MY_P}.tar.bz2 -> ${MY_P}.tar.bz2"
+SRC_URI="https://gnunet.org/sites/default/files/${P}.tar.bz2 -> ${P}.tar.bz2"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~"
@@ -20,7 +19,6 @@ RDEPEND=">=net-libs/gnutls-3[dane?]
 DEPEND="${RDEPEND}"
 
 DOCS=( CHANGES README docs/FEATURES docs/MANUAL docs/FAQ docs/BUGS )
-#S=${WORKDIR}/${MY_P}
 
 # TODO: check if this phase is still appropriate in content!
 src_prepare() {
