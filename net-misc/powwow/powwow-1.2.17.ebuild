@@ -54,7 +54,7 @@ src_install() {
 pkg_postinst() {
 	elog " "
 	elog "You enabled the cmdsep useflag which changes the"
-	elog "CMDSEP from \';\' to \'\\\', this way allowing you"
+	elog "CMDSEP from ';' to '\', this way allowing you"
 	elog "to wink in conversations.  ;-)"
 	elog " "
 }

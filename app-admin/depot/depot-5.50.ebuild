@@ -17,6 +17,11 @@ IUSE="test"
 
 DOCS=( README )
 
+src_compile() {
+    # this code can't handle too parallel make
+    emake -j1
+}
+
 src_prepare() {
 	epatch "${FILESDIR}/build-5.50.patch"
 	eapply_user
