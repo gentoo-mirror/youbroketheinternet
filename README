@@ -237,19 +237,6 @@ A tiny C implementation of the PSYC protocol syntax for
 lightning fast parsing and rendering. Easily beats JSON
 and XML.
 
-== net-misc/gnunet ==
-
-GNUnet is a mesh network routing system not limited to peer-
-to-peer usage, so it belongs into net-misc instead of net-p2p.
-Usage is a bit unorthodox, but it provides censorship-resistant
-anonymous file publication and sharing for a start.
-
-== net-misc/gnunet-gtk ==
-
-While compiling from source works great, the ebuilds produce
-some mysterious error messages. Please help to figure out
-what the problem is. Luckily this package is optional.
-
 == net-misc/gnurl ==
 
 Trimmed down variation of curl without all the cruft. GNUnet
@@ -263,7 +250,20 @@ as a text-based messaging client with psyced's telnet access.
 That's why we also provide a 'cmdsep' flag to avoid making ";"
 a command separator symbol as it would keep you from winking.
 
-== net-misc/onioncircuits ==
+== net-vpn/gnunet ==
+
+GNUnet is a mesh network routing system not limited to peer-
+to-peer usage. It explicitly provides VPN functionality among
+the many other things like censorship-resistant anonymous file
+publication and sharing.
+
+== net-vpn/gnunet-gtk ==
+
+While compiling from source works great, the ebuilds produce
+some mysterious error messages. Please help to figure out
+what the problem is. Luckily this package is optional.
+
+== net-vpn/onioncircuits ==
 
 Another fine item from MeisterP's torbrowser overlay.
 

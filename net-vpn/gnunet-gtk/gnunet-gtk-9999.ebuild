@@ -23,7 +23,7 @@ IUSE="debug qr"
 
 RDEPEND="
 	x11-libs/gtk+:3
-	=net-misc/gnunet-${PV}
+	=net-vpn/gnunet-${PV}
 	>=gnome-base/libglade-2.0
 	dev-libs/libunique:3
 	dev-util/glade:*"

@@ -18,12 +18,13 @@ EGIT_REPO_URI="/usr/local/src/${PN}
             https://gnunet.org/git/${PN}.git
             git://gnunet.org/${PN}.git
             https://github.com/gnunet/${PN}"
+# otherwise version "9999" means fetching it from github rather than gnunet.org
 
 IUSE="debug qr"
 
 RDEPEND="
 	x11-libs/gtk+:3
-	=net-misc/gnunet-${PV}
+	=net-vpn/gnunet-${PV}
 	>=gnome-base/libglade-2.0
 	dev-libs/libunique:3
 	dev-util/glade:*"
