@@ -138,6 +138,14 @@ removing camera shake from video files, since kdenlive
 is such a buggy piece of software and overkill if you do
 not need to do any editing beyond what mp4cut offers.
 
+== media-sound/mumble ==
+
+From mva's overlay, an ebuild that produces a Qt5
+compatible prerelease of mumble 1.3.0 from the 
+current git. Unfortunately it fetches many submodules
+that cannot be pinned down to a cryptographic hash,
+therefore this ebuild is not safe from MITM attacks.
+
 == media-sound/rxaudio-bin ==
 
 A *shareware* from 1998: A remote controllable MP3 engine
@@ -275,8 +283,8 @@ identical binary files.
 
 == sys-apps/nix ==
 
-The package manager from Nix. Currently this ebuild is
-open for debugging here, please provide us with input.
+The package manager from Nix. Portage has added its own version
+without credit to us. Ts!
 
 == sys-apps/oneshot ==
 
