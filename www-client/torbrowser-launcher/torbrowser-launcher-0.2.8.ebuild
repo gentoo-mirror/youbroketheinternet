@@ -1,13 +1,12 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 EAPI=6
 
 PYTHON_COMPAT=( python2_7 )
 DISTUTILS_SINGLE_IMPL=1
 
-inherit distutils-r1 gnome2-utils fdo-mime
+inherit distutils-r1 gnome2-utils xdg-utils
 
 DESCRIPTION="A program to download, updated, and run the Tor Browser Bundle"
 HOMEPAGE="https://github.com/micahflee/torbrowser-launcher"
@@ -29,7 +28,7 @@ DEPEND="${PYTHON_DEPS}
 		>=dev-python/twisted-web-14.0.1[${PYTHON_USEDEP}]
 	)"
 RDEPEND="${DEPEND}
-	app-crypt/gnupg
+	app-crypt/gpgme[${PYTHON_USEDEP}]
 	dev-python/psutil[${PYTHON_USEDEP}]
 	dev-python/pyliblzma[${PYTHON_USEDEP}]"
 
@@ -45,7 +44,7 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	fdo-mime_desktop_database_update
+	xdg_mimeinfo_database_update
 	gnome2_icon_cache_update
 
 	elog "To get additional features, a number of optional runtime"
@@ -56,6 +55,6 @@ pkg_postinst() {
 }
 
 pkg_postrm() {
-	fdo-mime_desktop_database_update
+	xdg_mimeinfo_database_update
 	gnome2_icon_cache_update
 }
