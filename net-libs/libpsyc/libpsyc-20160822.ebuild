@@ -7,8 +7,9 @@ inherit eutils autotools
 DESCRIPTION="library for parsing and rendering PSYC packets more efficiently"
 HOMEPAGE="http://about.psyc.eu/libpsyc"
 LICENSE="AGPL-2"
-EGIT_REPO_URI="git://git.cheettyiapsyciew.onion/libpsyc
-				git://git.psyced.org/git/libpsyc"
+EGIT_REPO_URI="/usr/local/src/${PN}
+		git://git.cheettyiapsyciew.onion/${PN}
+		git://git.psyced.org/git/${PN}"
 
 case ${PV} in
 "20160822")

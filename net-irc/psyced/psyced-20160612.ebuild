@@ -6,8 +6,11 @@ EAPI=6
 DESCRIPTION="Server for Federated Messaging and Chat over PSYC, IRC, XMPP and more"
 HOMEPAGE="http://www.psyced.org"
 LICENSE="GPL-2"
-EGIT_REPO_URI="git://git.cheettyiapsyciew.onion/psyced
-			   git://git.psyced.org/git/psyced"
+
+# if you have a local copy of the git already, you can put it here:
+EGIT_REPO_URI="/usr/local/src/${PN}
+			   git://git.cheettyiapsyciew.onion/${PN}
+			   git://git.psyced.org/git/${PN}"
 
 # providing actual commit hashes protects against man in
 # the middle attacks on the way to the git repository --
