@@ -46,8 +46,9 @@ case ${PV} in
 esac
 
 SLOT="0"
-KEYWORDS="~x86 ~amd64"
-# IUSE="debug"
+
+# isn't it pointless to have a list of architectures for architecture-independent packages?
+KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k mips ppc ppc64 s390 sh sparc x86 amd64-fbsd sparc-fbsd x86-fbsd"
 
 DEPEND="dev-lang/psyclpc"
 RDEPEND="${DEPEND}

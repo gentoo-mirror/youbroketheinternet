@@ -7,7 +7,9 @@ DESCRIPTION="Perl implementation of PSYC protocol plus psycion, remotor, syslog2
 HOMEPAGE="http://perlpsyc.cheettyiapsyciew.onion http://perl.psyc.eu http://perlpsyc.pages.de"
 LICENSE="GPL-2+ Artistic"
 SLOT="0"
-KEYWORDS="~x86 ~ppc ~sparc ~amd64"		# anything, really
+
+# isn't it pointless to have a list of architectures for architecture-independent packages?
+KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k mips ppc ppc64 s390 sh sparc x86 amd64-fbsd sparc-fbsd x86-fbsd"
 
 # our version of eclass/git-r3 supports onion gits:
 EGIT_REPO_URI="git://cheettyiapsyciew.onion/perlpsyc
