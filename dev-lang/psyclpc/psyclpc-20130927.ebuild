@@ -31,13 +31,19 @@ case ${PV} in
 	;;
 "20160417")
 	inherit elisp-common
+	# EGIT_COMMIT="b29bdca5a13abfc70c03f0b51aa9df84d491349c"
+	SRC_URI="http://www.psyced.org/files/${P}.tar.xz"
+	;;
+"20160821")
+	inherit elisp-common
+	# EGIT_COMMIT="27f21a3bf0d140f0d2680c695e8df229b46a814b"
 	# last snapshot available via http
 	SRC_URI="http://www.psyced.org/files/${P}.tar.xz"
 	;;
 *)
 	inherit git-r3 elisp-common
 	# last seen change
-	EGIT_COMMIT="b29bdca5a13abfc70c03f0b51aa9df84d491349c"
+	EGIT_COMMIT="27f21a3bf0d140f0d2680c695e8df229b46a814b"
 	# therefore, for security reasons "9999" doesn't actually
 	# emerge the latest version. please consult 'git log' and
 	# update the last EGIT_COMMIT to obtain a newer version.
@@ -66,6 +72,7 @@ RDEPEND="zlib? ( sys-libs/zlib )
 		emacs? ( virtual/emacs )"
 
 DEPEND="${RDEPEND}
+		net-libs/libpsyc
 		>=sys-devel/flex-2.5.4a-r5
 		>=sys-devel/bison-1.875
 		>=sys-devel/gettext-0.12.1"
