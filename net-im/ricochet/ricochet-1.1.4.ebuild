@@ -18,6 +18,7 @@ EGIT_REPO_URI="https://github.com/ricochet-im/ricochet"
 SRC_URI=""
 
 KEYWORDS="~amd64 ~arm ~ppc64 ~x86"
+IUSE="debug"
 SLOT="0"
 
 DEPEND="
@@ -58,9 +59,13 @@ case ${PV} in
 	EGIT_COMMIT="36d6582f98b64c309609ef88119ab831421910d8"
 	# Date:   Fri Nov 4 16:05:25 2016 -0600
 	;;
-*)
+"1.1.5_alpha1")
 	EGIT_COMMIT="2504d9cf402d25b8a774eced39e1896c8c287f32"
 	# Date:   Wed Nov 16 16:04:11 2016 -0700
+	;;
+*)
+	EGIT_COMMIT="e13b2401507164271c849719e6dfe7e95b89fc23"
+	# wfr committed with special Feb 2, 2017
 	;;
 esac
 # therefore, for security reasons "9999" doesn't actually
@@ -70,7 +75,8 @@ esac
 # 'git tag', 'git reset --hard <tag>', then 'git log'.
 
 src_configure() {
-	eqmake5 "DEFINES+=RICOCHET_NO_PORTABLE CONFIG+=release"
+	use debug && d='CONFIG+=debug' || d='CONFIG+=release'
+	eqmake5 DEFINES+=RICOCHET_NO_PORTABLE $d
 }
 
 src_install() {
@@ -78,4 +84,7 @@ src_install() {
 	doicon -s 48x48 "${S}/icons/ricochet.png"
 	doicon -s scalable "${S}/icons/ricochet.svg"
 	domenu "${S}/src/ricochet.desktop"
+	#
+	# alternate method:
+	#	emake INSTALL_ROOT="${D}" install
 }
