@@ -203,7 +203,8 @@ X
 	$emerge .= " --ask --changelog" if $0 =~ /ask/;
 	# should we always have --changed-deps=y?
 	# WTF is --use-ebuild-visibility=y ?
-	$emerge .= " --alert --alphabetical --ask-enter-invalid --autounmask-write --buildpkg --buildpkg-exclude 'sys-kernel/*-sources' --keep-going --newrepo --oneshot --verbose --verbose-conflicts";
+	# is --newrepo introducing unwelcome side effects?
+	$emerge .= " --alert --alphabetical --ask-enter-invalid --autounmask-write --buildpkg --buildpkg-exclude 'sys-kernel/*-sources' --keep-going --oneshot --verbose --verbose-conflicts";
 	# --verbose shows the USE flags in the ask listing
 	say "Command: $emerge" if verbose;
 

@@ -1,7 +1,13 @@
 # Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# Written by, in historic order: vonlynX, ng0.
+# Written by, in historic order: vminko, vonlynX, ng0.
 # https://gnunet.org/gentoo-build is outdated, please ignore.
+#
+# taken from https://338909.bugs.gentoo.org/attachment.cgi?id=381924
+# referenced at https://bugs.gentoo.org/show_bug.cgi?id=338909
+# merged with 9999 variant from emery overlay
+# refined 2015-07 by carlo von lynX of youbroketheinternet.org
+# tweaks since 2015-07 by ng0 and lynX
 
 EAPI=6
 

@@ -2,60 +2,53 @@
 # Distributed under the terms of the GNU General Public License v2
 # Written by, in historic order: vminko, vonlynX, ng0.
 # https://gnunet.org/gentoo-build is outdated, please ignore.
+#
+# taken from https://338909.bugs.gentoo.org/attachment.cgi?id=381924
+# referenced at https://bugs.gentoo.org/show_bug.cgi?id=338909
+# merged with 9999 variant from emery overlay
+# refined 2015-07 by carlo von lynX of youbroketheinternet.org
+# tweaks since 2015-07 by ng0 and lynX
 
 EAPI=6
 
 DESCRIPTION="Cryptographic GNU Mesh/Underlay Network Routing Layer"
 HOMEPAGE="https://gnunet.org/"
 LICENSE="GPL-3"
-# tests are not yet python3 compatible.
-PYTHON_COMPAT=( python2_7 )
 KEYWORDS="~"
+# KEYWORDS="~amd64 ~x86"
 SLOT="0"
 
-ESVN_PROJECT="gnunet"
-ESVN_REPO_URI="https://gnunet.org/svn/gnunet"
+PYTHON_COMPAT=( python2_7 )
+WANT_AUTOCONF="2.5"
+WANT_AUTOMAKE="1.11"
+# WANT_LIBTOOL="2.2"
+AUTOTOOLS_AUTORECONF=1
 
 # if you're a gnunet developer, you can put a symlink to your local git here:
 EGIT_REPO_URI="/usr/local/src/${PN}
-	https://github.com/gnunet/${PN}"
-# otherwise version "9999" means fetching it from github rather than gnunet.org
+    https://gnunet.org/git/${PN}
+	https://github.com/gnunet/${PN}
+    git://git.gnunet.org/${PN}"
 
 case ${PV} in
 "9999")
-	# use latest git
 	inherit autotools git-r3 user python-any-r1 flag-o-matic
-	WANT_AUTOCONF="2.5"
-	WANT_AUTOMAKE="1.11"
-	WANT_LIBTOOL="2.2"
-	AUTOTOOLS_AUTORECONF=1
-	KEYWORDS="~amd64 ~x86"
+	# using latest git. caution:
+	# this methode is prone to man-in-the-middle attacks
 	;;
-"999")
-	# use latest svn
-	inherit autotools subversion user python-any-r1 flag-o-matic
-	WANT_AUTOCONF="2.5"
-	WANT_AUTOMAKE="1.11"
-	WANT_LIBTOOL="2.2"
-	AUTOTOOLS_AUTORECONF=1
-	S="${WORKDIR}/${PN}"
-	KEYWORDS="~amd64 ~x86"
+"0.10.2_rc3")
+	inherit autotools git-r3 user python-any-r1 flag-o-matic
+    EGIT_COMMIT="c87a389a4f842c20383d8619120b188e104cf64a"
 	;;
-"0.10.1_pre01021")
-	inherit autotools subversion user python-any-r1 flag-o-matic
-	ESVN_REVISION="37273"
-	WANT_AUTOCONF="2.5"
-	WANT_AUTOMAKE="1.11"
-	WANT_LIBTOOL="2.2"
-	AUTOTOOLS_AUTORECONF=1
-	S="${WORKDIR}/${PN}"
-	KEYWORDS="amd64 ~x86"
-	;;
+"0.10.2_rc2")
+	inherit autotools git-r3 user python-any-r1 flag-o-matic
+    EGIT_COMMIT="922318150433906dafd11adb5185a6ff664573db"
+    ;;
 "0.10.1")
 	inherit autotools user python-any-r1 flag-o-matic
 	SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
 	S="${WORKDIR}/${PN}"
-	KEYWORDS="~amd64 ~x86"
+	# tests of gnunet <= 0.10.1 are using python 2.7, gnunet HEAD uses python 3.
 	;;
 esac
 #S="${WORKDIR}/${PF}/${PN}"
@@ -71,7 +64,7 @@ IUSE="debug +httpd +sqlite postgres mysql nls nss +X +gnutls dane +bluetooth \
 	  +gnurl +curl curl_ssl_gnutls"
 
 # !!! TODO: Sort run depend, required use, build time use.
-REQUIRED_USE="?? ( mysql postgres sqlite )
+REQUIRED_USE="|| ( mysql postgres sqlite )
 		?? ( pulseaudio gstreamer )
 		experimental? ( || ( extra ) )
 		extra? ( || ( experimental ) )"
@@ -151,14 +144,12 @@ pkg_setup() {
 # Here we add and run what bootstrap would do.
 src_prepare() {
 	if [[ "${PV}" == "0.10.1_pre01021" ]]; then
-		#subversion_src_prepare
 		rm -rf libltdl || die
 		eautoreconf
 		./contrib/pogen.sh || die
 		default
 		eapply_user
 	elif [[ "${PV}" == "9999" ]]; then
-		#subversion_src_prepare
 		rm -rf libltdl || die
 		eautoreconf
 		./contrib/pogen.sh || die
@@ -171,6 +162,7 @@ src_prepare() {
 }
 
 src_configure() {
+	./bootstrap
 	econf \
 		$(use_enable experimental ) \
 		$(use_with httpd microhttpd ) \
