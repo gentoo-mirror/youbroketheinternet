@@ -15,14 +15,18 @@ case ${PV} in
 	EGIT_COMMIT="12080f60712b6d533b1f4b45788de8b4bcd2a3d9"
 	;;
 "20160823")
-	# last snapshot available via http
 	# EGIT_COMMIT="a0abf99f72e4c248a798a56a31b4ebdaa81e2965"
+	SRC_URI="http://www.psyced.org/files/${P}.tar.xz"
+	;;
+"20160913")
+	# last snapshot available via http
+	# EGIT_COMMIT="2e82f31f9d9281af0b3450d617458ca85dd12ee5"
 	SRC_URI="http://www.psyced.org/files/${P}.tar.xz"
 	;;
 *)
 	inherit git-r3
 	# last seen change
-	EGIT_COMMIT="a0abf99f72e4c248a798a56a31b4ebdaa81e2965"
+	EGIT_COMMIT="2e82f31f9d9281af0b3450d617458ca85dd12ee5"
 	;;
 esac
 
