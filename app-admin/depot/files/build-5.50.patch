@@ -1,0 +1,47 @@
+diff --git a/lib/DepotConf/Makefile.in b/lib/DepotConf/Makefile.in
+index 71c89cf..16e17c8 100644
+--- a/lib/DepotConf/Makefile.in
++++ b/lib/DepotConf/Makefile.in
+@@ -20,10 +20,10 @@ Objs = GlobalDepotConf_Read.o GlobalDepotConf_Parse.o \
+ 	DepotConf.o DepotConfUtil.o
+ 
+ GlobalDepotConf_Read.h GlobalDepotConf_Read.c: GlobalDepotConf_Read.y
+-	$(YACC) $(YFLAGS) $<
+-	$(SED) -e 's/yy/GlobalDepotConf_Read_/g' -e 's/YY/GLOBALDEPOTCONF_READ_/g' y.tab.c > $*.c
+-	$(SED) -e 's/yy/GlobalDepotConf_Read_/g' -e 's/YY/GLOBALDEPOTCONF_READ_/g' y.tab.h > $*.h
+-	rm -f y.tab.c y.tab.h
++	$(YACC) $(YFLAGS) -b gdcy $<
++	$(SED) -e 's/yy/GlobalDepotConf_Read_/g' -e 's/YY/GLOBALDEPOTCONF_READ_/g' gdcy.tab.c > $*.c
++	$(SED) -e 's/yy/GlobalDepotConf_Read_/g' -e 's/YY/GLOBALDEPOTCONF_READ_/g' gdcy.tab.h > $*.h
++	rm -f gdcy.tab.c gdcy.tab.h
+ 
+ GlobalDepotConf_Parse.c: GlobalDepotConf_Parse.l
+ 	$(LEX) $<
+@@ -31,10 +31,10 @@ GlobalDepotConf_Parse.c: GlobalDepotConf_Parse.l
+ 	rm -f lex.yy.c
+ 
+ CollectionDepotConf_Read.h CollectionDepotConf_Read.c: CollectionDepotConf_Read.y
+-	$(YACC) $(YFLAGS) $<
+-	$(SED) -e 's/yy/CollectionDepotConf_Read_/g' -e 's/YY/COLLECTIONDEPOTCONF_READ_/g' y.tab.c > $*.c
+-	$(SED) -e 's/yy/CollectionDepotConf_Read_/g' -e 's/YY/COLLECTIONDEPOTCONF_READ_/g' y.tab.h > $*.h
+-	rm -f y.tab.c y.tab.h
++	$(YACC) $(YFLAGS) -b cdcy $<
++	$(SED) -e 's/yy/CollectionDepotConf_Read_/g' -e 's/YY/COLLECTIONDEPOTCONF_READ_/g' cdcy.tab.c > $*.c
++	$(SED) -e 's/yy/CollectionDepotConf_Read_/g' -e 's/YY/COLLECTIONDEPOTCONF_READ_/g' cdcy.tab.h > $*.h
++	rm -f cdcy.tab.c cdcy.tab.h
+ 
+ CollectionDepotConf_Parse.c: CollectionDepotConf_Parse.l
+ 	$(LEX) $<
+diff --git a/lib/common.build.mk.in b/lib/common.build.mk.in
+index 0ffcaef..453f525 100644
+--- a/lib/common.build.mk.in
++++ b/lib/common.build.mk.in
+@@ -30,7 +30,7 @@ LEX=		@LEX@ @LEXFLAGS@
+ SED=		@SED@
+ YACC=		@YACC@
+ 
+-CFLAGS = @CFLAGS@ @DEFS@ -I${srcdir} -I$(top_srcdir)/include -I$(top_objdir)/include -I. -I/usr/local/include
++CFLAGS = @CFLAGS@ @DEFS@ -I${srcdir} -I$(top_srcdir)/include -I$(top_objdir)/include -I. -I/usr/local/include -I../Collection -I../CollectionList
+ YFLAGS=-d
+ 
+ headers:: $(Headers)
