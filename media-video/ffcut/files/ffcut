@@ -46,7 +46,7 @@ $start = &timeparse( $start, 0 );
   $end = &timeparse( $end, $start );
 
 # $start == 0 is legitimate...
-die pod2usage if $excess or not $input;
+die pod2usage if $excess or not $input or not -r $input;
 # ffcut intercepts GPAC's automatic file name creation "feature" to
 # let *you* decide the name of the file.
 
