@@ -9,7 +9,7 @@ use Term::ANSIColor qw(:constants);
 use Pod::Usage qw( pod2usage );
 
 use Getopt::Std;
-getopt('tsump');
+getopt('tsumP');
 # i liked 'sumpf' but it was not worth renaming -t into -f
 my $user = $opt_u || $ENV{SUDO_USER};
 
@@ -323,9 +323,9 @@ Option -s is cool but you have to choose between -c and -e to go with it.
 X
 }
 
-if ($opt_p) {
+if ($opt_P) {
 	# ugly, do not use
-	sys "/bin/echo -n '$opt_p' | /sbin/cryptsetup luksOpen --key-file - '$vol' '$map'";
+	sys "/bin/echo -n '$opt_P' | /sbin/cryptsetup luksOpen --key-file - '$vol' '$map'";
 } elsif ($keef) {
 	sys "/sbin/cryptsetup luksOpen --key-file '$keef' '$vol' '$map'";
 } else {
