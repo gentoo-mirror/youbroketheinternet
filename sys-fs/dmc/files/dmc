@@ -181,7 +181,7 @@ sub wordFetch {
 	if (open (F, $f)) {{
 		$kee = $_ = <F>;
 		close F;
-		die if length() < 2;
+		warn "Failed to read $f somehow" if length() < 2;
 		next unless s/\s+$//;
 		open (F, ">$f") or
 		    die "Cannot fix trailing whitespace in $f";

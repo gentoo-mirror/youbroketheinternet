@@ -75,6 +75,10 @@ my $audiosize = 0;
 if ($has_ffmpeg and not $opt_b) {
 	my @copy = $opt_a ? ( "-codec:a", "copy", "-vn" ) :
 		   $opt_s ? ( "-codec:v", "copy", "-an" ) : ( "-c", "copy" );
+	# can't figure how to make this a lossless extract...
+	# will have to use it with 'wav' output
+	@copy = ( "-ac", "1", "-map_channel", "0.0.1", "-map_channel", "-1" ) if $opt_L;
+	@copy = ( "-ac", "1", "-map_channel", "-1", "-map_channel", "0.0.0" ) if $opt_R;
 
 	# Why didn't anybody tell me that ffmpeg can do this, too
 	# just with a different absurd and impractical syntax...
@@ -82,10 +86,11 @@ if ($has_ffmpeg and not $opt_b) {
 	$start = "0:0.1" unless $start;
 	print STDERR "*** Start is $start, duration is ", $end - $start, "\n"
 	    if debug & 2;
-	die "Cannot run ffmpeg: $!" unless $pid = open3($W,$F,$F,
-	    $has_ffmpeg, "-ss", $start, "-i", $input, @copy,
+	my @args = ( $has_ffmpeg, "-ss", $start, "-i", $input, @copy,
 			 "-avoid_negative_ts", "make_zero", "-fflags", "+genpts",
-			 "-t", $end - $start, "-y", $output);
+			 "-t", $end - $start, "-y", $output );
+	print MAGENTA, join(' ', @args), RESET, "\n" if $opt_v;
+	die "Cannot run ffmpeg: $!" unless $pid = open3($W,$F,$F, @args);u
 } elsif ($has_mp4box) {
 	# The -out option doesn't actually work
 	# But luckily, -splitz resumed working
@@ -145,7 +150,7 @@ X
 exit unless $opt_x;
 
 my $has_mplayer = &which('mplayer');
-my $has_mpv = &which('mpv');
+#my $has_mpv = &which('mpv');
 my $prefer_mpv = $has_mpv || $has_mplayer;
 my $prefer_mplayer = $has_mplayer || $has_mpv;
 die "Neither mpv nor mplayer available on this system"
@@ -212,6 +217,8 @@ ffcut [<options>] <input-file> [<output-file> <start-time> [<end-time>]]
     -q(uiet)	Turn off audio when playing resulting video
     -s(ilent)	Produce output video without audio
     -a(udio)	Produce output audio without video
+    -L(eft)	Produce mono audio output using just the left channel
+    -R(ight)	Produce mono audio output using just the right channel
     -b(oxing)	Plan B: prefer MP4Box over ffmpeg
     -Q(uiet)	Do not produce screen output
 
@@ -240,6 +247,11 @@ ffcut [<options>] <input-file> [<output-file> <start-time> [<end-time>]]
 
  Depending on the way the media was encoded you may not be able to cut
  into the exact second or subsecond that you would like to edit.
+
+=head1 BUGS
+
+ The -L and -R options currently re-encode the output.
+ Not sure if we're using ffmpeg the wrong way or it just can't do this.
 
 =head1 AUTHORS
 
