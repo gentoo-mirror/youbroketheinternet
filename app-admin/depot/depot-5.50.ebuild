@@ -12,7 +12,8 @@ SRC_URI="http://ftp.andrew.cmu.edu/pub/depot/${P}.tar.gz"
 
 LICENSE="CMU"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+# apparently needs to be fixed for 64bit!
+KEYWORDS="~x86"
 IUSE="test"
 
 DOCS=( README )
