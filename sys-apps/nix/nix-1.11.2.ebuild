@@ -53,7 +53,7 @@ sys-libs/zlib"
 
 DEPEND="${COMMON_DEPENDS}
 >=sys-devel/bison-2.6
->=sys-devel/flex-2.5.35
+>=sys-devel/flex-2.6.1
 virtual/perl-ExtUtils-ParseXS"
 
 RDEPEND="${COMMON_DEPENDS}

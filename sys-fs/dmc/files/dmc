@@ -12,6 +12,7 @@
 # TODO: fallocate is cool. maybe we even want an option for 'truncate'
 #	aka using sparse files that factually get allocated on the fly?
 
+use IPC::Open3;
 use Term::ANSIColor qw(:constants);
 
 use Getopt::Std;
@@ -88,6 +89,16 @@ X
 
 ## HELPERS
 
+sub sys3 {
+	my $match = shift;
+	# why can't people honestly admit that it is in fact PINK
+	print BOLD, MAGENTA, join(' ', @_), "\n", RESET unless $opt_q;
+	return if $opt_n;
+	open3(\*I, \*O, \*U, @_) or die "$_[0]: $!";
+	$_ = <U>;
+	close I, O, U;
+	die $_ if /$match/;
+}
 sub sys2 {
 	print BOLD, BLUE, join(' ', @_), "\n", RESET unless $opt_q;
 	return system(@_) unless $opt_n;
@@ -141,8 +152,10 @@ X
 }
 sub unmount {
 	if ($opt_n or -r $mapper) {
-		sys2 '/bin/umount', $mnt;	# ignore if already unmounted
-		sys2 '/sbin/cryptsetup', 'luksClose', $map;
+		# ignore if already unmounted but stop if cannot be unmounted
+		sys3 ' target is busy', '/bin/umount', $mnt;
+		# ignore if already closed but stop if cannot be closed
+		sys3 'Device or resource busy', '/sbin/cryptsetup', 'luksClose', $map;
 		sys2 '/bin/rmdir', $mnt;
 	} else {
 		print "\t{$mapper already dismounted}\n";

@@ -229,11 +229,15 @@ X
 		if (s/\.(ebuild|tbz2)$//) {
 			s%/(\w\S+?)/%/% if m%\w\S+/(\w\S+?)/(\w\S+?)-\d.*?$% && $1 eq $2;
 		}
-		# merely prepends '=' in front of package specifications
-		# that portage wants to have with a '=' prepended.
-		s/^(\w\S+\/\w\S+?-\d.*?)$/=$1/;
-		# FIXME: should honor 'any' here
-		#
+		if ( $0 =~ /any/ ) {
+			# any: remove specific version numbers
+			s/^=//;
+			s/-\d.*?$//;
+		} else {
+			# merely prepends '=' in front of package specifications
+			# that portage wants to have with a '=' prepended.
+			s/^(\w\S+\/\w\S+?-\d.*?)$/=$1/;
+		}
 #		# one by one, useful sometimes, detrimental other times.
 #		# wanting to use this probably means you did something wrong:
 #		emerge $_;

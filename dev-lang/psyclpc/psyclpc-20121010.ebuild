@@ -81,7 +81,7 @@ RDEPEND="zlib? ( sys-libs/zlib )
 
 DEPEND="${RDEPEND}
 		net-libs/libpsyc
-		>=sys-devel/flex-2.5.4a-r5
+		>=sys-devel/flex-2.6.1
 		>=sys-devel/bison-1.875
 		>=sys-devel/gettext-0.12.1"
 
