@@ -38,4 +38,4 @@ esac
 
 # see also https://wiki.gentoo.org/wiki/Debugging
 IUSE="debug"
-
+SLOT=0
