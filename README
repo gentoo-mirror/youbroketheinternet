@@ -181,6 +181,20 @@ Metadata protecting Instant Messenger tool operating
 peer-to-peer over Tor Hidden Services without using
 servers.
 
+== net-im/telegram-cli ==
+
+Barebones API for remote controlling an account on telegram.org.
+Has no proper client interface but comes with enough command-line
+editing so you can run a few "secret chats" which are the only
+private (end-to-end encrypted) way of using Telegram, if your
+counterpart also runs a trustworthy compile. Do not resize the 
+window after starting. The hardcoded company servers do not 
+accept connections via Tor. You will be prompted for your GSM 
+phone number and sent a confirmation token via SMS. Your metadata 
+becomes available to that company and whoever has authority over
+it. At least this libre client doesn't automatically upload your
+telephone book, as it doesn't have any.
+
 == net-im/toxic ==
 
 Person-to-person encrypted telephony application with CLI-UI.
