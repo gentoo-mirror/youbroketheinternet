@@ -193,7 +193,8 @@ accept connections via Tor. You will be prompted for your GSM
 phone number and sent a confirmation token via SMS. Your metadata 
 becomes available to that company and whoever has authority over
 it. At least this libre client doesn't automatically upload your
-telephone book, as it doesn't have any.
+telephone book, as it doesn't have any. Thanks to jorgicio overlay
+for this one, too.
 
 == net-im/toxic ==
 
@@ -350,3 +351,14 @@ One more great ebuild from Poncho.
 == x11-misc/interrobang ==
 
 A tiny launcher menu packing a big bang (syntax).
+
+== x11-plugins/telegram-purple ==
+
+Mixed from jorgicio and gentoo-zh, these ebuilds produce a plugin for 
+Pidgin and other libpurple-based messengers. As always don't say
+anything private unless you are using "secret chat" and your counter-
+part also has a trustworthy client build. Telegram is a commercial
+service that may some day monetize your metadata. I have added a
+custom 1.4.0_alpha version which is just a git freeze of the current
+head of development.
+
