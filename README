@@ -120,6 +120,11 @@ Person-to-person encrypted telephony application.
 Server for federated messaging and chat using PSYC, IRC,
 XMPP and other protocols.
 
+== net-libs/libpsyc ==
+
+A tiny C implementation of the PSYC protocol syntax for
+lightning fast parsing and rendering.
+
 == net-misc/gnunet ==
 
 GNUnet is a mesh network routing system not limited to peer-
@@ -184,6 +189,10 @@ GNU Guix is a package manager for reproducible building. It
 is therefore legitimate to use its binary installation as
 you can check its correctness later, by rebuilding the exact
 identical binary files.
+
+== sys-apps/nix ==
+
+The package manager from NixOS.
 
 == www-client/torbrowser ==
 
