@@ -208,6 +208,18 @@ remove parts from an mp3 with a practical command-line UX
 and without doing any re-encoding. Uses either ffmpeg or
 GPAC, which are both amazing but have terrible UX each.
 
+== media-video/ffmpeg ==
+
+Our version adds just a tiny patch that influences the
+behaviour of live stream ripping: while the existing
+implementation would always pick the newest playlists,
+therefore introducing many hiccups whenever the source
+is sending faster than we are receiving the stream, this
+patch tries to get as many old fragments as possible,
+reducing the number of hiccups and prolonging the skips
+in exchange. Would be best if this was a runtime option
+for ffmpeg, but so far it isn't.
+
 == net-im/qtox ==
 
 Person-to-person encrypted telephony application.

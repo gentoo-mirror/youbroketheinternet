@@ -1,0 +1,38 @@
+--- a/libavformat/hls.c	2018-08-02 20:12:12.567317733 +0200
++++ b/libavformat/hls.c	2018-08-02 20:17:27.091316533 +0200
+@@ -1407,18 +1407,23 @@
+         reload_count++;
+         if (reload_count > c->max_reload)
+             return AVERROR_EOF;
+-        if (!v->finished &&
+-            av_gettime_relative() - v->last_load_time >= reload_interval) {
+-            if ((ret = parse_playlist(c, v->url, v, NULL)) < 0) {
+-                if (ret != AVERROR_EXIT)
+-                    av_log(v->parent, AV_LOG_WARNING, "Failed to reload playlist %d\n",
+-                           v->index);
+-                return ret;
+-            }
+-            /* If we need to reload the playlist again below (if
+-             * there's still no more segments), switch to a reload
+-             * interval of half the target duration. */
+-            reload_interval = v->target_duration / 2;
++        if (v->cur_seq_no >= v->start_seq_no + v->n_segments - 0) {
++	    printf("\r+ \n");
++	    if (!v->finished &&
++		av_gettime_relative() - v->last_load_time >= reload_interval) {
++		if ((ret = parse_playlist(c, v->url, v, NULL)) < 0) {
++		    if (ret != AVERROR_EXIT)
++			av_log(v->parent, AV_LOG_WARNING, "Failed to reload playlist %d\n",
++			       v->index);
++		    return ret;
++		}
++		/* If we need to reload the playlist again below (if
++		 * there's still no more segments), switch to a reload
++		 * interval of half the target duration. */
++		reload_interval = v->target_duration / 2;
++	    }
++        } else {
++	    printf("\r- \n");
+         }
+         if (v->cur_seq_no < v->start_seq_no) {
+             av_log(NULL, AV_LOG_WARNING,
