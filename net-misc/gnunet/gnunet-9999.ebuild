@@ -36,6 +36,10 @@ case ${PV} in
 	# using latest git. caution:
 	# this method is prone to man-in-the-middle attacks
 	;;
+"0.10.2_rc5")
+	inherit autotools git-r3 user python-any-r1 flag-o-matic
+    EGIT_COMMIT="67367ce73933cd065f77b176762fb22b3ef849f1"
+	;;
 "0.10.2_rc4")
 	inherit autotools git-r3 user python-any-r1 flag-o-matic
     EGIT_COMMIT="6bcc73a1cbb1d4a609884762eab1b6de761ad1d9"
