@@ -29,6 +29,7 @@ my $MPARMS = '-quiet -fs';
 # '--keep-open-pause=no' for mpv?
 $MPARMS .= ' -ao null' if $opt_q;
 $MPARMS .= ' -screen 1' if $opt_S;
+$MPARMS .= ' -osdlevel 3' unless $opt_T;
 my $DEFLEN = 10;
 
 $output .= " (ffcut $start $end)" if $opt_A;
@@ -231,6 +232,7 @@ ffcut [<options>] <input-file> [<output-file> <start-time> [<end-time>]]
     -b(oxing)	Plan B: prefer MP4Box over ffmpeg
     -A(ppend)	Append start and end parameters to the resulting filename
     -S(creen)	Show the video on the other screen
+    -T(ime)	Do not show length and elapsed time on screen
     -Q(uiet)	Do not produce screen output
 
 =head1 DESCRIPTION
