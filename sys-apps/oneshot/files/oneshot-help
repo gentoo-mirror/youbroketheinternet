@@ -85,12 +85,18 @@ sub emerge {
 sub slurp {
 	my $fd = shift;
 	while (<$fd>) {
+		# remove ansi color codes
+		s/\e\[[\d;]+m//gm;
 		return if /^\s*STOP\s*$/;
 		if ( /^\s+(\w\S+\/\w\S+?-\d.*?) requires \S+\/\w\S+\s*$/
 		    or /^-\s(\w\S+\/\w\S+?-\d.*?) \(masked by: /
 		    or /^\s+(\w\S+\/\w\S+?-\d.*?) pulled in by:$/
 		    # look at packages that cause preserved libs:
 		    or /^\s\*\s+used by .+ \((\w\S+\/\w\S+?-\d.*?)\)$/
+		    # parse a complaint for 'invalid resume list'
+		    or /^\s\*\s+\(u'ebuild', u'\/', u'(\w\S+\/\w\S+?-\d.*?)', u'merge'\)$/
+		    # parse a list of things that failed to build
+		    or /^\s\*\s+\((\w\S+\/\w\S+?-\d.*?), \w+ scheduled for merge\), Log file:$/
 		    # accept some /etc/portage/package.* file as input
 		    or /^[<=>]*(\w\S+\/\w\S+?-\d\S+)$/
 		    # accept a simple list of packages
