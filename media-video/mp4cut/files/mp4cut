@@ -10,6 +10,8 @@
 
 sub debug() { 0 }
 
+use IPC::Open3 qw( open3 );
+
 use Getopt::Std;
 getopt;
 
@@ -72,19 +74,26 @@ Options are:
 
 X
 
+die <<X if $output eq $input;
+You don't want to overwrite your $input file, do you?
+X
+
 unless ( $end ) {
 	$end = "9999999";	# shows the available length of the file to edit
-	$end = 5 + $start if $start;
+	$end = 10 + $start if $start;
 	$start = "9999998" unless $start;
 }
-print STDERR <<X unless $opt_q;
+print STDERR <<X if $opt_v;
 *** Cutting from $start to $end into $output
 X
 
+my $W, $F;
 # The -out option doesn't actually work
 # But luckily, -splitz resumed working
-die "Cannot run MP4Box: $!" unless open(P, "MP4Box -out '$output' -splitz $start:$end '$input' 2>&1 |");
-while ( <P> ) {
+die "Cannot run MP4Box: $!" unless $pid = open3($W,$F,$F,
+    "MP4Box", "-out", $output, "-splitz", "$start:$end", $input);
+
+while ( <$F> ) {
 	if ( /xtracting chunk (.+) - duration / ) {
 		$tmp = $1;
 		print;
@@ -92,26 +101,35 @@ while ( <P> ) {
 		print;
 		print "$start% of $1 = ", $start * $1 / 100, "...\n" if $start < 100;
 		exit;
+	} elsif ( /error/i ) {
+		die $_;
 	} else {
 		print if $opt_v;
 	}
 }
-close P;
-die "Apparently MP4Box created no file" unless $tmp;
+close $F;
+close $W;
+die <<X unless $tmp;
+Apparently MP4Box created no file.
+Did you leave out the file type in the file name?
+X
 if ( $tmp ne $output ) {
-	print "MP4Box produced a file called '$tmp' instead. Trying to rename.\n";
+	# circumventing the -out bug
+	print "MP4Box produced '$tmp'. Renaming.\n";
 	rename($tmp, $output);
 }
 exit unless $opt_x;
 
-die "Cannot run mplayer: $!" unless open(P, "mplayer $MPARMS '$output' 2>&1 |");
-while ( <P> ) {
+die "Cannot run mplayer: $!" unless $pid = open3($W,$F,$F,
+    'mplayer', split(' ', $MPARMS), $output);
+while ( <$F> ) {
 	if ( $opt_v ) {
 		print;
 	} else {
 		print if /^(AUDIO|VIDEO):/;
 	}
 }
-close P;
+close $F;
+close $W;
 exit;
 
