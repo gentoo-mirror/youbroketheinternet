@@ -85,7 +85,11 @@ sub slurp {
 		return if /^\s*STOP\s*$/;
 		if ( /^\s+(\w\S+\/\w\S+?-\d.*?) requires \S+\/\w\S+\s*$/
 		    or /^-\s(\w\S+\/\w\S+?-\d.*?) \(masked by: /
-		    or /^\s+(\w\S+\/\w\S+?-\d.*?) pulled in by:$/ ) {
+		    or /^\s+(\w\S+\/\w\S+?-\d.*?) pulled in by:$/
+		    # accept some /etc/portage/package.* file as input
+		    or /^[<=>]*(\w\S+\/\w\S+?-\d\S+)$/
+		    # accept a simple list of packages
+		    or /^(\w\S+\/\w[^-]+)$/ ) {
 			&pushit($1);
 			next;
 		}
@@ -210,6 +214,7 @@ X
 		say "Is $f a file I can slurp?" if debug;
 		if ( not $f =~ /\.(ebuild|tbz2)$/ and -f $f and -r $f ) {
 			open (I, $f) or die $!;
+			say "Slurping in $f" if debug;
 			slurp *I;
 			close I;
 		}
