@@ -6,6 +6,7 @@
 
 use IPC::Open3;
 use Term::ANSIColor qw(:constants);
+use Pod::Usage qw( pod2usage );
 
 use Getopt::Std;
 getopt('tsump');
@@ -64,7 +65,7 @@ sub sysmatch {
 	$_ = <U>;
 	close I, O, U;
 	if ( /$match/ ) {
-		print STDERR $_;
+		print STDERR BOLD, RED, $_, RESET;
 		return -1;
 	}
 	return 0;
@@ -388,7 +389,7 @@ sys2 '/bin/mkdir', '-p', $mnt unless -d $mnt;
 chdir ('/');	# nothing as annoying as having mounted A in dependency of B
 
 if ($fs eq 'ntfs') {
-	sys '/bin/mount', '-v', '-t', $fs, $mapper, $mnt;
+	$ro = sysmatch ' mounted read-only', '/bin/mount', '-v', '-t', $fs, $mapper, $mnt;
 } else {
 	unless ($opt_c or $opt_e) {
 		# would have spared me a system crash recently...
@@ -400,7 +401,7 @@ if ($fs eq 'ntfs') {
 		#sys2 '/sbin/btrfs', 'check', $mapper if $fs eq 'btrfs';
 		# madness. btrfs check takes ages and cannot be sped up.
 	}
-	sys '/bin/mount', $mapper, $mnt;
+	$ro = sysmatch ' mounted read-only', '/bin/mount', $mapper, $mnt;
 }
 
 sys2 "/sbin/btrfs filesystem resize max $mnt" if $opt_e and $fs eq 'btrfs';
@@ -412,7 +413,7 @@ sys2 '/sbin/cryptsetup', 'status', $mapper unless $opt_q;
 sys '/bin/df', '-Th', $mnt if -d $mnt;
 # -m(onitor) -(ignore)x(11) -n(oincrementalscan)
 sys '/usr/bin/recollindex', '-nmx', '-c', $recoll
-    if not $opt_p and -d $recoll and -r $recoll.'/recoll.conf';
+    if not $opt_p and not $ro and -w $recoll and -r $recoll.'/recoll.conf';
 
 
 __END__
