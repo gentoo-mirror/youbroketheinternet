@@ -195,6 +195,9 @@ src_install() {
 	rm -rf ${D}/usr/lib/gnunet/nss
 	newinitd "${FILESDIR}/${PN}.initd" gnunet
 	insinto /etc
+# FIXME: how can we make this line work?
+#	use nss && sed -iE 's/^(hosts:\s+files) dns/\1 gns [NOTFOUND=return] dns/' /etc/nsswitch.conf
+# instead of this one:
 	use nss && doins "${FILESDIR}/nsswitch.conf"
 	insinto /etc/gnunet
 	doins "${FILESDIR}/gnunet.conf"
