@@ -1,1 +1,2 @@
-# none
+# masked for testing
+>=dev-scheme/guile-2.0.12-r99
