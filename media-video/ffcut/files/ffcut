@@ -72,13 +72,18 @@ Options are:
     -q	Turn off audio when playing resulting video
     -b	Plan B: prefer MP4Box over ffmpeg
 
+A GUI tool by the same name and a probably similar purpose
+is available from https://github.com/wschreyer/ffcut
 X
-# It intercepts GPAC's automatic file name creation "feature" to
+# ffcut intercepts GPAC's automatic file name creation "feature" to
 # let *you* decide the name of the file.
 
 die <<X if $output eq $input;
 You don't want to overwrite your $input file, do you?
 X
+
+$has_mp4box = &which('MP4Box') || &which('mp4box');
+$has_ffmpeg = &which('ffmpeg');
 
 unless ( $end ) {
 	if ($start or $start eq '0') {
@@ -86,14 +91,15 @@ unless ( $end ) {
 	} else {
 		$end   = "9999999";	# shows the available length of the file to edit
 		$start = "9999998";	# actually only MP4Box does that.. FIXME for ffmpeg
+		die <<X unless $has_mp4box;
+This function only works with GPAC installed, currently.
+X
+		undef $has_ffmpeg;
 	}
 }
 print GREEN, <<X, RESET unless $opt_q;
 *** ffcutting from $start to $end into $output
 X
-
-$has_mp4box = &which('MP4Box') || &which('mp4box');
-$has_ffmpeg = &which('ffmpeg');
 
 my $W, $F;
 my $videosize = 0;

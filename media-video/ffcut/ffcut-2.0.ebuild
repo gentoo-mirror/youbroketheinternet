@@ -20,6 +20,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	elog "ffcut works best with both media-video/ffmpeg and media-video/gpac"
+	elog "ffcut works best with both media-video/ffmpeg and media-video/gpac installed"
 	elog "ffcut also makes use of either media-video/mplayer or media-video/mpv when installed"
 }
