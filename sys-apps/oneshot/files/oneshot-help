@@ -235,6 +235,9 @@ X
 			# any: remove specific version numbers
 			s/^=//;
 			s/-\d.*?$//;
+		} elsif ( /[\<\>]/ ) {
+			# when >=version expressions are passed, the quotes need to be reproduced
+			s/^(.*)$/'$1'/;
 		} else {
 			# merely prepends '=' in front of package specifications
 			# that portage wants to have with a '=' prepended.
