@@ -136,7 +136,7 @@ sub unmount {
 				chomp $pid;
 				print "\t{shutting down recollindex $pid}\n";
 				kill 'INT', $pid;
-				sleep 1;
+				sleep 2;
 			}
 		}
 	}
