@@ -261,8 +261,7 @@ if ($opt_E) {
 If you really want to remove all access keys and make the
 volume inaccessible, copy and paste this command:
 
-/sbin/cryptsetup erase $vol
-/bin/rm $vol
+/sbin/cryptsetup erase $vol && /bin/rm $vol
 
 If you need to remove a certain key slot but leave the
 others as they are, here's what you need:
