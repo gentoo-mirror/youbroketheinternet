@@ -79,6 +79,17 @@ without this all these years?
 
 [ask ng0]
 
+== app-shells/tcsh ==
+
+Removing a long path specification from the command line
+can be tedious with tcsh as it has no notion of file names
+containing whitespace while editing the command line.
+My patch makes CTRL-W aka kill-region do this whenever no
+mark has been set (which is the default), instead of giving
+an error. Back when tcsh was created, no sane Unix person
+would put whitespace into filenames! Filesystems had barely
+just learned to even be capable of such perversions.
+
 == dev-db/cayley ==
 
 A graph database written in Go. Borrowed the ebuild from
