@@ -142,7 +142,10 @@ sub unmount {
 	}
 	if ($opt_n or -r $mapper) {
 		# ignore if already unmounted but stop if cannot be unmounted
-		return -1 if sysmatch(' target is busy', '/bin/umount', $mnt);
+		if ( sysmatch(' target is busy', '/bin/umount', $mnt) ) {
+			system("lsof | fgrep $mnt") unless $nick =~ /work/;
+			return -1;
+		}
 		# ignore if already closed but stop if cannot be closed
 		return -1 if sysmatch('Device or resource busy', '/sbin/cryptsetup', 'luksClose', $map);
 		sys2 '/bin/rmdir', $mnt;
