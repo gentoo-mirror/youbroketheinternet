@@ -68,7 +68,7 @@ my %b = undef;
 my $emerge = '/usr/bin/emerge';
 
 sub say {
-        print STDERR BOLD, "\t=== ", MAGENTA, @_, RESET, "\n";
+        print STDERR "\t=== ", BOLD, MAGENTA, @_, RESET, "\n";
 }
 
 sub emerge {
@@ -86,6 +86,8 @@ sub slurp {
 		if ( /^\s+(\w\S+\/\w\S+?-\d.*?) requires \S+\/\w\S+\s*$/
 		    or /^-\s(\w\S+\/\w\S+?-\d.*?) \(masked by: /
 		    or /^\s+(\w\S+\/\w\S+?-\d.*?) pulled in by:$/
+		    # look at packages that cause preserved libs:
+		    or /^\s\*\s+used by .+ \((\w\S+\/\w\S+?-\d.*?)\)$/
 		    # accept some /etc/portage/package.* file as input
 		    or /^[<=>]*(\w\S+\/\w\S+?-\d\S+)$/
 		    # accept a simple list of packages
@@ -182,7 +184,7 @@ X
 	m%/([^/]+)$%;
 	say "I was called as $1 this time" if debug;
 	$_ = (grep { /^$1 - / } (split /\n/, $variations))[0];
-	print STDERR BOLD, "\t=== ", CYAN, $_, RESET, "\n" if /^\S+ - .*$/;
+	print STDERR "\t=== ", BOLD, CYAN, $_, RESET, "\n" if /^\S+ - .*$/;
 
 	# now we actually start doing something
 	$emerge = '/usr/bin/revdep-rebuild' if $0 =~ /revdep/;
@@ -201,7 +203,7 @@ X
 	$emerge .= " --ask --changelog" if $0 =~ /ask/;
 	# should we always have --changed-deps=y?
 	# WTF is --use-ebuild-visibility=y ?
-	$emerge .= " --alert --alphabetical --ask-enter-invalid --autounmask-write --buildpkg --buildpkg-exclude 'sys-kernel/*-sources' --keep-going --oneshot --verbose --verbose-conflicts";
+	$emerge .= " --alert --alphabetical --ask-enter-invalid --autounmask-write --buildpkg --buildpkg-exclude 'sys-kernel/*-sources' --keep-going --newrepo --oneshot --verbose --verbose-conflicts";
 	# --verbose shows the USE flags in the ask listing
 	say "Command: $emerge" if verbose;
 

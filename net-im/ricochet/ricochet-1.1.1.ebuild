@@ -46,9 +46,21 @@ case ${PV} in
 	EGIT_COMMIT="3aaf80eeb870f56097537ba65c5ac5cffd9b6e26"
 	# Date:   Tue Sep 8 18:18:28 2015 -0600
 	;;
+"1.1.2")
+	EGIT_COMMIT="6cfbcd0c3f6d9a2528c504ec50f287e3eeebe5cb"
+	# Date:   Sat Jan 16 15:56:34 2016 -0800
+	;;
+"1.1.3")
+	EGIT_COMMIT="6853e40d19e75dd137be35dea9fe86abdc4199f3"
+	# Date:   Sun Oct 9 11:06:00 2016 -0700
+	;;
+"1.1.4")
+	EGIT_COMMIT="36d6582f98b64c309609ef88119ab831421910d8"
+	# Date:   Fri Nov 4 16:05:25 2016 -0600
+	;;
 *)
-	EGIT_COMMIT="d29bb2b45eaa4632be61a2b9f6710549f7fe051e"
-	# Date:   Fri Sep 18 17:08:27 2015 -0600
+	EGIT_COMMIT="2504d9cf402d25b8a774eced39e1896c8c287f32"
+	# Date:   Wed Nov 16 16:04:11 2016 -0700
 	;;
 esac
 # therefore, for security reasons "9999" doesn't actually
