@@ -27,10 +27,13 @@ my $output = $opt_o or pop;
 die pod2usage if not @ARGV or not $output;
 my $input = $ARGV[0];	# look at the first to extract file type
 if ( $output and not $output =~ /\.\w+$/ ) {
-	# attempt change of container if no output format is given
-	$output .= ".mp4" if $input =~ /\.(m4v|3gp|mov|flv)$/i;
-	# otherwise inherit from input
-	$output .= $1 if $input =~ /(\.\w+)$/i;
+#	if ( $input =~ /\.(m4v|3gp|mov|flv)$/i ) {
+#		# attempt change of container if no output format is given
+#		$output .= ".mp4"
+#	} else {
+		# otherwise inherit from input
+		$output .= $1 if $input =~ /(\.\w+)$/i;
+#	}
 }
 
 $has_mp4box = &which('MP4Box') || &which('mp4box');
