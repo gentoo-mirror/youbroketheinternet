@@ -1,0 +1,47 @@
+#!/bin/sh
+#
+# A variant of git pull which operates over Tor and
+#   - figures out when 'torify' needs to be used
+#   - shows the changes that were made to the repository
+#   - before attempting to merge
+#	--lynX & heldensaga, 2017
+#
+# I recommend piping the output into
+#	vim -R "+set syntax=diff"
+# but since that isn't everybody's choice of editor
+# I won't work it into this script...
+
+# would be more elegant to tell you how to 
+# configure this in your .git/config?
+gitdiff="git diff -b -M77% --minimal"
+
+# 'resolve' has served me well as default strategy
+gitmerge="git merge -s resolve"
+
+branch="$*"
+if test x"$*" = x; then
+	branch="origin"
+fi
+# echo $branch
+
+url=`git remote get-url $branch`
+if test x"$url" = x; then
+	exit
+fi
+# echo $url
+
+case $url in
+http*)
+	torify=""
+	echo "*** Fetching from $url via web proxy"
+	;;
+*)
+	torify="torsocks"
+	echo "*** Fetching from $url via torsocks"
+esac
+# echo $torify
+
+$torify git fetch $branch \
+&& $gitdiff master..$branch/master \
+&& exec $gitmerge $branch/master
+

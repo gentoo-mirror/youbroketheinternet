@@ -3,7 +3,7 @@
 
 EAPI=5
 
-DESCRIPTION="git commit command that preserves the privacy of working habits"
+DESCRIPTION="git commands that preserve the privacy of working habits"
 
 LICENSE="AGPL"
 SLOT="0"
@@ -17,5 +17,6 @@ S="$WORKDIR"
 src_install() {
 	exeinto /usr/bin
 	doexe "${FILESDIR}"/git-commit-private
+	doexe "${FILESDIR}"/git-update
 }
 
