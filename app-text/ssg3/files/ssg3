@@ -1,0 +1,261 @@
+#!/bin/sh
+#
+# https://www.romanzolotarev.com/bin/ssg3
+# Copyright 2018 Roman Zolotarev <hi@romanzolotarev.com>
+#
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+set -e
+
+main() {
+	test -n "$1" || usage
+	test -n "$2" || usage
+	test -n "$3" || usage
+	test -n "$4" || usage
+ 	test -d "$1" || no_dir "$1"
+ 	test -d "$2" || no_dir "$2"
+
+	src=$(readlink -f "$1")
+	dst=$(readlink -f "$2")
+
+
+	# files
+
+	title="$3"
+
+	head=$(
+	wrap_file "$src/_rss.html"
+	wrap_file "$src/_styles.css" '<style>' '</style>'
+	wrap_file "$src/_scripts.js" '<script>' '</script>'
+	)
+	header=$(wrap_file "$src/_header.html")
+	footer=$(wrap_file "$src/_footer.html")
+
+	list_dirs "$src" |
+	(cd "$src" && cpio -pdu "$dst")
+
+	fs=$(
+ 	if test -f "$dst/.files"
+	then list_affected_files "$src" "$dst/.files"
+	else list_files "$1"
+	fi
+	)
+
+	if test -n "$fs"
+	then
+		echo "$fs" | tee "$dst/.files"
+
+		if echo "$fs" | grep -q '\.md$'
+		then test -x "$(which lowdown)" || exit 3
+		fi
+		echo "$fs" | grep '\.md$' |
+		render_md_files "$src" "$dst" \
+		"$title" "$head" "$header" "$footer"
+
+		echo "$fs" | grep '\.html$' |
+		render_html_files "$src" "$dst" \
+		"$title" "$head" "$header" "$footer"
+
+		echo "$fs" | grep -Ev '\.md$|\.html$' |
+		(cd "$src" && cpio -pu "$dst")
+	fi
+
+	printf '[ssg] ' >&2
+	print_status 'file,' 'files,' "$fs" >&2
+
+
+	# sitemap
+
+	base_url="$4"
+	date=$(date +%Y-%m-%d)
+ 	urls=$(list_pages "$src")
+
+	if test -n "$urls"
+	then
+		echo "$urls" |
+		render_urls "$base_url" "$date" |
+		render_sitemap > "$dst/sitemap.xml"
+	fi
+
+	print_status 'url' 'urls' "$urls" >&2
+	echo >&2
+}
+
+
+wrap_file() {
+	if test -f "$1"
+	then echo "$2$(cat "$1")$3"
+	fi
+}
+
+
+print_status() {
+	if test -n "$3"
+	then echo "$3" | line_counter "$1" "$2"
+	else printf 'no %s ' "$2"
+	fi
+}
+
+
+line_counter() {
+	wc -l |
+	awk '{printf $1" "}($1=="1"){printf "'"$1"' "}($1>"1"){printf "'"$2"' "}'
+}
+
+
+usage() {
+	echo "usage: ${0##*/} src dst title base_url" >&2
+	exit 1
+}
+
+
+no_dir() {
+	echo "${0##*/}: $1: No such directory" >&2
+	exit 2
+}
+
+
+list_dirs() {
+	cd "$1" &&
+	find . -type d \
+	! -name '.' ! -path '*/.*' ! -path '*/CVS/*' ! -path '*/_*'
+}
+
+
+list_files() {
+	cd "$1" &&
+	find . -type f \
+	! -name '.' ! -path '*/.*' ! -path '*/CVS/*' ! -path '*/_*'
+}
+
+
+list_dependant_files () {
+	cd "$1" &&
+	find . -type f \
+	! -name '.' ! -path '*/.*' ! -path '*/CVS/*' ! -path '*/_*' \
+	\( -name '*.html' -o -name '*.md' -o -name '*.css' -o -name '*.js' \)
+}
+
+
+list_newer_files() {
+	cd "$1" &&
+	find . -type f \
+	! -name '.' ! -path '*/.*' ! -path '*/CVS/*' \
+	-newer "$2"
+}
+
+
+has_partials() {
+	grep -qE '^./_.*\.html$|^./_.*\.js$|^./_.*\.css$'
+}
+
+
+list_affected_files() {
+	fs=$(list_newer_files "$1" "$2")
+
+	if echo "$fs" | has_partials
+	then list_dependant_files "$1"
+	else echo "$fs"
+	fi
+}
+
+
+render_html_files() {
+	while read -r f
+	do render_html_file "$1" "$3" "$4" "$5" "$6" < "$1/$f" > "$2/$f"
+	done
+}
+
+
+render_md_files() {
+	while read -r f
+	do
+		lowdown \
+		-D html-skiphtml \
+		-D smarty \
+		-d metadata \
+		-d autolink < "$1/$f" |
+		render_html_file "$1" "$3" "$4" "$5" "$6" \
+		> "$2/${f%\.md}.html"
+	done
+}
+
+
+render_html_file() {
+	body=$(cat)
+	src="$1"
+	site_title="$2"
+	head="$3"
+	header="$4"
+	footer="$5"
+
+	echo "$body" | grep -iq '<html' &&
+	echo "$body" && return
+
+	title=$(echo "$body" | awk 'tolower($0)~/^<h1/{gsub(/<[^>]*>/,"",$0);print;exit}')
+	echo '<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="romanzolotarev.com/bin/ssg3">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="/favicon.png">
+<title>'"$(test -n "$title" && echo "$title - ")$site_title"'</title>
+'"$head"'
+</head>
+<body>
+'"$header"'
+'"$body"'
+'"$footer"'
+</body>
+</html>'
+}
+
+list_pages() {
+	cd "$1" && find . -type f ! -path '*/.*' ! -path '*/_*' \
+	\( -name '*.html' -o -name '*.md' \) |
+	sed 's#^./##;s#.md$#.html#;s#/index.html$#/#'
+}
+
+
+render_urls() {
+	while read -r url
+	do render_url "$1/$url" "$2"
+	done
+}
+
+
+render_url() {
+	url="$1"
+	date="$2"
+	echo '<url>
+<loc>'"$url"'</loc>
+<lastmod>'"$date"'</lastmod>
+<priority>1.0</priority>
+</url>'
+}
+
+
+render_sitemap() {
+	echo '<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+'"$(cat)"'
+</urlset>'
+}
+
+
+main "$@"

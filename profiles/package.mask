@@ -25,3 +25,4 @@ net-im/cutegram
 
 # unfinished
 www-client/hardzilla
+=www-plugins/gnash-9999
