@@ -40,3 +40,7 @@ SLOT="0"
 IUSE="debug"
 RDEPEND=""
 
+use debug && {
+    RESTRICT="${RESTRICT} nostrip"
+}
+
