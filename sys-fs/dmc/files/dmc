@@ -11,6 +11,7 @@ use Pod::Usage qw( pod2usage );
 use Getopt::Std;
 getopt('tsump');
 # i liked 'sumpf' but it was not worth renaming -t into -f
+my $user = $opt_u || $ENV{SUDO_USER};
 
 # urandom is rather slow, zero is faster. by default however we use
 # 'fallocate' instead of 'dd' which reserves an amount of disk space
@@ -116,14 +117,17 @@ X
 		$media = "/tmp";
 	}
 	$mnt = "$media/$nick" unless $mnt;
+	$recoll = $mnt.'/.recoll';
 
 	# the prefix is useful to automate dismounting of all dmcs
 	$map = "dmc-$nick";
 	$mapper = "/dev/mapper/$map";
 }
 sub unmount {
+	print "\t{checking for $recoll}\n" if debug;
 	if (not $opt_p and -d $recoll) {
 		my $pid = $recoll."/index.pid";
+		print "\t{checking pid $pid}\n" if debug;
 		while (-r $pid) {
 			open(P, $pid);
 			$pid = <P>;
@@ -214,9 +218,6 @@ unless ($keef) {
 	my $f = "/root/.words/$nick";
 	&wordFetch($f) if -r $f;
 }
-
-$user = $opt_u || $ENV{SUDO_USER};
-$recoll = $mnt.'/.recoll';
 
 if ($opt_d) {
 	&unmount;
