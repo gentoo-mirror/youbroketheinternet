@@ -140,6 +140,8 @@ pkg_setup() {
 	enewgroup gnunetdns
 	enewgroup gnunet
 	enewuser gnunet -1 /bin/sh "${GNUNET_HOME}" gnunet
+	mkdir -p "${GNUNET_HOME}/config.d"
+	chown gnunet "${GNUNET_HOME}/config.d"
 	if [[ $(egethome gnunet) != ${GNUNET_HOME} ]]; then
 		ewarn "For homedir different from"
 		ewarn "/var/lib/gnunet set GNUNET_HOME in your make.conf"

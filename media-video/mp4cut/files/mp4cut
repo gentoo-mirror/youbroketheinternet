@@ -1,17 +1,20 @@
 #!/usr/bin/perl
 #
-# Lossless MP4 Scene Extractor	--symlynX 2016
+# ffcut, the Fast & Furious Lossless Media Cutting Tool
+#	--symlynX 2016, 2018
 #
-# Tiny UX simplification frontend for GPAC's MP4Box -splitz
-# (how could you dare to give it an uppercase command
-# name in the first place!)
+# UX simplification frontend for ffmpeg and/or GPAC's MP4Box
+# to produce lossless extractions from encoded media like
+# mp3, mp4, opus, flv... you name it.
 #
-# Search engine hints: Video Editing, ffmpeg, Editor, Unix
+# Search engine hints: Video Editing, Audio Editing, Unix CLI
+
+my $VERSION = "2.0";
 
 sub debug() { 0 }
 
 use IPC::Open3 qw( open3 );
-
+use Term::ANSIColor qw(:constants);
 use Getopt::Std;
 getopt;
 
@@ -23,21 +26,16 @@ my $excess = shift;
 my $tmp;
 
 my $MPARMS = '-quiet -fs';
+# '--keep-open-pause=no' for mpv?
 # $MPARMS .= ' -ao null' unless $opt_l;
 $MPARMS .= ' -ao null' if $opt_q;
+my $DEFLEN = 10;
 
-$output .= ".mp4" unless $output =~ /\.(mp4|m4v|3gp|mov)$/i;
-
-# assumes minutes by default!
-sub timeparse {
-	$_ = shift;
-	my $min = shift;
-	return 3600 * $1 + 60 * $2 + $3 if /^(\d+)\D(\d+)\D(\d+)$/;
-	return $1 if /^\D(\d+)$/;
-	return 60 * $1 if /^(\d+)$/;
-	# guess what the user means depending on previous input
-	my $tmp = 60 * $1 + $2 if /^(\d+)\D(\d+)$/;
-	return $tmp < $min ? $tmp * 60 : $tmp;
+unless ( $output =~ /\.\w+$/ ) {
+	# attempt change of container if no output format is given
+	$output .= ".mp4" if $input =~ /\.(m4v|3gp|mov|flv)$/i;
+	# otherwise inherit from input
+	$output .= $1 if $input =~ /(\.\w+)$/i;
 }
 
 $start = &timeparse( $start, 0 );
@@ -46,90 +44,170 @@ $start = &timeparse( $start, 0 );
 # $start == 0 is legitimate...
 die <<X if $excess or not $input;
 
-mp4cut, Lossless M4V Scene Extractor
+symlynX's ffcut $VERSION, the Fast & Furious Lossless Media Cutting Tool
 
 Usage: $0 [<options>] <input-file> [<output-file> <start-time> [<end-time>]]
 
-mp4cut allows you to extract pieces of an mp4 file without re-encoding
-neither video nor audio. You need to install the gpac package to use this.
+ffcut allows you to extract pieces of a video or sound file without requiring
+any re-encoding. It can use both ffmpeg and the GPAC package. The order of 
+arguments in the command line is intentional to maximize usability.
 
-If only an input file name is given, mp4cut outputs the duration in seconds.
-If only a starting time is given, a five second excerpt is extracted. This
-is useful to find a suitable starting time for editing.
-
+If only an input file name is given, ffcut outputs the duration in seconds.
+If only a starting time is given, a $DEFLEN second excerpt is extracted.
+   This is useful to find a suitable starting time for editing. 
 If also provided with an ending time, the video from start to end is copied
-into the new output file.
+   into the new output file.
 
 Times are specified using [<hh>:]<mm>[:<ss>] syntax (just like you see them
 on VLC or 'mplayer -osdlevel 3'), then narrow down the ideal values simply
-by re-editing the command line and re-running it since gpac can only appro-
-ximate your time extraction requests according to the existing MP4 file
-structure. It intercepts gpac's automatic file name creation "feature" to
-let *you* decide the name of the file. The order of arguments in the command
-line is intentional to maximize usability.
+by re-editing the command line and re-running it since your time extraction
+requests can only be approximated according to the existing encoding. You
+can append a [.<fraction>] after the seconds, but it usually doesn't help.
+
+Plan B: When ffmpeg messes up the audio sync of the resulting video or when
+it cannot handle some broken mp4/mov/3gp files, be sure to try out GPAC!
 
 Options are:
     -v	Show verbose outputs
-    -x	Immediately play the resulting video in mplayer
+    -x	Immediately play the resulting video in mpv or mplayer
+    -b	Plan B: prefer MP4Box over ffmpeg
 
 X
+# It intercepts GPAC's automatic file name creation "feature" to
+# let *you* decide the name of the file.
 
 die <<X if $output eq $input;
 You don't want to overwrite your $input file, do you?
 X
 
 unless ( $end ) {
-	$end = "9999999";	# shows the available length of the file to edit
-	$end = 10 + $start if $start;
-	$start = "9999998" unless $start;
+	if ($start or $start eq '0') {
+		$end = $DEFLEN + $start;
+	} else {
+		$end   = "9999999";	# shows the available length of the file to edit
+		$start = "9999998";	# actually only MP4Box does that.. FIXME for ffmpeg
+	}
 }
-print STDERR <<X if $opt_v;
-*** Cutting from $start to $end into $output
+print GREEN, <<X, RESET; # if $opt_v;
+*** ffcutting from $start to $end into $output
 X
 
+$has_mp4box = &which('MP4Box') || &which('mp4box');
+$has_ffmpeg = &which('ffmpeg');
+
 my $W, $F;
-# The -out option doesn't actually work
-# But luckily, -splitz resumed working
-die "Cannot run MP4Box: $!" unless $pid = open3($W,$F,$F,
-    "MP4Box", "-out", $output, "-splitz", "$start:$end", $input);
+my $videosize = 0;
+my $audiosize = 0;
+
+if ($has_ffmpeg and not $opt_b) {
+	# Why didn't anybody tell me that ffmpeg can do this, too
+	# just with a different absurd and impractical syntax...
+	# The following line circumvents a bug in ffmpeg:
+	$start = "0:0.1" unless $start;
+	print STDERR "*** Start is $start, duration is ", $end - $start, "\n" if debug & 2;
+	die "Cannot run ffmpeg: $!" unless $pid = open3($W,$F,$F,
+	    "ffmpeg", "-ss", $start, "-t", $end - $start,
+			 '-analyzeduration', '44044404',
+			 '-probesize', '44044404',
+		      "-i", $input, "-c", "copy", "-y", $output);
+} elsif ($has_mp4box) {
+	# The -out option doesn't actually work
+	# But luckily, -splitz resumed working
+	die "Cannot run MP4Box: $!" unless $pid = open3($W,$F,$F,
+	    $has_mp4box, "-out", $output, "-splitz", "$start:$end", $input);
+} else {
+	die "Need either ffmpeg or MP4Box to do my job.\n";
+}
 
 while ( <$F> ) {
+	## MP4Box
 	if ( /xtracting chunk (.+) - duration / ) {
 		$tmp = $1;
-		print;
+		print YELLOW, $_, RESET;
 	} elsif ( /nput file \((\d+)\S*\) shorter/ ) {
-		print;
+		print RED, $_, RESET;
 		print "$start% of $1 = ", $start * $1 / 100, "...\n" if $start < 100;
 		exit;
 	} elsif ( /error/i ) {
 		die $_;
+	## ffmpeg
+	} elsif ( /^video:(\d+)kB audio:(\d+)kB .* muxing overhead/ ) {
+		$videosize = $1;
+		$audiosize = $2;
+		print CYAN, "*** Produced ";
+		print "$1 kB of video and " if $1;
+		print "$2 kB of audio.\n", RESET;
+	} elsif ( /^(Input|Output) #/ ) {
+		print YELLOW, $_, RESET;
 	} else {
-		print if $opt_v;
+		print BLUE, $_, RESET if $opt_v;
 	}
 }
 close $F;
 close $W;
-die <<X unless $tmp;
-Apparently MP4Box created no file.
-Did you leave out the file type in the file name?
+
+if ($tmp or not -s $output) {
+	die BOLD, RED, <<X, RESET unless $tmp;
+Apparently no file was created by the conversion engine.
+Did you try to convert formats? Try -v to see details.
 X
-if ( $tmp ne $output ) {
-	# circumventing the -out bug
-	print "MP4Box produced '$tmp'. Renaming.\n";
-	rename($tmp, $output);
+	if ( $tmp ne $output ) {
+		# circumventing the -out bug
+		print RED, "MP4Box produced '$tmp'. Renaming.\n", RESET;
+		rename($tmp, $output);
+	}
+} else {
+	die BOLD, RED, <<X, RESET unless $audiosize or $videosize;
+Apparently conversion failed. Try -v to see details.
+X
 }
 exit unless $opt_x;
 
-die "Cannot run mplayer: $!" unless $pid = open3($W,$F,$F,
-    'mplayer', split(' ', $MPARMS), $output);
+my $has_mplayer = &which('mplayer');
+my $has_mpv = &which('mpv');
+my $prefer_mpv = $has_mpv || $has_mplayer;
+my $prefer_mplayer = $has_mplayer || $has_mpv;
+die "Neither mpv nor mplayer available on this system"
+    unless $prefer_mpv;
+
+unless ($videosize) {
+	# play audio: need controls on tty
+	die "Cannot run $prefer_mpv $!"
+	    unless exec $prefer_mpv, $output;
+}
+die "Cannot run $prefer_mplayer: $!" unless $pid = open3($W,$F,$F,
+    $prefer_mplayer, split(' ', $MPARMS), $output);
 while ( <$F> ) {
-	if ( $opt_v ) {
-		print;
+	if ( $opt_v or not $has_mplayer ) {
+		print BLUE, $_, RESET;
 	} else {
-		print if /^(AUDIO|VIDEO):/;
+		print YELLOW, $_, RESET if /^(AUDIO|VIDEO):/;
 	}
 }
 close $F;
 close $W;
 exit;
+
+# assumes minutes by default!
+sub timeparse {
+	$_ = shift;
+	my $min = shift;
+	return $_ if /\:\d+\.\d+/;  # ffmpeg subsecond notation
+	return 3600 * $1 + 60 * $2 + $3 if /^(\d+)\D(\d+)\D(\d+)$/;
+	return $1 if /^\D(\d+)$/;
+	return 60 * $1 if /^(\d+)$/;
+	# guess what the user means depending on previous input
+	my $tmp = 60 * $1 + $2 if /^(\d+)\D(\d+)$/;
+	return $tmp < $min ? $tmp * 60 : $tmp;
+}
+
+# if your system doesn't have "which" we're in trouble
+# even BSD has which in that place, so it is ok to use full path
+sub which {
+	my $cmd = shift;
+	$_ = `/usr/bin/which $cmd 2>&1`;
+	print STDERR "which $cmd: $_" if debug & 1;
+	/^(\S+)\s*$/;
+	return $1;
+}
 
