@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit flag-o-matic git-2 toolchain-funcs
+inherit flag-o-matic git-r3 toolchain-funcs
 
 DESCRIPTION="A tiny launcher menu packing a big bang (syntax)"
 HOMEPAGE="http://github.com/TrilbyWhite/interrobang.git"
