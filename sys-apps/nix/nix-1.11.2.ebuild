@@ -77,9 +77,15 @@ src_install() {
 
 pkg_setup() {
 	enewgroup nixbld
+    g=0
 	for i in `seq -w 0 9`;
 	do
 		enewuser nixbld$i -1 -1 /var/empty nixbld;
+        if [ $g == 0 ]; then
+			g="nixbld$i"
+        else
+			g="$g,nixbld$i"
+        fi
 	done
     # For some strange reason all of the generated
     # user ids need to be listed in /etc/group even though
@@ -88,7 +94,7 @@ pkg_setup() {
     # but it expects perl to be installed. If you don't have
     # perl installed, you have to do this manually. Adding a
     # dependency for this is inappropriate.
-    perl -pi~ -e 's/^(nixbld:\w+:\d+):$/\1'$g'/' /etc/group
+    perl -pi~ -e 's/^(nixbld:\w+:\d+):$/\1:'$g'/' /etc/group
 }
 
 pkg_postinst() {
