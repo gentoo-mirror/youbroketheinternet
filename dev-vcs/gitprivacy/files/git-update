@@ -18,17 +18,14 @@ gitdiff="git diff -b -M77% --minimal"
 # 'resolve' has served me well as default strategy
 gitmerge="git merge -s resolve"
 
-branch="$*"
-if test x"$*" = x; then
+if [ "$*" ]; then
+	branch="$*"
+else
 	branch="origin"
 fi
 # echo $branch
 
-url=`git remote get-url $branch`
-if test x"$url" = x; then
-	exit
-fi
-# echo $url
+url=`git remote get-url $branch` || exit
 
 case $url in
 http*)

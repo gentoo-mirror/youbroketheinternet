@@ -3,9 +3,17 @@
 # working habits privacy-preserving git commit command
 #	--lynX & heldensaga, 2016
 #
-# this will simply add one second to the previous commit so
-# that stupid tools that actually use the commit timestamps
-# such as redmine will still be able to handle the repository.
+# ever wondered what implications it can have that the git
+# logs of the projects you are working on give a lot of
+# insight in your working habits.. your discipline, your
+# real-life duties or absence of duties? this script
+# censors such invasive information. by means of this
+# script it will no longer be visible when you committed
+# work items and how much time you spent on them. to keep
+# tools, such as redmine, from breaking as they actually
+# make assumptions regarding the continuity of time, this
+# script simply takes the timestamp of the previous commit
+# and adds *one second* to it.
 
 # default for new repositories is "1984-04-04 00:44:04 GMT"
 # don't try a unixtime before 1973 as git-commit will ignore that
