@@ -8,7 +8,8 @@ HOMEPAGE="https://gnunet.org/gnurl"
 
 inherit autotools eutils prefix versionator
 
-SRC_URI="https://gnunet.org/sites/default/files/${P}.tar.bz2 -> ${P}.tar.bz2"
+#RC_URI="https://gnunet.org/sites/default/files/${P}.tar.bz2 -> ${P}.tar.bz2"
+SRC_URI="https://ftp.gnu.org/gnu/gnunet/${P}.tar.bz2 -> ${P}.tar.bz2"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~"

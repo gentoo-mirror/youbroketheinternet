@@ -23,32 +23,11 @@ DOCS=( CHANGES README docs/FEATURES docs/MANUAL docs/FAQ docs/BUGS )
 
 # TODO: check if this phase is still appropriate in content!
 src_prepare() {
-		sed -i '/LD_LIBRARY_PATH=/d' configure.ac || die #382241
-
-		eapply_user
-		eprefixify gnurl-config.in
-		eautoreconf
-
-		# Fix conflicts with Curl: UGLY HACK AHEAD /!\
-		# (The fork maintainer should do that.)
-
-		# XXX Fix this upstream: Rename include/curl to include/gnurl
-		mv include/curl include/gnurl
-		# FIX: Tune explicit paths in source files (~400 lines)
-		grep -ERl 'include(.*curl/|/curl)' | \
-			xargs sed -i -r \
-				  -e 's:include/curl:include/gnurl:g' \
-				  -e 's:(include.*)curl/:\1gnurl/:g' || die
-		# FIX: Tune relative 'curl' path in makefiles under include/
-		grep -Rl 'SUBDIRS\s*=\s*curl' | \
-			xargs sed -i -r 's:(SUBDIRS\s*=\s*)curl:\1@PACKAGE@:g' || die
-		# FIX: Tune relative 'curl' path in makefiles, install phase
-		grep -Rl 'pkgincludedir\s*=\s*.*curl' | \
-			xargs sed -i -r 's:(pkgincludedir\s*=\s*.*)curl:\1@PACKAGE@:g' || die
-		# FIX: Skip examples and man3
-		grep -Rl 'SUBDIRS\s*=\s*.*libcurl' docs/ | \
-			xargs sed -i -r '/SUBDIRS\s*=\s*.*libcurl/s:^:#:g' || die
-		default
+	sed -i '/LD_LIBRARY_PATH=/d' configure.ac || die #382241
+	eapply_user
+	eprefixify gnurl-config.in
+	eautoreconf
+	default
 }
 
 src_configure() {
