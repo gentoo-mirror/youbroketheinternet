@@ -2,20 +2,14 @@
 #
 # how to stabilize a shaky video clip
 #   --vonlynX 2015
-#
-# see also vid.stab when compiling melt and transcode
-# see also y4mstabilizer
-#
-# took so much work to figure this script out but then
-# i found out .mlt files are smarter than intermediate
-# renderings and therefore it is best to just use
-# kdenlive with its "Stabilize" function in the
-# "Clip Jobs" menu. should you not find it, then you
-# need my vid-stab.ebuild.
+# see 'perldoc deshake' for documentation
 
+	require 5.000;
+	use Pod::Usage qw( pod2usage );
+	use Term::ANSIColor qw(:constants);
 	use File::Find;
 	use Getopt::Std;
-	getopts('hazony:F:');
+	getopts('Qqhazmony:F:');
 
 	my $outputmodule = "xvid,wav";
 	my $outputmodule = "mpeg2enc,wav";
@@ -39,7 +33,7 @@
 	$outputextension = $opt_o if $opt_o;
 
 	my $probe = undef;
-	$probe = "--mplayer_probe" unless $opt_n;
+	$probe = "--mplayer_probe" if $opt_m;
 
 	# flag documentation: see 'tcmodinfo -i transform'
 #	-f		# keep black frame around unshaked video
@@ -51,24 +45,16 @@
 	# flag documentation: see 'tcmodinfo -i stabilize'
 	my $stab = "stabilize=shakiness=8:accuracy=10";
 
-	die <<X if $opt_h or $#ARGV < 0;
-Usage: $0 [<opts>] <files-or-dirs>
-
-Options:
-	-n		# use native instead of mplayer for input decoding
-	-z		# zoom or clone rather than drawing a black frame
-	-a		# analyze only, generate .trf file for transform
-	-y <modules>	# select output modules
-	-F <format>	# select output format for video module
-	-o <extension>	# output files end in .$outputextension by default
-	-h		# help!
+	if ($opt_h or $#ARGV < 0) {
+		print STDERR <<X;
 
 Default modules are $outputmodule.
 Default format is $outputformat.
-Available export modules for -y are in `ls /usr/lib/transcode/export_*`.
-Available export formats for some modules listable with '-F list'.
-See also: man transcode_export
+
 X
+		pod2usage;
+		exit;
+	}
 
 	my $transcode = "/usr/bin/transcode";
 	$transcode = "/usr/local/bin/transcode" unless -x $transcode;
@@ -79,6 +65,15 @@ X
 	find(\&wanted, $#ARGV >= 0 ? @ARGV : '.');
 	exit;
 
+sub say {
+	print "* ", CYAN, join(' ', @_), "\n", RESET unless $opt_Q;
+}
+
+sub sys {
+	print "> ", YELLOW, join(' ', @_), "\n", RESET unless $opt_q;
+	return system(@_) unless $opt_n;
+}
+
 sub wanted {
 	my $f = $_;
 	# assume this is the output of a previous run
@@ -88,24 +83,82 @@ sub wanted {
 	return unless s/\.(mp4|flv|mov|avi|asf|webm|mpg|mpeg)$//i;
 
 	if (-s "$f.trf" > 12) {
-		print STDERR "*** Skipping analysis pass for $f.trf\n";
+		say "Skipping analysis pass for '$f.trf'";
 	} else {
-		print STDERR "*** Deshake analysis of $f\n";
-		system $transcode, $probe, '-J', $stab, '-i', $f,
+		say "Deshake analysis of '$f'";
+		sys $transcode, $probe, '-J', $stab, '-i', $f,
 		    # these parameters can be left out
 		    '-q', 0, '-y', 'null,null', '-o', '/dev/null';
 	}
 	if ( $opt_a ) {
-		print STDERR "*** Skipping transformation pass for $f\n";
+		say "Skipping transformation pass for '$f'";
 		return;
 	}
 
 	my $o = "$_.$outputextension";
 	if ( -s $o > 9999 ) {
-		print STDERR "*** Skipping $o, it already exists.\n";
+		say "Skipping '$o', it already exists.";
 		return;
 	}
-	print STDERR "*** Outputting to $o\n";
-	system $transcode, '-q', 0, $probe, '-J', $trafo, '-i', $f,
+	say "Outputting to '$o'";
+	sys $transcode, '-q', 0, $probe, '-J', $trafo, '-i', $f,
 	    '-y', $outputmodule, '-F', $outputformat, '-o', $o;
 }
+
+
+__END__
+
+=pod
+
+=head1 NAME
+
+ deshake - Stabilize a shaky camera video clip using vid.stab
+
+=head1 SYNOPSIS
+
+ deshake [<opts>] <files-or-dirs>
+
+ Options:
+	-n		# no operation, just pretend
+	-q		# do not show commands that will be executed
+	-Q		# do not explain what you are doing
+	-m		# use external mplayer instead of native input decoding
+	-z		# zoom or clone rather than drawing a black frame
+	-a		# analyze only, generate .trf file for transform
+	-y <modules>	# select output modules
+	-F <format>	# select output format for video module
+	-o <extension>	# output files end in .$outputextension by default
+	-h		# help!
+
+ Available export modules for -y are in `ls /usr/lib/transcode/export_*`.
+ Available export formats for some modules listable with '-F list' after analysis.
+ See 'perldoc deshake' for longer help.
+
+=head1 DESCRIPTION
+
+ Took so much work to figure this script out but then
+ I found out .mlt files are smarter than intermediate
+ renderings and therefore it is frequently better to
+ just use editors like kdenlive with its "Stabilize"
+ function in the "Clip Jobs" menu.
+
+ Should you not find it there, then you need to install
+ the vid-stab library first, then recompile both
+ melt/transcode and kdenlive/whatever.
+
+=head1 SEE ALSO
+
+ See also 'man transcode_export'
+ See also vid.stab when compiling melt and transcode.
+ See also y4mstabilizer.
+
+=head1 AUTHORS
+
+ carlo von lynX.
+
+=head1 COPYRIGHT
+
+ This program is free software, published under the Affero GNU Public
+ License. A disclaimer isn't necessary in my country, nor do I need
+ to mention the current year to assert a copyright.
+
