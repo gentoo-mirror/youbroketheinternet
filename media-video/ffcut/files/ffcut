@@ -69,10 +69,10 @@ my $W, $F;
 my $videosize = 0;
 my $audiosize = 0;
 
-my @copy = $opt_a ? ( "-codec:a", "copy", "-vn" ) :
-	   $opt_s ? ( "-codec:v", "copy", "-an" ) : ( "-c", "copy" );
-
 if ($has_ffmpeg and not $opt_b) {
+	my @copy = $opt_a ? ( "-codec:a", "copy", "-vn" ) :
+		   $opt_s ? ( "-codec:v", "copy", "-an" ) : ( "-c", "copy" );
+
 	# Why didn't anybody tell me that ffmpeg can do this, too
 	# just with a different absurd and impractical syntax...
 	# The following line circumvents a bug in ffmpeg:
