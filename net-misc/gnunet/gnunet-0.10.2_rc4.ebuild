@@ -88,7 +88,7 @@ RDEPEND="
 		gnurl? ( >=net-misc/gnurl-7.50.1 )
 		!gnurl? ( >=net-misc/curl-7.50.1[curl_ssl_gnutls] )
 	)
-	gnutls? ( net-libs/gnutls )
+	gnutls? ( net-libs/gnutls[tools] )
 	dane? ( net-libs/gnutls[dane] )
 	ssl? (
 		!libressl? ( dev-libs/openssl:0= )
