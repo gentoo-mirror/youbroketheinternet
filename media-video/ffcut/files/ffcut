@@ -38,7 +38,7 @@ if ( $output and not $output =~ /\.\w+$/ ) {
 #		$output .= ".mp4"
 #	} else {
 		# otherwise inherit from input
-		$output .= lc($1) if $input =~ /(\.\w+)$/i;
+		$output .= lc($1) if $input =~ /(\.\w+)$/ or $input =~ /(\.\w+)\?/;
 #	}
 }
 
