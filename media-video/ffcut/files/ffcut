@@ -27,7 +27,6 @@ my $tmp;
 
 my $MPARMS = '-quiet -fs';
 # '--keep-open-pause=no' for mpv?
-# $MPARMS .= ' -ao null' unless $opt_l;
 $MPARMS .= ' -ao null' if $opt_q;
 my $DEFLEN = 10;
 
@@ -70,6 +69,7 @@ it cannot handle some broken mp4/mov/3gp files, be sure to try out GPAC!
 Options are:
     -v	Show verbose outputs
     -x	Immediately play the resulting video in mpv or mplayer
+    -q	Turn off audio when playing resulting video
     -b	Plan B: prefer MP4Box over ffmpeg
 
 X
@@ -88,7 +88,7 @@ unless ( $end ) {
 		$start = "9999998";	# actually only MP4Box does that.. FIXME for ffmpeg
 	}
 }
-print GREEN, <<X, RESET; # if $opt_v;
+print GREEN, <<X, RESET unless $opt_q;
 *** ffcutting from $start to $end into $output
 X
 
@@ -106,10 +106,8 @@ if ($has_ffmpeg and not $opt_b) {
 	$start = "0:0.1" unless $start;
 	print STDERR "*** Start is $start, duration is ", $end - $start, "\n" if debug & 2;
 	die "Cannot run ffmpeg: $!" unless $pid = open3($W,$F,$F,
-	    "ffmpeg", "-ss", $start, "-t", $end - $start,
-			 '-analyzeduration', '44044404',
-			 '-probesize', '44044404',
-		      "-i", $input, "-c", "copy", "-y", $output);
+	    $has_ffmpeg, "-ss", $start, "-t", $end - $start,
+		         "-i", $input, "-c", "copy", "-y", $output);
 } elsif ($has_mp4box) {
 	# The -out option doesn't actually work
 	# But luckily, -splitz resumed working
