@@ -85,10 +85,6 @@ DEPEND="${RDEPEND}
 		>=sys-devel/bison-1.875
 		>=sys-devel/gettext-0.12.1"
 
-#use debug && {
-#		RESTRICT="${RESTRICT} nostrip"
-#}
-
 MYS="${S}/src"
 # MYS="${WORKDIR}/${PN}/src"
 DOCS=( ANNOUNCE CHANGELOG-psyclpc FAQ HELP )

@@ -40,7 +40,10 @@ SLOT="0"
 IUSE="debug"
 RDEPEND=""
 
-use debug && {
-    RESTRICT="${RESTRICT} nostrip"
+src_compile {
+        use debug && {
+            append-flags -g -DDEBUG
+			RESTRICT="${RESTRICT} nostrip"
+        }
 }
 
