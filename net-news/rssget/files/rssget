@@ -89,7 +89,7 @@ for my $item ($xp->findnodes('/rss/channel/item')) {
 	# SPECIAL NEED: refuse to download a specific show if duration is too short
 	#
 	# a clear case where perl itself is the configuration tool as nothing simpler would do...
-	if ($chan =~ /Tagesthemen/i and $dura < "15:00") {
+	if ($chan =~ /Tagesthemen/i and $dura < "15:00" and not $opt_f) {
 		print STDERR MAGENTA, "Lame short edition. Get yourself a Tagesschau instead.\n", RESET;
 		next;
 	}

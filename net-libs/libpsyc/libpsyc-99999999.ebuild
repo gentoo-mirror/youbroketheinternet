@@ -8,7 +8,7 @@ DESCRIPTION="library for parsing and rendering PSYC packets more efficiently"
 HOMEPAGE="http://about.psyc.eu/libpsyc"
 LICENSE="AGPL-2"
 EGIT_REPO_URI="/usr/local/src/${PN}
-		git://git.cheettyiapsyciew.onion/${PN}
+		git://git.psyciumunsqarzsehz5xlgsi2mg4dkvntwf5bwj5kwbcbazwiuhna2ad.onion/${PN}
 		git://git.psyced.org/git/${PN}"
 
 case ${PV} in

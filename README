@@ -14,9 +14,9 @@ overlays into our operating system build procedures. So, if your
 ebuild is in here, it's an honor for us to be hosting a copy.
 
 Please drop by
-	    irc://loupsycedyglgamf.onion:67/welcome
-	 or http://loupsycedyglgamf.onion/PSYC/
-	 or torify telnet loupsycedyglgamf.onion
+    irc://psycyificvaxuzut3t6hcies3stfdtlzqftcnmbb5su3xv4zugplsfad.onion:67/welcome
+ or http://psycyificvaxuzut3t6hcies3stfdtlzqftcnmbb5su3xv4zugplsfad.onion/PSYC/
+ or torify telnet psycyificvaxuzut3t6hcies3stfdtlzqftcnmbb5su3xv4zugplsfad.onion
 for feedback and 'git pull' offers.
 
 Git was intended for everyone to run their own little git server
@@ -28,7 +28,7 @@ Github is not a safe infrastructure for a GNU Internet.
 
 If you need some advice on which anti-PRISM tools to install,
 have a look at our 'best current practice' recommendations at
-http://secushare.cheettyiapsyciew.onion/comparison.
+http://secushare.psyciumunsqarzsehz5xlgsi2mg4dkvntwf5bwj5kwbcbazwiuhna2ad.onion/comparison.
 
 If you are a developer, some of the ebuilds allow you to symlink or
 put a git of the package in /usr/local/src. The ebuild will select 
