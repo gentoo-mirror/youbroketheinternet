@@ -3,7 +3,7 @@
 
 # this ebuild is only for the libcrypto.so.0.9.8 and libssl.so.0.9.8 SONAME for ABI compat
 
-EAPI="5"
+EAPI="6"
 
 inherit eutils flag-o-matic toolchain-funcs multilib multilib-minimal
 
@@ -13,7 +13,7 @@ MY_PV=${PV/_p*/${PLEVEL}}
 MY_P=${PN}-${MY_PV}
 S="${WORKDIR}/${MY_P}"
 DESCRIPTION="Toolkit for SSL v2/v3 and TLS v1"
-HOMEPAGE="http://www.openssl.org/"
+HOMEPAGE="https://www.openssl.org/"
 SRC_URI="mirror://openssl/source/${MY_P}.tar.gz"
 
 LICENSE="openssl"
@@ -36,10 +36,15 @@ DEPEND="${RDEPEND}
 # Do not install any docs
 DOCS=()
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-0.9.8e-bsd-sparc64.patch
+	"${FILESDIR}"/${PN}-0.9.8h-ldflags.patch #181438
+	"${FILESDIR}"/${PN}-0.9.8m-binutils.patch #289130
+	"${FILESDIR}"/${PN}-0.9.8z_p8-perl-5.26.patch
+)
+
 src_prepare() {
-	epatch "${FILESDIR}"/${PN}-0.9.8e-bsd-sparc64.patch
-	epatch "${FILESDIR}"/${PN}-0.9.8h-ldflags.patch #181438
-	epatch "${FILESDIR}"/${PN}-0.9.8m-binutils.patch #289130
+	default
 
 	# disable fips in the build
 	# make sure the man pages are suffixed #302165
@@ -54,7 +59,7 @@ src_prepare() {
 		Makefile{,.org} \
 		|| die
 	# show the actual commands in the log
-	sed -i '/^SET_X/s:=.*:=set -x:' Makefile.shared
+	sed -i '/^SET_X/s:=.*:=set -x:' Makefile.shared || die
 	# update the enginedir path.
 	# punt broken config we don't care about as it fails sanity check.
 	sed -i \
@@ -74,13 +79,13 @@ src_prepare() {
 
 	# allow openssl to be cross-compiled
 	cp "${FILESDIR}"/gentoo.config-0.9.8 gentoo.config || die "cp cross-compile failed"
-	chmod a+rx gentoo.config
+	chmod a+rx gentoo.config || die
 
 	append-flags -fno-strict-aliasing
 	append-flags -Wa,--noexecstack
 
-	sed -i '1s,^:$,#!/usr/bin/perl,' Configure #141906
-	sed -i '/^"debug-bodo/d' Configure # 0.9.8za shipped broken
+	sed -i '1s,^:$,#!/usr/bin/perl,' Configure || die #141906
+	sed -i '/^"debug-bodo/d' Configure || die # 0.9.8za shipped broken
 	./config --test-sanity || die "I AM NOT SANE"
 
 	multilib_copy_sources
