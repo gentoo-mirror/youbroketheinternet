@@ -10,7 +10,7 @@ inherit autotools eutils prefix versionator
 
 #MY_PV="$(replace_all_version_separators '_')"
 MY_P=${PN}-$(replace_all_version_separators '_')
-SRC_URI="https://gnunet.org/sites/default/files/${MY_P}.tar.bz2 -> ${MY_P}.tar.bz2"
+SRC_URI="https://gnunet.org/sites/default/files/gnurl-7_50_2-1.tar.bz2 -> ${MY_P}.tar.bz2"
 
 LICENSE="MIT"
 SLOT="0"
@@ -23,7 +23,7 @@ DEPEND="${RDEPEND}"
 
 DOCS=( CHANGES README docs/FEATURES docs/MANUAL docs/FAQ docs/BUGS )
 
-S=${WORKDIR}/${MY_P}
+S=${WORKDIR}/${PN}-7_50_2
 
 # TODO: check if this phase is still appropriate in content!
 src_prepare() {
@@ -35,9 +35,8 @@ src_prepare() {
 
 		# Fix conflicts with Curl: UGLY HACK AHEAD /!\
 		# (The fork maintainer should do that.)
-		# XXX: fixed in upcoming release.
 
-		# FIX: Rename include/curl to include/gnurl
+		# XXX Fix this upstream: Rename include/curl to include/gnurl
 		mv include/curl include/gnurl
 		# FIX: Tune explicit paths in source files (~400 lines)
 		grep -ERl 'include(.*curl/|/curl)' | \
