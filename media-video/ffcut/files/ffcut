@@ -83,11 +83,13 @@ if ($has_ffmpeg and not $opt_b) {
 
 	# Why didn't anybody tell me that ffmpeg can do this, too
 	# just with a different absurd and impractical syntax...
+	#
 	# The following line circumvents a bug in ffmpeg:
-	$start = "0:0.1" unless $start;
+	#$start = "0:0.1" unless $start;
+	unshift @copy, '-ss', $start if $start;
 	print STDERR "*** Start is $start, duration is ", $end - $start, "\n"
 	    if debug & 2;
-	my @args = ( $has_ffmpeg, "-ss", $start, "-i", $input, @copy,
+	my @args = ( $has_ffmpeg, "-i", $input, @copy,
 			 "-avoid_negative_ts", "make_zero", "-fflags", "+genpts",
 			 "-t", $end - $start, "-y", $output );
 	print MAGENTA, join(' ', @args), RESET, "\n" if $opt_v;
