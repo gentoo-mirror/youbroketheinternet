@@ -37,6 +37,6 @@ case ${PV} in
 esac
 
 SLOT="0"
-IUSE=""
+IUSE="debug"
 RDEPEND=""
 
