@@ -34,16 +34,12 @@ case ${PV} in
 "9999")
 	inherit autotools git-r3 user python-any-r1 flag-o-matic
 	# using latest git. caution:
-	# this methode is prone to man-in-the-middle attacks
+	# this method is prone to man-in-the-middle attacks
 	;;
-"0.10.2_rc3")
+"0.10.2_rc4")
 	inherit autotools git-r3 user python-any-r1 flag-o-matic
-    EGIT_COMMIT="c87a389a4f842c20383d8619120b188e104cf64a"
+    EGIT_COMMIT="6bcc73a1cbb1d4a609884762eab1b6de761ad1d9"
 	;;
-"0.10.2_rc2")
-	inherit autotools git-r3 user python-any-r1 flag-o-matic
-    EGIT_COMMIT="922318150433906dafd11adb5185a6ff664573db"
-    ;;
 "0.10.1")
 	inherit autotools user python-any-r1 flag-o-matic
 	SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
@@ -94,7 +90,10 @@ RDEPEND="
 	sys-libs/zlib
 	httpd? ( >=net-libs/libmicrohttpd-0.9.42[messages] )
 	nls? ( >=sys-devel/gettext-0.18.1 )
-	nss? ( dev-libs/nss )
+	nss? (
+		dev-libs/nss
+		sys-libs/glibc
+	)
 	dev-libs/gmp:0=
 	X? (
 		x11-libs/libXt
@@ -167,7 +166,7 @@ src_configure() {
 		$(use_enable experimental ) \
 		$(use_with httpd microhttpd ) \
 		$(use_with mysql ) \
-		$(use_with postgres ) \
+		$(use_with postgres postgresql ) \
 		$(use_with sqlite ) \
 		$(use_with X x ) \
 		$(use_with gnutls ) \
@@ -177,8 +176,13 @@ src_configure() {
 
 
 src_install() {
+	into /
+	use nss && dolib.so src/gns/nss/.libs/libnss_gns*.so*
 	emake DESTDIR="${D}" install
+	rm -rf ${D}/usr/lib/gnunet/nss
 	newinitd "${FILESDIR}/${PN}.initd" gnunet
+	insinto /etc
+	use nss && doins "${FILESDIR}/nsswitch.conf"
 	insinto /etc/gnunet
 	doins "${FILESDIR}/gnunet.conf"
 	keepdir /var/{lib,log}/gnunet
@@ -188,7 +192,8 @@ src_install() {
 pkg_postinst() {
 	# We should update the gtk icon cache for the icons.
 	# @TODO: provide average working example config to copy for user.
-	# @TOO: point out that exact time is needed currently.
+	# @TODO: point out that exact time is needed currently.
+	elog " "
 	elog "To configure"
 	elog "	 1) Add desired user(s) to the 'gnunet' group"
 	elog "	 2) Edit the system-wide config file '/etc/gnunet/gnunet.conf'"
