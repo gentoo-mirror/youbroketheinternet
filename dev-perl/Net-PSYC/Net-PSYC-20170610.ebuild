@@ -26,9 +26,12 @@ case ${PV} in
 "20170610")
 	EGIT_COMMIT="5a24e0e643885a16e7c3b7b6ac50e4db31e476d0"
 	;;
+"20171128")
+	EGIT_COMMIT="28c1278f45ab707005b7784654d2a3a57ce9a5d9"
+	;;
 *)
 	# last seen change
-	EGIT_COMMIT="5a24e0e643885a16e7c3b7b6ac50e4db31e476d0"
+	EGIT_COMMIT="28c1278f45ab707005b7784654d2a3a57ce9a5d9"
 	# therefore, for security reasons "9999" doesn't actually
 	# emerge the latest version. please consult 'git log' and
 	# update the last EGIT_COMMIT to obtain a newer version.
@@ -39,6 +42,7 @@ esac
 
 # some perl library items used by some scripts.. FIXME
 DEPEND="dev-lang/perl
+		dev-perl/TimeDate
 		dev-perl/Curses"
 IUSE="rxaudio +mplayer"
 RDEPEND="rxaudio? ( media-sound/rxaudio-bin )

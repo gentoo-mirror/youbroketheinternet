@@ -42,6 +42,7 @@ esac
 
 # some perl library items used by some scripts.. FIXME
 DEPEND="dev-lang/perl
+		dev-perl/TimeDate
 		dev-perl/Curses"
 IUSE="rxaudio"
 RDEPEND="rxaudio? ( media-sound/rxaudio-bin )"
