@@ -1,0 +1,54 @@
+* TODO - various tasks which need to be worked on
+
+When you work on this and finished an item, make sure to
+point it out in this file.
+
+** */*
+
+- Update to EAPI 6.
+
+** net-misc/gnunet
+
+- _!Fix the postinst message!_
+- Last dependency checks
+- Debug the openrc service and improve it to function like intended
+  (see post setup notes). Either fix the service or adjust the ebuild.
+*** ng0
+  I think the service is fixed now, we need to make it customizable and
+  then we can include it in gnunet source.
+
+** net-p2p/retroshare
+
+- Check if we are affected by the annual sourceforge stupidity of changing
+  URLs of download locations.
+
+** sys-apps/guix
+
+- Debug the openrc service!
+- Check the ebuild for mistakes.
+- Update to 0.11 [done]
+
+** sys-apps/guix-bin
+
+- Make it functional.
+
+** www-plugins/*
+
+- Fix this: use() is wrong in the ebuilds.
+
+** dev-perl/Net-PSYC
+
+- fix the last minor problems in Makefile and/or expand it -> ng0 will do it.
+- psycion segfaults when torified. debug this.
+
+** www-client/palemoon
+
+- patch it to remove default start page (which contains advertisment)
+- write an update fetcher - its home page is behind the Great Firewall of Cloudflare
+** www-client/torbrowser-bundle
+
+- we do not actually use this or have tested
+  this. for maintenance ease we should drop
+  it.
+
+

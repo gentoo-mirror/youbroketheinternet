@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>ng0@we.make.ritual.n0.is</email>
+		<name>ng0</name>
+		<description>maintainer</description>
+	</maintainer>
+	<upstream>
+		<bugs-to>https://gnunet.org/bugs</bugs-to>
+		<doc lang="en">https://gnunet.org</doc>
+	</upstream>
+	<use>
+		<flag name='qr'>experimental feature</flag>
+		<flag name='debug'>don't set, only for debugging purposes</flag>
+	</use>
+</pkgmetadata>
