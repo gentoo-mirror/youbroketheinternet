@@ -20,14 +20,14 @@ IUSE="+symlink_all_targets target_torbrowser target_firefox target_firefox-bin"
 # isn't it pointless to have a list of architectures for architecture-independent packages?
 KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k mips ppc ppc64 s390 sh sparc x86 amd64-fbsd sparc-fbsd x86-fbsd"
 
-# symlink all possible target paths if this is set
-if use symlink_all_targets; then
+## symlink all possible target paths if this is set
+#if use symlink_all_targets; then
 	MZA_TARGETS="torbrowser firefox firefox-bin"
-else
-	use target_torbrowser && MZA_TARGETS+=" torbrowser"
-	use target_firefox && MZA_TARGETS+=" firefox"
-	use target_firefox-bin && MZA_TARGETS+=" firefox-bin"
-fi
+#else
+#	use target_torbrowser && MZA_TARGETS+=" torbrowser"
+#	use target_firefox && MZA_TARGETS+=" firefox"
+#	use target_firefox-bin && MZA_TARGETS+=" firefox-bin"
+#fi
 
 RDEPEND="
 	!symlink_all_targets? (
