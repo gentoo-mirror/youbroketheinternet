@@ -1,0 +1,53 @@
+#!/usr/bin/perl
+
+sub progress() { 1 }
+
+my $db = "/var/db/pkg";
+
+my $pd = "/packages";
+$pd = "/usr/portage/packages" unless -r $pd;
+
+use Term::ANSIColor qw(:constants);
+
+use Getopt::Std;
+&getopt;
+
+$#ARGV >= 0 or die <<X;
+For some strange reason, quickpkg \@system and quickpkg \@world do
+not generate all packages available in $db so here's a
+little tool that finds the missing ones...
+
+Usage: cd $db; $0 [flags] */*
+
+-f	force creation of pkg even if a target file already exists
+X
+
+die "You have no $pd. Is this a gentoo system?" unless -r $pd;
+die "You have no rights to write into $pd. Are you root?" unless -w $pd;
+
+foreach $a ( @ARGV ) {
+	print <<X, next if $a =~ m!sys-kernel/.*-sources!;
+Skipping $a ...
+X
+	print '.' if progress;
+	die "Detected broken merge: $a" if $a =~ m!-MERGING-!;
+	if ( -f "$pd/$a.tbz2" ) {
+		next unless $opt_f;
+		print "\tremake $pd/$a.tbz2 for $a\n" if progress;
+	} else {
+		print "\tmake $pd/$a.tbz2 for $a\n" if progress;
+	}
+	# many apps just do not do anything good without their /etc
+	# and /usr/share/config files... so we include-config!
+	die $! if sys('/usr/bin/quickpkg', '--include-config=y', "=$a");
+}
+print "\n" if progress;
+exit;
+
+
+sub sys {
+	print BOLD, BLUE, join(' ', @_), "\n", RESET unless $opt_q;
+	return system @_ unless $opt_n;
+	return 0;
+}
+

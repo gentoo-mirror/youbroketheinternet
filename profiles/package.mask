@@ -18,3 +18,10 @@ sys-apps/nix
 =net-vpn/gnunet-0.10.1
 =net-vpn/gnunet-gtk-0.10.1
 =net-vpn/gnunet-meta-0.10.1
+
+# insistently unstable...
+x11-plugins/telegram-purple
+net-im/cutegram
+
+# unfinished
+www-client/hardzilla
