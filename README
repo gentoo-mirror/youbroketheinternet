@@ -360,6 +360,12 @@ each time you check out a git repository.
 The package manager from Nix. Portage has added its own version
 without credit to us. Ts!
 
+== sys-apps/quickpkg-newer ==
+
+Wrapper around quickpkg that ensures all atoms installed in the system
+have a corresponding tar snapshot in the archive of binary packages,
+so you can freely unmerge and reinstall them without recompilation.
+
 == sys-apps/oneshot ==
 
 Command line usability enhancement for Gentoo's emerge. It should in most 
