@@ -1,0 +1,167 @@
+#!/usr/bin/perl
+# All these developers of GUI file managers... did they really never
+# think that the gesture of dragdropping one directory on another
+# may also be a useful thing to have as a shell command?!?
+# A tool I've been waiting to have for a decade or two.
+# This is so fundamental, it might even deserve a cryptic unix name.
+# Something like 'mrg' instead of 'merge'.
+#		--symlynX 2018
+#
+# Maybe mvmatch, mdcp, ddcp can be merged into here.
+# See also convmv.
+#
+# Use 'perldoc merge' to see the documentation.
+
+sub debug { 0 }
+
+use Cwd;
+use Pod::Usage qw( pod2usage );
+use File::Find ();
+use Getopt::Std;
+
+my $d, $s, $f;
+my $errors = 0;
+my $just1file = 0;
+
+main: {
+	getopt();
+	die pod2usage unless !$opt_h and $#ARGV >= 1;
+	$d = pop @ARGV;
+	die "You can't merge into a file" if -f $d;
+	if ( $d !~ m#^/# ) {
+		my $pwd = cwd;
+		$d = $pwd.'/'.$d;
+		print STDERR "Target directory: $d\n" if debug;
+	}
+	$d =~ s#/$##;
+
+	$f = '-a';		# does this make sense for anything but vanilla cp?
+	$f .= 'u' if $opt_u;	# does this make sense for anything but vanilla cp?
+	$f .= 's' if $opt_s;
+	$f .= 'l' unless $opt_s or $opt_c or $opt_r;
+
+	foreach $s (@ARGV) {
+		$s =~ s#/$## unless $just1file = -f $s;
+		unless (-e $s) {
+			$errors++;
+			print STDERR "Skipping $s: it does not exist\n";
+			next;
+		}
+		unless (-r $s) {
+			$errors++;
+			print STDERR "Skipping $s: it isn't readable\n";
+			next;
+		}
+		print STDERR "Processing $s\n" if $opt_v;
+		&File::Find::find(\&wanted, $s);
+	}
+
+	exit $errors;
+}
+
+sub wanted {
+	print STDERR "\t>$_<\n" if debug;
+	return if -d $_ and not -l $_;
+
+	my $name = $File::Find::name;
+	my $dir = $File::Find::dir;
+
+	if ($just1file) {
+		die "Impossible: $s is not $name" if $s ne $name;
+		# ignore the path that led to the file.
+		# files always go to the top level target dir.
+		$dir = '';
+		$name = $_;
+	} else {
+	#	$name =~ s!^\./!!;
+		$name =~ s!^$s/!! or die "Impossible: $s is not in $name";
+		print STDERR "name:\t>$name<\n" if debug;
+	#	$dir =~ s!^\./!!;
+		$dir =~ s!^$s/!! or die "Impossible: $s is not in $dir";
+		print STDERR "dir:\t>$dir<\n" if debug;
+		mkdirhier ( $d.'/'.$dir ) if $dir ne '.';
+	}
+	if ($opt_m and $opt_u) {
+		die $! if sys('/bin/mv', '-u', $_, $d.'/'.$name);
+	} elsif ($opt_m) {
+		die $! if sys('/bin/mv', $_, $d.'/'.$name);
+	} elsif ($opt_r) {
+		die $! if sys('/bin/cp', $f, '--reflink', $_, $d.'/'.$name);
+	} else {
+		die $! if sys('/bin/cp', $f, $_, $d.'/'.$name);
+	}
+}
+
+# same code as in 'mvmatch'
+sub mkdirhier {
+	my $d = shift;
+	print STDERR "    mkdirhier: >$d<\n" if debug;
+	if (-d $d) {
+	    print STDERR "(directory $d already exists)\n" if $opt_v;
+	} else {
+	    print "mkdirhier $d\n" unless debug or $opt_q;
+	    return if $opt_n;
+	    if (sys('/bin/mkdir', '-p', $d)) {
+		undef $!;
+		# before mkdir learned about -p, mkdirhier
+		# was provided with the X11 graphical suite
+		die "Could not make directory hierarchy: $!"
+		    if sys('mkdirhier', $d);
+	    }
+	}
+}
+
+sub sys {
+	print STDERR "@_\n" if debug;
+	print "@_\n" unless debug or $opt_q;
+	return system @_ unless $opt_n;
+	return 0;
+}
+
+__END__
+
+=pod
+
+=head1 NAME
+
+merge - directory folder merging tool, like drag'n'drop without GUI file manager
+
+=head1 SYNOPSIS
+
+merge [<option>] [<operation>] <items> <target-folder>
+
+ Operations:
+	-m(ove)			use 'mv' instead of 'cp -l'
+	-s(ymlink)		use 'cp -s' instead of 'cp -l'
+	-r(eflink)		use 'cp --reflink' (btrfs only)
+	-c(opy)			use 'cp' instead of 'cp -l'
+
+ Options:
+	-h(elp)
+        -n(o operation)         just pretend and show what you would do
+        -q(uiet)		do not output commands being executed
+	-u(pdate)		copy only when the source file is newer
+        -v(erbose)		tell if a directory already exists
+
+=head1 DESCRIPTION
+
+ This tool merges directories in a similar way as graphical file managers do.
+ 'rsync' can't mv, ln, symlink or reflink files on the same file system, so
+ merge is for all those use cases. The default operation is to make hardlinked
+ copies of the source files into the target directories.
+
+=head1 AUTHORS
+
+ carlo von lynX.
+
+=head1 COPYRIGHT
+
+ This program is free software, published under the Affero GNU Public
+ License. A disclaimer isn't necessary in my country, nor do I need
+ to mention the current year to assert a copyright.
+
+=head1 UPDATES
+
+ Latest version available from the youbroketheinternet overlay:
+    https://gnunet.org/git/youbroketheinternet-overlay.git/plain/app-misc/merge/files/merge
+

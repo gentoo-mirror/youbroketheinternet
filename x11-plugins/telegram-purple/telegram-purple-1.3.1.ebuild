@@ -11,7 +11,7 @@ MY_PV=$(get_version_component_range 1-3)
 
 DESCRIPTION="Libpurple (Pidgin) plugin for using a Telegram account"
 HOMEPAGE="https://github.com/majn/${PN}"
-SRC_URI="https://github.com/majn/telegram-purple/releases/download/v1.3.0/telegram-purple_${PV}.orig.tar.gz"
+SRC_URI="https://github.com/majn/telegram-purple/releases/download/v1.3.1/telegram-purple_${PV}.orig.tar.gz"
 
 LICENSE="LGPL-3"
 SLOT="0"

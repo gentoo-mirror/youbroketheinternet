@@ -1,43 +1,14 @@
 #!/usr/bin/perl -w
-#
-# A better zipgrep then the shell script given in most distributions, but
-# mostly compatible to it. This one can handle filenames with spaces, it
-# can recurse into directories and search special purpose ZIPs like MAFF,
-# ODT or APK. Now also returns grep-compatible exit code.
-#
-# Originally by Ned Konz, perl@bike-nomad.com
-# Added ability to recurse and handle options, --symlynX 2012
-#
+# See below for documentation.
 use strict;
 
 # apt-get install libarchive-zip-perl
 use Archive::Zip qw(:CONSTANTS :ERROR_CODES);
+use Pod::Usage qw( pod2usage );
 use File::Find;
 use Getopt::Std;
 
-if ( @ARGV < 2 ) {
-    print <<X;
-This program searches for the given Perl regular expression in Zip archives.
-Archive is assumed to contain text files. If given directories, recursion is
-applied. Usage:
-
-    $0 <options> 'pattern' <items>
-
-Options are:
-    -a(ll)	    -- check every binary file if it is a zip
-    -l(ist)	    -- show just the matching file names
-    -h(ide)	    -- show only the matching text
-    -i(gnorecase)   -- ignore case when matching
-    -q(uiet)
-    -v(erbose)
-    -w(ordmatch)    -- check for word boundaries when matching
-    -x(clusive)	    -- show only lines that match exactly the pattern
-
-If you need to learn about regular expressions, try 'man perlre'.
-It's a long read, but it stays with you for a lifetime.
-X
-    exit 1;
-}
+die pod2usage if @ARGV < 2;
 
 # flags are intentionally compatible to egrep
 our($opt_a, $opt_h, $opt_i, $opt_l, $opt_q, $opt_v, $opt_w, $opt_x);
@@ -102,3 +73,62 @@ sub wanted {
 		$member->endRead();
 	}
 }
+
+__END__
+
+=pod
+
+=head1 NAME
+
+zipgrep - Recursively search for regular expressions in ZIP compatible archive formats"
+
+=head1 SYNOPSIS
+
+ziprgrep [<options>] 'pattern' <items>
+
+ Options are:
+    -a(ll)	    -- check every binary file if it is a zip
+    -l(ist)	    -- show just the matching file names
+    -h(ide)	    -- show only the matching text
+    -i(gnorecase)   -- ignore case when matching
+    -q(uiet)
+    -v(erbose)
+    -w(ordmatch)    -- check for word boundaries when matching
+    -x(clusive)	    -- show only lines that match exactly the pattern
+
+=head1 DESCRIPTION
+
+This program searches for the given Perl regular expression in Zip archives.
+Archive is assumed to contain text files. If given directories, recursion is
+applied.
+If you need to learn about regular expressions, try 'man perlre'.
+It's a long read, but it stays with you for a lifetime.
+
+This is a better zipgrep then the shell script provided in most
+distributions, but mostly compatible to it. This one can handle
+filenames with spaces, it can recurse into directories and search
+special purpose ZIPs like MAFF, ODT or APK.
+Now also returns grep-compatible exit code.
+
+=head1 CAVEATS
+
+For as long as a less intelligent zipgrep is already installed
+and collides with this one, you will find this improved version
+by the name of 'ziprgrep'.
+
+=head1 AUTHORS
+
+ Originally by Ned Konz, perl@bike-nomad.com.
+ carlo von lynX added ability to recurse and handle options in 2012.
+
+=head1 COPYRIGHT
+
+This program is free software, published under the Affero GNU Public
+License. A disclaimer isn't necessary in my country, nor do I need
+to mention the current year to assert a copyright.
+
+=head1 UPDATES
+
+Latest version available from the youbroketheinternet overlay:
+    https://gnunet.org/git/youbroketheinternet-overlay.git/plain/app-arch/zipgrep/files/ziprgrep
+

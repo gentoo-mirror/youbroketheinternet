@@ -28,10 +28,10 @@ IUSE="+gtk experimental +gnurl curl qr"
 REQUIRED_USE="?? ( curl gnurl )"
 
 RDEPEND="
-	=net-misc/gnunet-${PV}
-	experimental? ( =net-misc/gnunet-${PV}[experimental,extra] )
-	qr? ( =net-misc/gnunet-${PV}[experimental,extra,qr]
-		  =net-misc/gnunet-${PV}[qr] )
-	gtk? ( =net-misc/gnunet-gtk-${PV} )
-	gnurl? ( =net-misc/gnunet-${PV}[gnurl,curl] )
-	curl? ( =net-misc/gnunet-${PV}[curl,-gnurl] )"
+	=net-vpn/gnunet-${PV}
+	experimental? ( =net-vpn/gnunet-${PV}[experimental,extra] )
+	qr? ( =net-vpn/gnunet-${PV}[experimental,extra,qr]
+		  =net-vpn/gnunet-${PV}[qr] )
+	gtk? ( =net-vpn/gnunet-gtk-${PV} )
+	gnurl? ( =net-vpn/gnunet-${PV}[gnurl,curl] )
+	curl? ( =net-vpn/gnunet-${PV}[curl,-gnurl] )"

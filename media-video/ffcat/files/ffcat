@@ -1,0 +1,191 @@
+#!/usr/bin/perl
+#
+# UX simplification frontend for ffmpeg and/or GPAC's MP4Box
+# to produce lossless merges of encoded media like
+# mp3, mp4, opus, flv... you name it.
+#
+# Use 'perldoc ffcat' to see the documentation.
+#
+# Search engine hints: Video Editing, Audio Editing, Unix CLI
+
+my $VERSION = "2.0";
+
+sub debug() { 0 }
+
+use IPC::Open3 qw( open3 );
+use Term::ANSIColor qw(:constants);
+use Pod::Usage qw( pod2usage );
+use Getopt::Std;
+getopt('o');
+
+my $MPARMS = '-quiet -fs';
+# '--keep-open-pause=no' for mpv?
+$MPARMS .= ' -ao null' if $opt_q;
+my $DEFLEN = 10;
+
+my $output = $opt_o or pop;
+die pod2usage if not @ARGV or not $output;
+my $input = $ARGV[0];	# look at the first to extract file type
+if ( $output and not $output =~ /\.\w+$/ ) {
+#	if ( $input =~ /\.(m4v|3gp|mov|flv)$/i ) {
+#		# attempt change of container if no output format is given
+#		$output .= ".mp4"
+#	} else {
+		# otherwise inherit from input
+		$output .= $1 if $input =~ /(\.\w+)$/i;
+#	}
+}
+
+$has_mp4box = &which('MP4Box') || &which('mp4box');
+$has_ffmpeg = &which('ffmpeg');
+
+my $W, $F;
+my $videosize = 0;
+my $audiosize = 0;
+
+if ($has_ffmpeg and not $opt_b) {
+	my @copy = $opt_a ? ( "-codec:a", "copy", "-vn" ) :
+		   $opt_s ? ( "-codec:v", "copy", "-an" ) : ( "-c", "copy" );
+
+	# doesn't work if i put it in /tmp or elsewhere
+	$list = ".ffcat-".$$;
+	open(L, ">", $list) or die "Cannot create $list";
+	print L "# recipe to generate $output\n";
+	for ( @ARGV ) {
+		die <<X if not -f $_;
+There's no such file: $_
+X
+		die <<X if $output eq $_;
+You don't want to overwrite your $_ file, do you?
+X
+		print L "file ", $_, "\n";
+	}
+	close L;
+
+	die "Cannot run ffmpeg: $!" unless $pid = open3($W,$F,$F,
+	    $has_ffmpeg, "-f", 'concat', "-i", $list, @copy, '-y', $output);
+} elsif ($has_mp4box) {
+	my @args = ();
+	for ( @ARGV ) {
+		push @args, @args? '-cat': '-add';
+		push @args, $_;
+	}
+	die "Cannot run MP4Box: $!" unless $pid = open3($W,$F,$F,
+	    $has_mp4box, @args, $output);
+} else {
+	die "Need either ffmpeg or MP4Box to do my job.\n";
+}
+
+while ( <$F> ) {
+	## MP4Box
+	if ( /xtracting chunk (.+) - duration / ) {
+		$tmp = $1;
+		print YELLOW, $_, RESET;
+	} elsif ( /nput file \((\d+)\S*\) shorter/ ) {
+		print RED, $_, RESET;
+		print "$start% of $1 = ", $start * $1 / 100, "...\n" if $start < 100;
+		exit;
+	} elsif ( /error/i ) {
+		die $_;
+	## ffmpeg
+	} elsif ( /^video:(\d+)kB audio:(\d+)kB .* muxing overhead/ ) {
+		$videosize = $1;
+		$audiosize = $2;
+		next if $opt_Q;
+		print CYAN, "*** Produced ";
+		print "$1 kB of video and " if $1;
+		print "$2 kB of audio.\n", RESET;
+	} elsif ( /^(Input|Output) #/ or /\s+Duration: \d+/ ) {
+		print YELLOW, $_, RESET unless $opt_Q;
+	} else {
+		print BLUE, $_, RESET if $opt_v;
+	}
+}
+close $F;
+close $W;
+unlink $list;
+exit unless $opt_x;
+
+my $has_mplayer = &which('mplayer');
+my $has_mpv = &which('mpv');
+my $prefer_mpv = $has_mpv || $has_mplayer;
+my $prefer_mplayer = $has_mplayer || $has_mpv;
+die "Neither mpv nor mplayer available on this system"
+    unless $prefer_mpv;
+
+if ($audiosize and not $videosize) {
+	# play audio: need controls on tty
+	die "Cannot run $prefer_mpv $!"
+	    unless exec $prefer_mpv, $output;
+}
+die "Cannot run $prefer_mplayer: $!" unless $pid = open3($W,$F,$F,
+    $prefer_mplayer, split(' ', $MPARMS), $output);
+while ( <$F> ) {
+	if ( $opt_v or not $has_mplayer ) {
+		print BLUE, $_, RESET;
+	} else {
+		print YELLOW, $_, RESET if /^(AUDIO|VIDEO):/;
+	}
+}
+close $F;
+close $W;
+exit;
+
+# if your system doesn't have "which" we're in trouble
+# even BSD has which in that place, so it is ok to use full path
+sub which {
+	my $cmd = shift;
+	$_ = `/usr/bin/which $cmd 2>&1`;
+	print STDERR "which $cmd: $_" if debug & 1;
+	/^(\S+)\s*$/;
+	return $1;
+}
+
+__END__
+
+=pod
+
+=head1 NAME
+
+ffcat - the Fast & Furious Lossless Media Concatenation Tool
+
+=head1 SYNOPSIS
+
+ffcat [<options>] <input-files> [<output-file>]
+
+ Options are:
+    -o <output>	Provide output filename upfront instead of at the end
+    -v(erbose)	Show what is going on
+    -x(amine)	Immediately play the resulting video in mpv or mplayer
+    -q(uiet)	Turn off audio when playing resulting video
+    -s(ilent)	Produce output video without audio
+    -a(udio)	Produce output audio without video
+    -b(oxing)	Plan B: prefer MP4Box over ffmpeg
+    -Q(uiet)	Do not produce screen output
+
+=head1 DESCRIPTION
+
+ ffcat concatenates video or sound files into a single output file without
+ the need of re-encoding. It can use both ffmpeg and the GPAC package.
+
+ Plan B: When ffmpeg messes up the audio sync of the resulting video or when
+ it cannot handle some broken mp4/mov/3gp files, you can still try out GPAC!
+
+=head1 AUTHORS
+
+ carlo von lynX
+
+=head1 COPYRIGHT
+
+ This program is free software, published under the Affero GNU Public
+ License. A disclaimer isn't necessary in my country, nor do I need
+ to mention the current year to assert a copyright.
+
+=head1 UPDATES
+
+ Latest version available from the youbroketheinternet overlay:
+    https://gnunet.org/git/youbroketheinternet-overlay.git/plain/media-video/ffcat/files/ffcat
+
+=head1 SEE ALSO
+
+ ffcut(1)

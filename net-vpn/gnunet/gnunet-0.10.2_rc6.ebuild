@@ -88,7 +88,7 @@ RDEPEND="
 		gnurl? ( >=net-misc/gnurl-7.50.1 )
 		!gnurl? ( >=net-misc/curl-7.50.1[curl_ssl_gnutls] )
 	)
-	gnutls? ( net-libs/gnutls )
+	gnutls? ( net-libs/gnutls[tools] )
 	dane? ( net-libs/gnutls[dane] )
 	ssl? (
 		!libressl? ( dev-libs/openssl:0= )
@@ -140,6 +140,8 @@ pkg_setup() {
 	enewgroup gnunetdns
 	enewgroup gnunet
 	enewuser gnunet -1 /bin/sh "${GNUNET_HOME}" gnunet
+	mkdir -p "${GNUNET_HOME}/config.d"
+	chown gnunet "${GNUNET_HOME}/config.d"
 	if [[ $(egethome gnunet) != ${GNUNET_HOME} ]]; then
 		ewarn "For homedir different from"
 		ewarn "/var/lib/gnunet set GNUNET_HOME in your make.conf"

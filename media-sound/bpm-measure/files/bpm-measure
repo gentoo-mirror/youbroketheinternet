@@ -1,0 +1,217 @@
+#!/usr/bin/perl
+# apparently nobody on the internet has attempted to
+# write a tool that calculates an average bpm from
+# the detected beats by aubiotrack, so here goes!
+# use 'perldoc bpm-measure' to see the documentation.
+
+sub debug() { 0 }
+
+use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
+use Pod::Usage qw( pod2usage );
+use Getopt::Std;
+getopt('OstSE');
+
+if (@ARGV) {
+	my $has_ffcut = which('ffcut');
+	my $has_aubiotrack = which('aubiotrack');
+	die "For this we need both ffcut and aubiotrack from aubio installed.\n"
+	    unless $has_ffcut and $has_aubiotrack;
+	my $has_player = which('mpv') || which('mplayer');
+	my $has_aubioonset = which('aubioonset');
+
+	my @aubio;
+	if ($opt_x) {
+		@aubio = ( $has_aubioonset,
+			 '-O', $opt_O || 'default',
+			 '-s', $opt_s || '-50.0',
+			 '-t', $opt_t || '.9' );
+	} else {
+		# should be more accurate when used with '-s', '-50.0'
+		# but that part of the aubiotrack code may be broken
+		# in versions of libaubio prior 0.4.6
+		@aubio = ( $has_aubiotrack );
+		push @aubio, '-s', $s if $opt_s;
+	}
+	my $tmpwav;
+	if ($opt_m) {
+		$tmpwav = "/tmp/bpm-measure-$$.wav";
+		push @aubio, '-mfo', $tmpwav;
+	}
+
+	for $p (@ARGV) {
+		next if $p =~ /\.(asd|ovw|pk|txt|html|git)$/;
+		die pod2usage if not -r $p;
+		my $sum = 0;
+		my $count = 0;
+		my $f = ($p =~ m!/([^/]+)$!) ? $1 : $p;
+		my $t = "/tmp/bpm-measure-$f";
+		# guesswork: skip intro and take early beats
+		# before the track gets too noisy.. just to
+		# circumvent the bug in aubiotrack
+		system($has_ffcut, '-Q', $p, $t,
+		       $opt_S || '0:23', $opt_E || '0:64');
+		die "ffcut failed on $f" unless -s $t > 99999;
+		open(I, '-|', @aubio, $t);
+		if ($opt_x) {
+			# lame algorithm using onsets
+			$_ = do { local $/; <I> };    # slurp!
+			@on = split /\n/, $_;
+			my $p = shift @on;
+			foreach (@on) {
+				my $elapsed = $_ - $p;
+				# only consider onset distances within
+				# the range of a quarter-beat
+				if ($elapsed > .16 && $elapsed < .32) {
+					$sum += $elapsed;
+					$count++;
+				}
+				$p = $_;
+			}
+		} else {
+			# naive algorithm using beat detection
+			$p = <I>;
+			while (<I>) {
+				my $elapsed = $_ - $p;
+				$sum += $elapsed;
+				$count++;
+				$p = $_;
+			}
+		}
+		close I;
+		unlink($t);
+		if ($count and $count > 42) {
+			my $avg = $sum / $count;
+			print "Counted $count. Sum: $sum. Average: $avg\n" if $opt_v;
+			if ($opt_x) {
+				print "possible bpm: ", 60 / (1 * $avg), "\t", $f, "\n";
+				print "possible bpm: ", 60 / (2 * $avg), "\t", $f, "\n";
+				print "possible bpm: ", 60 / (4 * $avg), "\t", $f, "\n";
+			} else {
+				print 60 / $avg, "  \t", $f, "\n";
+			}
+		} else {
+			print STDERR "?\t\t\t", $f, "\n" unless $opt_m;
+		}
+		if ($opt_m and $tmpwav and -s $tmpwav) {
+			system $has_player, $tmpwav;
+			unlink $tmpwav;
+		}
+	}
+	exit;
+}
+
+while (1) {
+	print "\nHIT ENTER TO START: ";
+	$in = <stdin>;
+
+	$t0 = [gettimeofday];
+	exit if $in =~ /\S/;
+
+	print "HIT ENTER TO STOP: ";
+	$in = <stdin>;
+
+	$elapsed = tv_interval ( $t0, [gettimeofday]);
+
+	print <<X;
+
+seconds elapsed: $elapsed
+
+X
+
+#	print "possible bpm: ", 60 / $elapsed, "\n";
+#	print "possible bpm: ", 120 / $elapsed, "\n";
+#	print "possible bpm: ", 240 / $elapsed, "\n";
+	print "possible bpm: ", 480 / $elapsed, "\n";
+	print "possible bpm: ", 960 / $elapsed, "\n";
+	print "possible bpm: ", 1920 / $elapsed, "\n";
+#	print "possible bpm: ", 3840 / $elapsed, "\n";
+#	print "possible bpm: ", 7680 / $elapsed, "\n";
+
+	exit if $in =~ /\S/;
+}
+
+# if your system doesn't have "which" we're in trouble
+# even BSD has which in that place, so it is ok to use full path
+sub which {
+	my $cmd = shift;
+	$_ = `/usr/bin/which $cmd 2>&1`;
+	print STDERR "which $cmd: $_" if debug & 1;
+	/^(\S+)\s*$/;
+	return $1;
+}
+
+
+__END__
+
+=pod
+
+=head1 NAME
+
+bpm-measure - a beat per minute measurement tool von lynX, 2005, 2018
+
+=head1 SYNOPSIS
+
+ bpm-measure [<options>] [<mediafiles>]
+
+ Options:
+  -s(ilence) <db>   Set silence threshold in db (default is -90.0)
+  -m(onitor)	    Hear how well aubio's beat detection has performed
+  -S(tartat) <t>    Start at a different point in the track than 0:23
+  -E(ndat) <t>	    Close the window at a different time than 1:04
+  -v(erbose)	    Show how many beats were counted
+  -x(perimental)    Try using custom guesswork from onset calculation
+  -t(hreshold) <f>  Threshold for onset calculation (default is 0.9)
+  -O(nsetmeth) <M>  Onset detection method (default is 'default')
+
+=head2 AUTO-DETECTION
+
+	Pass audio file arguments to analyze.
+
+=head2 MANUAL MODE
+
+	Hit ENTER on the first beat (start counting from zero),
+	then wait 4, 8, 16 or 32 measures (the longer the better)
+	and hit ENTER on the beat again. The tool will output
+	some possible BPM values. Hit control-c to exit the loop.
+
+=head2 See also
+
+ 'perldoc bpm-measure' for longer description.
+ 'man aubiotrack' for info on regular beat detection.
+ 'man aubioonset' for info on onset detection methods etc.
+
+=head1 CAVEATS
+
+This little script makes terribly naive assumptions
+about the accuracy of aubiotrack and about the typical
+structure of a dance track. It probably will not produce 
+reasonable output for non-dance-oriented music. I found 
+that aubiotrack can easily get confused between on-beat and 
+off-beat, especially if the sound excerpt contains a break,
+resulting in imprecision of the final bpm number. With the -m
+option you can check if such a confusion occurred, but then you
+might as well measure the music manually. The 'experimental'
+algorithm is too stupid and usually produces less accurate
+results then aubio's own, but it can be a starting point
+for experimentation.
+
+If the track you are measuring has a longer intro than
+23 seconds you should use the -S and -E options to pick a
+better slice of the track. Use -m to check. One would
+expect that 'aubioquiet' can help to skip the intro,
+but so far it isn't very smart at doing so.
+
+=head1 HISTORY
+
+Up to 2018, this script only had its 'manual mode'.
+
+=head1 AUTHORS
+
+ carlo von lynX, sitting on the shoulders of the fantastic aubio library.
+
+=head1 COPYRIGHT
+
+ This program is free software, published under the Affero GNU Public
+ License. A disclaimer isn't necessary in my country, nor do I need
+ to mention the current year to assert a copyright.
+

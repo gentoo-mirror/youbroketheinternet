@@ -12,7 +12,7 @@ DESCRIPTION="Libpurple (Pidgin) plugin for using a Telegram account"
 HOMEPAGE="https://github.com/majn/${PN}"
 SRC_URI=""
 EGIT_REPO_URI="${HOMEPAGE}"
-EGIT_COMMIT="766335c34d7bc68cde2a51e45a10f4f02ac3bc2e"
+EGIT_COMMIT="94dd3be54f3fc3945dbbe54dd9809176b1ec0755"
 #
 # You should see the following submodule commit hashes when emerging:
 #		      tgl/__main__ 624cf5ac27433b9716c224ecaa8f1deee0616f99

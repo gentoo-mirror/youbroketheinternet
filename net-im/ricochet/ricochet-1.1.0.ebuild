@@ -1,3 +1,4 @@
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 # 
@@ -18,11 +19,12 @@ EGIT_REPO_URI="https://github.com/ricochet-im/ricochet"
 SRC_URI=""
 
 KEYWORDS="~amd64 ~arm ~ppc64 ~x86"
-IUSE="debug"
+IUSE="apparmor debug hardened"
 SLOT="0"
 
 DEPEND="
 	virtual/pkgconfig
+	apparmor? ( sys-libs/libapparmor )
 	dev-qt/qtcore:5
 	dev-qt/qtmultimedia:5
 	dev-qt/qtquickcontrols:5
@@ -31,8 +33,10 @@ DEPEND="
 	dev-libs/protobuf
 	dev-libs/openssl"
 RDEPEND="${DEPEND}"
+# Does it also depend on net-vpn/tor or can it
+# use a Tor router running on a different system?
 
-# providing actual commit hashes protects against man in
+# providing actual commit hashes reduces risk of man in
 # the middle attacks on the way to the git repository.	--lynX
 case ${PV} in
 "1.0.4")
@@ -63,9 +67,15 @@ case ${PV} in
 	EGIT_COMMIT="2504d9cf402d25b8a774eced39e1896c8c287f32"
 	# Date:   Wed Nov 16 16:04:11 2016 -0700
 	;;
-*)
+"1.1.5_alpha2")
 	EGIT_COMMIT="e13b2401507164271c849719e6dfe7e95b89fc23"
 	# wfr committed with special Feb 2, 2017
+	;;
+*)
+	# this one seems to be the most recommendable:
+	# version that introduces apparmor support
+	EGIT_COMMIT="a22c729b3e912794a8af65879ed1b38573385657"
+	# Date:   Wed Aug 16 22:11:23 2017 +0000
 	;;
 esac
 # therefore, for security reasons "9999" doesn't actually
@@ -75,16 +85,19 @@ esac
 # 'git tag', 'git reset --hard <tag>', then 'git log'.
 
 src_configure() {
+	use apparmor && a='APPARMOR' || a=''
+	use hardened && h='CONFIG+=hardened' || h='CONFIG+=no-hardened'
 	use debug && d='CONFIG+=debug' || d='CONFIG+=release'
-	eqmake5 DEFINES+=RICOCHET_NO_PORTABLE $d
+	tc-is-clang && c='-spec linux-clang' || c=''
+	eqmake5 $c DEFINES+=RICOCHET_NO_PORTABLE $d $h $a
 }
 
 src_install() {
-	dobin "${S}/ricochet"
-	doicon -s 48x48 "${S}/icons/ricochet.png"
-	doicon -s scalable "${S}/icons/ricochet.svg"
-	domenu "${S}/src/ricochet.desktop"
+#	dobin "${S}/ricochet"
+#	doicon -s 48x48 "${S}/icons/ricochet.png"
+#	doicon -s scalable "${S}/icons/ricochet.svg"
+#	domenu "${S}/src/ricochet.desktop"
 	#
 	# alternate method:
-	#	emake INSTALL_ROOT="${D}" install
+	emake INSTALL_ROOT="${D}" install
 }

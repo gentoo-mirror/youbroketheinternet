@@ -36,13 +36,6 @@ the requested git revision according to the version number you are
 emerging, but only if your git is sufficiently up to date.
 
 
-== app-arch/zipgrep ==
-
-A replacement for the zipgrep shell script that comes with
-app-arch/unzip. This one can handle spaces in filenames, can
-recognize ZIP compatible file formats such as ODT, APK or MAFF
-and recurses into directories by default.
-
 == app-admin/depot ==
 
 How many different Unix distributions have you tried out in the 
@@ -60,6 +53,21 @@ in universities in the 1990s (see LISA paper from 1993 describing
 theory and practice), but it can still prove useful to anyone who 
 moves tools around on several Unix flavors today. You may even 
 find it useful to organize non-software paths like media files.
+
+== app-arch/zipgrep ==
+
+A replacement for the zipgrep shell script that comes with
+app-arch/unzip. This one can handle spaces in filenames, can
+recognize ZIP compatible file formats such as ODT, APK or MAFF
+and recurses into directories by default.
+
+== app-misc/merge ==
+
+A command that should be a basic unix tool or be integrated
+into 'mv' and 'cp' as -m flag. The ability to merge folders
+from command line just like you can when drag+dropping folders
+into each other with a GUI file manager. How could we exist
+without this all these years?
 
 == dev-perl/Net-PSYC ==
 
@@ -136,7 +144,12 @@ the kdenlive ebuild is missing several dependencies.
 New: lynX added his "deshake" command line tool for
 removing camera shake from video files, since kdenlive
 is such a buggy piece of software and overkill if you do
-not need to do any editing beyond what mp4cut offers.
+not need to do any editing beyond what ffcut offers.
+
+== media-sound/bpm-measure ==
+
+A little tool to auto-detect or 'tap' the beats per
+minute of music media files.
 
 == media-sound/mumble ==
 
@@ -164,12 +177,20 @@ not as powerful as kdenlive, but doesn't crash in exchange.
 Mirrored from jorgicio's overlay, which is hosted on an
 unreliable commercial cloud offering called github.
 
-== media-video/mp4cut ==
+== media-video/ffcat ==
 
-Lossless M4V video editor (M4V = mp4, mov, 3gp and other
-mp4-based file formats), or rather, it's a a command line 
-scene extractor with a nifty practical command line UX.
-Based on GPAC, which is amazing but has terrible UX.
+Lossless audio/video concatenation tool. After cutting out
+parts video scenes with ffcut you can concatenate them in
+a new order using ffcat. Or you can do the same with mp3 or
+pretty much any other media format. Uses either ffmpeg or
+GPAC, which are both amazing but have terrible UX each.
+
+== media-video/ffcut ==
+
+Lossless audio/video cutting tool to extract video scenes or
+remove parts from an mp3 with a practical command-line UX
+and without doing any re-encoding. Uses either ffmpeg or
+GPAC, which are both amazing but have terrible UX each.
 
 == net-im/qtox ==
 
@@ -216,19 +237,6 @@ A tiny C implementation of the PSYC protocol syntax for
 lightning fast parsing and rendering. Easily beats JSON
 and XML.
 
-== net-misc/gnunet ==
-
-GNUnet is a mesh network routing system not limited to peer-
-to-peer usage, so it belongs into net-misc instead of net-p2p.
-Usage is a bit unorthodox, but it provides censorship-resistant
-anonymous file publication and sharing for a start.
-
-== net-misc/gnunet-gtk ==
-
-While compiling from source works great, the ebuilds produce
-some mysterious error messages. Please help to figure out
-what the problem is. Luckily this package is optional.
-
 == net-misc/gnurl ==
 
 Trimmed down variation of curl without all the cruft. GNUnet
@@ -242,7 +250,20 @@ as a text-based messaging client with psyced's telnet access.
 That's why we also provide a 'cmdsep' flag to avoid making ";"
 a command separator symbol as it would keep you from winking.
 
-== net-misc/onioncircuits ==
+== net-vpn/gnunet ==
+
+GNUnet is a mesh network routing system not limited to peer-
+to-peer usage. It explicitly provides VPN functionality among
+the many other things like censorship-resistant anonymous file
+publication and sharing.
+
+== net-vpn/gnunet-gtk ==
+
+While compiling from source works great, the ebuilds produce
+some mysterious error messages. Please help to figure out
+what the problem is. Luckily this package is optional.
+
+== net-vpn/onioncircuits ==
 
 Another fine item from MeisterP's torbrowser overlay.
 
@@ -298,6 +319,13 @@ GNU Guix is a package manager for reproducible building. It
 is therefore legitimate to use its binary installation as
 you can check its correctness later, by rebuilding the exact
 identical binary files.
+
+== sys-apps/metastore ==
+
+Do you use git for systems administration and get tangled up with
+files having wrong ownership? Metastore keeps metadata information
+of entire directory trees in a separate file, so you can restore it
+each time you check out a git repository.
 
 == sys-apps/nix ==
 

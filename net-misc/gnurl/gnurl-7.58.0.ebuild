@@ -4,30 +4,24 @@
 EAPI=6
 
 DESCRIPTION="A reliable small footprint version of Curl based on gnutls only"
-HOMEPAGE="https://gnunet.org/gnurl
-		https://www.git.taler.net/?p=gnurl.git;a=summary"
-if [[ ${PV} == "9999" ]] ; then
-	inherit git-r3 autotools eutils prefix
-	EGIT_REPO_URI="https://git.taler.net/gnurl
-				   git://git.taler.net/gnurl"
-	EGIT_CLONE_TYPE="shallow"
-else
-	inherit autotools eutils prefix
-	SRC_URI="https://gnunet.org/sites/default/files/${P}.tar.bz2"
-fi
+HOMEPAGE="https://gnunet.org/gnurl"
 
+inherit autotools eutils prefix versionator
+
+#RC_URI="https://gnunet.org/sites/default/files/${P}.tar.bz2 -> ${P}.tar.bz2"
+SRC_URI="https://ftp.gnu.org/gnu/gnunet/${P}.tar.bz2 -> ${P}.tar.bz2"
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~"
 IUSE="dane"
 
 RDEPEND=">=net-libs/gnutls-3[dane?]
 	sys-libs/zlib"
 DEPEND="${RDEPEND}"
 
-DOCS=( CHANGES README docs/FEATURES docs/INTERNALS \
-	docs/MANUAL docs/FAQ docs/BUGS docs/CONTRIBUTE )
+DOCS=( CHANGES README docs/FEATURES docs/MANUAL docs/FAQ docs/BUGS )
 
+# TODO: check if this phase is still appropriate in content!
 src_prepare() {
 	sed -i '/LD_LIBRARY_PATH=/d' configure.ac || die #382241
 	eapply_user

@@ -15,6 +15,6 @@ sys-apps/nix
 # It is known and intentional that 0.9, 0.10.1, and current (HEAD) are incompatible
 # GNUnet versions in gnunet-fs.  This leads to wrong assumptions about GNUnet, we
 # only provide a pin to certain HEAD version now and 0.10.2 when it is released.
-=net-misc/gnunet-0.10.1
-=net-misc/gnunet-gtk-0.10.1
-=net-misc/gnunet-meta-0.10.1
+=net-vpn/gnunet-0.10.1
+=net-vpn/gnunet-gtk-0.10.1
+=net-vpn/gnunet-meta-0.10.1
