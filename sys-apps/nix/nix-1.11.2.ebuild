@@ -5,9 +5,31 @@
 
 EAPI=5
 
-inherit user eutils
+inherit user
 
-DESCRIPTION="The Nix functional package manager"
+# Thanks to ng0 for writing this initial ebuild stub.
+#
+# The main reason to want to install Nix on Gentoo is to have a
+# source of trustworthy reproducible binaries so we don't have
+# to build every binary ourselves in order to be able to trust
+# our system. Ideal to avoid having to compile torbrowser, which
+# is supposed to be reproducible.
+#
+# Well, here's some bad news: Nix apparently makes a distinction
+# between "reproducible" and "deterministic" according to the only
+# wiki page that mentions the terms:
+#
+#		https://nixos.org/wiki/GSOC_2015_ideas_list
+#
+# So far we have not found out which packages from the NixOS store
+# are trustworthy, let alone how to get a cryptographic proof.
+#
+# --symlynX 2016
+#
+# See also:
+# https://github.com/NixOS/nixpkgs/labels/6.topic:%20reproducible%20builds
+
+DESCRIPTION="The Nix functional package manager from NixOS.org"
 HOMEPAGE="https://nixos.org"
 
 SRC_URI="https://nixos.org/releases/${PN}/${P}/${P}.tar.xz"
@@ -48,9 +70,9 @@ src_configure() {
 
 src_install() {
 	default
-	if ! use etc_profile; then
-		rm "${ED}"/etc/profile.d/nix.sh || die
-	fi
+#	if ! use etc_profile; then
+#		rm "${ED}"/etc/profile.d/nix.sh || die
+#	fi
 }
 
 pkg_setup() {
@@ -65,8 +87,17 @@ pkg_postinst() {
 	einfo "Warning, this is a test package, thanks for participating"
 	einfo "in trying to get a functional Nix package manager into"
 	einfo "Gentoo."
-	if ! use etc_profile; then
-		ewarn "${EROOT}etc/profile.d/nix.sh was removed (due to USE=-etc_profile)."
-		ewarn "Please fix the ebuild by adding nix user/group handling."
-	fi
+#	if ! use etc_profile; then
+#		ewarn "${EROOT}etc/profile.d/nix.sh was removed (due to USE=-etc_profile)."
+#		ewarn "Please fix the ebuild by adding nix user/group handling."
+#	fi
+	. /etc/profile.d/nix.sh
+	# FIXME:
+	ewarn "Now you should 'nix-channel --update' but it will fail because"
+	ewarn "nix-channel requires the names of the nixbld* users listed in /etc/group!?"
+	# nix-channel --update
 }
+
+# FIXME:
+# openrc script needed for launching the nix-daemon
+
