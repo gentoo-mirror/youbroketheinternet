@@ -16,53 +16,46 @@ HOMEPAGE="https://gnunet.org/"
 LICENSE="GPL-3"
 # gnunet <= 0.10.1 uses python 2.7 for tests, HEAD uses python 3.
 PYTHON_COMPAT=( python2_7 )
-KEYWORDS="~"
+KEYWORDS="~amd64 ~x86"
 SLOT="0"
 
-ESVN_PROJECT="gnunet"
-ESVN_REPO_URI="https://gnunet.org/svn/gnunet"
+WANT_AUTOCONF="2.5"
+WANT_AUTOMAKE="1.11"
+# WANT_LIBTOOL="2.2"
+AUTOTOOLS_AUTORECONF=1
 
 # if you're a gnunet developer, you can put a symlink to your local git here:
 EGIT_REPO_URI="/usr/local/src/${PN}
-            https://gnunet.org/git/${PN}
-			https://github.com/gnunet/${PN}
-            git://gnunet.org/${PN}"
+    https://gnunet.org/git/${PN}
+	https://github.com/gnunet/${PN}
+    git://git.gnunet.org/${PN}"
 
 case ${PV} in
 "9999")
-	# use latest git
 	inherit autotools git-r3 user python-any-r1 flag-o-matic
-	WANT_AUTOCONF="2.5"
-	WANT_AUTOMAKE="1.11"
-	WANT_LIBTOOL="2.2"
-	AUTOTOOLS_AUTORECONF=1
-	KEYWORDS="~amd64 ~x86"
+	# using latest git. caution:
+	# this method is prone to man-in-the-middle attacks
 	;;
-"999")
-	# use latest svn
-	inherit autotools subversion user python-any-r1 flag-o-matic
-	WANT_AUTOCONF="2.5"
-	WANT_AUTOMAKE="1.11"
-	WANT_LIBTOOL="2.2"
-	AUTOTOOLS_AUTORECONF=1
-	S="${WORKDIR}/${PN}"
-	KEYWORDS="~amd64 ~x86"
+"0.11.0_pre69")
+	inherit autotools git-r3 user python-any-r1 flag-o-matic
+    EGIT_COMMIT="1c0e4ab320429f11a1c5e63194643e61766aca3f"
 	;;
-"0.10.1_pre01021")
-	inherit autotools subversion user python-any-r1 flag-o-matic
-	ESVN_REVISION="37273"
-	WANT_AUTOCONF="2.5"
-	WANT_AUTOMAKE="1.11"
-	WANT_LIBTOOL="2.2"
-	AUTOTOOLS_AUTORECONF=1
-	S="${WORKDIR}/${PN}"
-	KEYWORDS="amd64 ~x86"
+"0.10.2_rc6")
+	inherit autotools git-r3 user python-any-r1 flag-o-matic
+    EGIT_COMMIT="45140f0fd3426e9689c6d1e5e758f1b75c450e90"
+	;;
+"0.10.2_rc5")
+	inherit autotools git-r3 user python-any-r1 flag-o-matic
+    EGIT_COMMIT="4a92d3943554681ce35e8106ef4f889c7a3bfed3"
+	;;
+"0.10.2_rc4")
+	inherit autotools git-r3 user python-any-r1 flag-o-matic
+    EGIT_COMMIT="6bcc73a1cbb1d4a609884762eab1b6de761ad1d9"
 	;;
 "0.10.1")
 	inherit autotools user python-any-r1 flag-o-matic
 	SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
 	S="${WORKDIR}/${PN}"
-	KEYWORDS="~amd64 ~x86"
 	;;
 esac
 #S="${WORKDIR}/${PF}/${PN}"
@@ -78,7 +71,7 @@ IUSE="debug +httpd +sqlite postgres mysql nls +nss +X +gnutls dane +bluetooth \
 	  +gnurl +curl curl_ssl_gnutls"
 
 # !!! TODO: Sort run depend, required use, build time use.
-REQUIRED_USE="&& ( mysql postgres sqlite )
+REQUIRED_USE="|| ( mysql postgres sqlite )
 		?? ( pulseaudio gstreamer )
 		experimental? ( || ( extra ) )
 		extra? ( || ( experimental ) )"
@@ -98,7 +91,7 @@ RDEPEND="
 		gnurl? ( >=net-misc/gnurl-7.50.1 )
 		!gnurl? ( >=net-misc/curl-7.50.1[curl_ssl_gnutls] )
 	)
-	gnutls? ( net-libs/gnutls )
+	gnutls? ( net-libs/gnutls[tools] )
 	dane? ( net-libs/gnutls[dane] )
 	ssl? (
 		!libressl? ( dev-libs/openssl:0= )
@@ -108,7 +101,10 @@ RDEPEND="
 	sys-libs/zlib
 	httpd? ( >=net-libs/libmicrohttpd-0.9.42[messages] )
 	nls? ( >=sys-devel/gettext-0.18.1 )
-	nss? ( dev-libs/nss )
+	nss? (
+		dev-libs/nss
+		sys-libs/glibc
+	)
 	dev-libs/gmp:0=
 	X? (
 		x11-libs/libXt
@@ -147,6 +143,8 @@ pkg_setup() {
 	enewgroup gnunetdns
 	enewgroup gnunet
 	enewuser gnunet -1 /bin/sh "${GNUNET_HOME}" gnunet
+	mkdir -p "${GNUNET_HOME}/config.d"
+	chown gnunet "${GNUNET_HOME}/config.d"
 	if [[ $(egethome gnunet) != ${GNUNET_HOME} ]]; then
 		ewarn "For homedir different from"
 		ewarn "/var/lib/gnunet set GNUNET_HOME in your make.conf"
@@ -157,32 +155,31 @@ pkg_setup() {
 
 # Here we add and run what bootstrap would do.
 src_prepare() {
-	if [[ "${PV}" == "0.10.1_pre01021" ]]; then
-		#subversion_src_prepare
+#	if [[ "${PV}" == "0.10.1_pre01021" ]]; then
+#		rm -rf libltdl || die
+#		eautoreconf
+#		./contrib/pogen.sh || die
+#		default
+#		eapply_user
+#	elif [[ "${PV}" == "9999" ]]; then
 		rm -rf libltdl || die
 		eautoreconf
-		./contrib/pogen.sh || die
+		./bin/pogen.sh || die
 		default
 		eapply_user
-	elif [[ "${PV}" == "9999" ]]; then
-		#subversion_src_prepare
-		rm -rf libltdl || die
-		eautoreconf
-		./contrib/pogen.sh || die
-		default
-		eapply_user
-	else
-		default
-		eapply_user
-	fi
+#	else
+#		default
+#		eapply_user
+#	fi
 }
 
 src_configure() {
+	./bootstrap
 	econf \
 		$(use_enable experimental ) \
 		$(use_with httpd microhttpd ) \
 		$(use_with mysql ) \
-		$(use_with postgres ) \
+		$(use_with postgres postgresql ) \
 		$(use_with sqlite ) \
 		$(use_with X x ) \
 		$(use_with gnutls ) \
@@ -192,8 +189,13 @@ src_configure() {
 
 
 src_install() {
+	into /
+	use nss && dolib.so src/gns/nss/.libs/libnss_gns*.so*
 	emake DESTDIR="${D}" install
+	rm -rf ${D}/usr/lib/gnunet/nss
 	newinitd "${FILESDIR}/${PN}.initd" gnunet
+	insinto /etc
+	use nss && doins "${FILESDIR}/nsswitch.conf"
 	insinto /etc/gnunet
 	doins "${FILESDIR}/gnunet.conf"
 	keepdir /var/{lib,log}/gnunet
@@ -203,7 +205,8 @@ src_install() {
 pkg_postinst() {
 	# We should update the gtk icon cache for the icons.
 	# @TODO: provide average working example config to copy for user.
-	# @TOO: point out that exact time is needed currently.
+	# @TODO: point out that exact time is needed currently.
+	elog " "
 	elog "To configure"
 	elog "	 1) Add desired user(s) to the 'gnunet' group"
 	elog "	 2) Edit the system-wide config file '/etc/gnunet/gnunet.conf'"

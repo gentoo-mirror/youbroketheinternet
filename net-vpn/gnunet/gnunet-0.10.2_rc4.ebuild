@@ -14,11 +14,11 @@ EAPI=6
 DESCRIPTION="Cryptographic GNU Mesh/Underlay Network Routing Layer"
 HOMEPAGE="https://gnunet.org/"
 LICENSE="GPL-3"
-KEYWORDS="~"
-# KEYWORDS="~amd64 ~x86"
+# gnunet <= 0.10.1 uses python 2.7 for tests, HEAD uses python 3.
+PYTHON_COMPAT=( python2_7 )
+KEYWORDS="~amd64 ~x86"
 SLOT="0"
 
-PYTHON_COMPAT=( python2_7 )
 WANT_AUTOCONF="2.5"
 WANT_AUTOMAKE="1.11"
 # WANT_LIBTOOL="2.2"
@@ -36,6 +36,10 @@ case ${PV} in
 	# using latest git. caution:
 	# this method is prone to man-in-the-middle attacks
 	;;
+"0.11.0_pre69")
+	inherit autotools git-r3 user python-any-r1 flag-o-matic
+    EGIT_COMMIT="1c0e4ab320429f11a1c5e63194643e61766aca3f"
+	;;
 "0.10.2_rc6")
 	inherit autotools git-r3 user python-any-r1 flag-o-matic
     EGIT_COMMIT="45140f0fd3426e9689c6d1e5e758f1b75c450e90"
@@ -52,7 +56,6 @@ case ${PV} in
 	inherit autotools user python-any-r1 flag-o-matic
 	SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
 	S="${WORKDIR}/${PN}"
-	# tests of gnunet <= 0.10.1 are using python 2.7, gnunet HEAD uses python 3.
 	;;
 esac
 #S="${WORKDIR}/${PF}/${PN}"
@@ -152,22 +155,22 @@ pkg_setup() {
 
 # Here we add and run what bootstrap would do.
 src_prepare() {
-	if [[ "${PV}" == "0.10.1_pre01021" ]]; then
+#	if [[ "${PV}" == "0.10.1_pre01021" ]]; then
+#		rm -rf libltdl || die
+#		eautoreconf
+#		./contrib/pogen.sh || die
+#		default
+#		eapply_user
+#	elif [[ "${PV}" == "9999" ]]; then
 		rm -rf libltdl || die
 		eautoreconf
-		./contrib/pogen.sh || die
+		./bin/pogen.sh || die
 		default
 		eapply_user
-	elif [[ "${PV}" == "9999" ]]; then
-		rm -rf libltdl || die
-		eautoreconf
-		./contrib/pogen.sh || die
-		default
-		eapply_user
-	else
-		default
-		eapply_user
-	fi
+#	else
+#		default
+#		eapply_user
+#	fi
 }
 
 src_configure() {
