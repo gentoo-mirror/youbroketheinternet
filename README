@@ -1,0 +1,81 @@
+youbroketheinternet-overlay
+===========================
+
+Overlay that borrows and adapts ebuilds from various sources and
+republishes them via a secure authentication medium. Since all of
+git, rsync and https protocols can be man in the middled, using
+a self-authenticating onion is the way to go. Makes you nervous?
+Why.. this is not about anonymity. All the known problems related
+to onion services are about de-anonymization. There are no known
+cases of authenticity failure, which is what we expect from this.
+
+Please drop by 
+    irc://loupsycedyglgamf.onion:67/youbroketheinternet
+ or http://loupsycedyglgamf.onion/PSYC/?room=youbroketheinternet
+ or torify telnet loupsycedyglgamf.onion + /c youbroketheinternet
+for feedback and 'git pull' offers.
+
+Git was intended for everyone to run their own little git server
+and pull from each other. Git was NOT invented for centralized
+commercial social networking clouds such as github! If you want
+to submit a patch to this overlay, pass it in form of a textual
+patch or make your copy of this git available on your own onion.
+Github is not a safe infrastructure for a GNU Internet.
+
+
+== dev-libs/openssl ==
+
+The regular portage openssl files disallow the use of elliptic
+curve cryptography. I don't understand such utter madness.
+pybitmessage needs openssl with proper ECC.
+
+== net-misc/gnunet ==
+
+GNUnet is a mesh network routing system not limited to peer-
+to-peer usage, so it belongs into net-misc instead of net-p2p.
+Usage is a bit unorthodox, but it provides anonymous file
+sharing/publication for a start.
+
+== net-misc/gnunet-gtk ==
+
+While compiling from source works great, the ebuilds produce
+some mysterious error messages. Please help to figure out
+what the problem is. Luckily this package is optional.
+
+== net-misc/gnurl ==
+
+Trimmed down variation of curl without all the cruft. GNUnet
+uses this.
+
+== net-p2p/pybitmessage ==
+
+Cryptographic anonymizing text publication system. Not a lot better
+than PGP concerning one-to-one communications (it lacks forward
+secrecy) but its strength is clearly in the ability to broadcast
+from few senders to many recipients. The latest version also works
+over Tor, but that is actually quite a strain on your Tor router
+and will only hide the fact that you are using Bitmessage, it
+probably does not increase your messaging anonymity.
+
+== net-p2p/retroshare ==
+
+With the new 0.6 series RetroShare finally has built-in Tor
+support. Still, it is far too complicated to configure. This
+needs to get a lot simpler. RetroShare is lightweight and
+reasonably safe if used in Tor-only mode with DHT disabled.
+For generic file sharing it's better to use GNUnet.
+
+== www-client/torbrowser ==
+
+By fulfilling most requirements of protocol standards, all web browsers
+are currently tuned to conspire with web servers to spy on you, even
+if you use them in combination with the Tor anonymization system.
+Torbrowser is the only instrument that separates your browsing activity
+tab by tab into separate Tor identities, disallowing big brother to
+correlate your activities. In other words, this is the only acceptable
+web browser in existence as of 2015.
+
+== www-client/torbrowser-launcher ==
+
+I don't use this currently.
+

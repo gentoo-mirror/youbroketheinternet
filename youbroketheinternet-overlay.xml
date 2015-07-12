@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE repositories SYSTEM "/dtd/repositories.dtd">
+<repositories xmlns="" version="1.0">
+   <repo quality="experimental" status="unofficial">
+      <name>youbroketheinternet</name>
+      <description>We'll make us a GNU one - Tools for a libre Internet</description>
+      <homepage>http://youbroketheinternet.org/#overlay</homepage>
+      <owner type="person">
+         <name>carlo von lynX</name>
+      </owner>
+      <source type="git">git://cheettyiapsyciew.onion/youbroketheinternet-overlay</source>
+   </repo>
+</repositories>
