@@ -1,35 +1,35 @@
-Index: src/dns/Makefile.am
-===================================================================
---- src/dns/Makefile.am	(revision 28689)
-+++ src/dns/Makefile.am	(working copy)
-@@ -20,7 +20,7 @@
+diff --git a/src/dns/Makefile.am b/src/dns/Makefile.am
+index a8ff426..45b86c7 100644
+--- a/src/dns/Makefile.am
++++ b/src/dns/Makefile.am
+@@ -21,7 +21,7 @@ pkgcfg_DATA = \
  if LINUX
  HIJACKBIN = gnunet-helper-dns
  install-exec-hook:
 -	$(top_srcdir)/src/dns/install-dns-helper.sh $(libexecdir) $(GNUNETDNS_GROUP) $(SUDO_BINARY) || true
-+	$(top_srcdir)/src/dns/install-dns-helper.sh $(DESTDIR)/$(libexecdir) $(GNUNETDNS_GROUP) $(SUDO_BINARY) || true
++	$(top_srcdir)/src/dns/install-dns-helper.sh $(DESTDIR)$(libexecdir) $(GNUNETDNS_GROUP) $(SUDO_BINARY) || true
  else
  install-exec-hook:
  endif
-Index: src/exit/Makefile.am
-===================================================================
---- src/exit/Makefile.am	(revision 28689)
-+++ src/exit/Makefile.am	(working copy)
-@@ -21,7 +21,7 @@
+diff --git a/src/exit/Makefile.am b/src/exit/Makefile.am
+index 10a1ae8..6c4cbf1 100644
+--- a/src/exit/Makefile.am
++++ b/src/exit/Makefile.am
+@@ -22,7 +22,7 @@ dist_pkgcfg_DATA = \
  if LINUX
  EXITBIN = gnunet-helper-exit
  install-exec-hook:
 -	$(top_srcdir)/src/exit/install-exit-helper.sh $(libexecdir) $(SUDO_BINARY) || true
-+	$(top_srcdir)/src/exit/install-exit-helper.sh $(DESTDIR)/$(libexecdir) $(SUDO_BINARY) || true
++	$(top_srcdir)/src/exit/install-exit-helper.sh $(DESTDIR)$(libexecdir) $(SUDO_BINARY) || true
  else
  install-exec-hook:
  endif
-Index: src/gns/nss/Makefile.am
-===================================================================
---- src/gns/nss/Makefile.am	(revision 28689)
-+++ src/gns/nss/Makefile.am	(working copy)
-@@ -53,7 +53,7 @@
- 
+diff --git a/src/gns/nss/Makefile.am b/src/gns/nss/Makefile.am
+index 62da710..2551b95 100644
+--- a/src/gns/nss/Makefile.am
++++ b/src/gns/nss/Makefile.am
+@@ -60,7 +60,7 @@ libnss_gns6_la_LDFLAGS=$(libnss_gns_la_LDFLAGS)
+ if INSTALL_NSS
  if !MINGW
  install-data-hook:
 -	$(top_srcdir)/src/gns/nss/install-nss-plugin.sh $(SHELL) $(top_builddir) $(nssdir) $(SUDO_BINARY)
@@ -37,51 +37,53 @@ Index: src/gns/nss/Makefile.am
  
  uninstall-hook:
  	$(top_srcdir)/src/gns/nss/uninstall-nss-plugin.sh $(SHELL) $(top_builddir) "rm -f $(nssdir)/libnss_gns.so.2" $(SUDO_BINARY)
-Index: src/nat/Makefile.am
-===================================================================
---- src/nat/Makefile.am	(revision 28689)
-+++ src/nat/Makefile.am	(working copy)
-@@ -19,7 +19,7 @@
+diff --git a/src/nat/Makefile.am b/src/nat/Makefile.am
+index 063b8e3..92acbf1 100644
+--- a/src/nat/Makefile.am
++++ b/src/nat/Makefile.am
+@@ -20,14 +20,14 @@ if LINUX
    NATSERVER = gnunet-helper-nat-server.c
    NATCLIENT = gnunet-helper-nat-client.c
  install-exec-hook:
 -	$(top_srcdir)/src/nat/install-nat-helper.sh $(libexecdir) $(SUDO_BINARY) || true
-+	$(top_srcdir)/src/nat/install-nat-helper.sh $(DESTDIR)/$(libexecdir) $(SUDO_BINARY) || true
++	$(top_srcdir)/src/nat/install-nat-helper.sh $(DESTDIR)$(libexecdir) $(SUDO_BINARY) || true
+ else
+ if XFREEBSD
+   NATBIN = gnunet-helper-nat-server gnunet-helper-nat-client
+   NATSERVER = gnunet-helper-nat-server.c
+   NATCLIENT = gnunet-helper-nat-client.c
+ install-exec-hook:
+-	$(top_srcdir)/src/nat/install-nat-helper.sh $(libexecdir) $(SUDO_BINARY) || true
++	$(top_srcdir)/src/nat/install-nat-helper.sh $(DESTDIR)$(libexecdir) $(SUDO_BINARY) || true
+ endif
  else
  install-exec-hook:
- endif
-Index: src/transport/Makefile.am
-===================================================================
---- src/transport/Makefile.am	(revision 28689)
-+++ src/transport/Makefile.am	(working copy)
-@@ -61,7 +61,7 @@
+diff --git a/src/transport/Makefile.am b/src/transport/Makefile.am
+index 950b0a9..0016811 100644
+--- a/src/transport/Makefile.am
++++ b/src/transport/Makefile.am
+@@ -95,9 +95,9 @@ endif
  
  if LINUX
  install-exec-hook:
 -	$(top_srcdir)/src/transport/install-wlan-helper.sh $(libexecdir) $(SUDO_BINARY) || true
-+	$(top_srcdir)/src/transport/install-wlan-helper.sh $(DESTDIR)/$(libexecdir) $(SUDO_BINARY) || true
++	$(top_srcdir)/src/transport/install-wlan-helper.sh $(DESTDIR)$(libexecdir) $(SUDO_BINARY) || true
+ if HAVE_LIBBLUETOOTH
+-	$(top_srcdir)/src/transport/install-bluetooth-helper.sh $(libexecdir) $(SUDO_BINARY) || true
++	$(top_srcdir)/src/transport/install-bluetooth-helper.sh $(DESTDIR)$(libexecdir) $(SUDO_BINARY) || true
+ endif
  else
  install-exec-hook:
- endif
-@@ -83,7 +83,7 @@
- if LINUX
- if HAVE_LIBBLUETOOTH
- install-exec-hook2:
--	$(top_srcdir)/src/transport/install-bluetooth-helper.sh $(libexecdir) $(SUDO_BINARY) || true
-+	$(top_srcdir)/src/transport/install-bluetooth-helper.sh $(DESTDIR)/$(libexecdir) $(SUDO_BINARY) || true
- endif
- else
- install-exec-hook2:
-Index: src/vpn/Makefile.am
-===================================================================
---- src/vpn/Makefile.am	(revision 28689)
-+++ src/vpn/Makefile.am	(working copy)
-@@ -21,7 +21,7 @@
+diff --git a/src/vpn/Makefile.am b/src/vpn/Makefile.am
+index 47bee89..5517a45 100644
+--- a/src/vpn/Makefile.am
++++ b/src/vpn/Makefile.am
+@@ -22,7 +22,7 @@ pkgcfg_DATA = \
  if LINUX
  VPNBIN = gnunet-helper-vpn
  install-exec-hook:
 -	$(top_srcdir)/src/vpn/install-vpn-helper.sh $(libexecdir) $(SUDO_BINARY) || true
-+	$(top_srcdir)/src/vpn/install-vpn-helper.sh $(DESTDIR)/$(libexecdir) $(SUDO_BINARY) || true
++	$(top_srcdir)/src/vpn/install-vpn-helper.sh $(DESTDIR)$(libexecdir) $(SUDO_BINARY) || true
  else
  install-exec-hook:
  endif

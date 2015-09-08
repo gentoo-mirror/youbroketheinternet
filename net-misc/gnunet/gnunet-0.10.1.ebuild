@@ -57,7 +57,7 @@ RDEPEND="
 	net-misc/gnurl
 	sys-libs/ncurses
 	sys-libs/zlib
-	httpd? ( >=net-libs/libmicrohttpd-0.9.18[messages] )
+	httpd? ( >=net-libs/libmicrohttpd-0.9.42[messages] )
 	mysql? ( >=virtual/mysql-5.1 )
 	nls? ( sys-devel/gettext )
 	postgres? ( >=dev-db/postgresql-server-8.3 )
