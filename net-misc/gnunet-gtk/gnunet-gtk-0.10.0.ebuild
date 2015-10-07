@@ -18,6 +18,7 @@ IUSE=""
 DEPEND=">=x11-libs/gtk+-2.20.0
 	=net-misc/gnunet-${PV}
 	>=gnome-base/libglade-2.0"
+	# krosos says we actually need dev-util/glade
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit eutils autotools autotools-utils subversion user

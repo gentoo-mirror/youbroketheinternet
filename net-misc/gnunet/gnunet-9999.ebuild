@@ -83,8 +83,10 @@ src_prepare() {
 	if [[ ${PV} == "9999" ]] ; then
 		subversion_src_prepare
 		autotools-utils_src_prepare
+	else
+		# only needed for gnunet <= 0.10.1
+		epatch "${FILESDIR}"/install.diff
 	fi
-	epatch "${FILESDIR}"/install.diff
 }
 
 src_configure() {
