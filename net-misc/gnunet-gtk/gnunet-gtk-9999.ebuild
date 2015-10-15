@@ -61,7 +61,7 @@ src_compile() {
 	emake || die "emake failed"
 }
 
-# todo: solve issue with docs as described in gnunet-9999
+# todo: solve issue with doc folders as described in gnunet-9999
 src_install() {
 	emake DESTDIR="${D}" install || die "emake install failed"
 	dodoc README COPYING
