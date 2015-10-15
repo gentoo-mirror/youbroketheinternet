@@ -1,6 +1,8 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
+# author: lynx
+# altered by krosos (krosos.sdf.org)
 
 EAPI=5
 
@@ -18,7 +20,6 @@ IUSE=""
 DEPEND=">=x11-libs/gtk+-2.20.0
 	=net-misc/gnunet-${PV}
 	>=gnome-base/libglade-2.0"
-	# krosos says we actually need dev-util/glade
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit eutils autotools autotools-utils subversion user
@@ -48,15 +49,17 @@ src_unpack() {
 	AT_M4DIR="${S}/m4" eautoreconf
 }
 
+# was: ${PF}"
 src_configure() {
-	econf --with-gnunet=/usr || die "econf failed"
+        econf --with-gnunet=/usr || die "econf failed"
 }
+#                --docdir="${EPREFIX}/usr/share/doc/${PF}" \
 
 src_compile() {
 	emake || die "emake failed"
 }
 
+#dodoc README COPYING
 src_install() {
 	emake DESTDIR="${D}" install || die "emake install failed"
 }
-

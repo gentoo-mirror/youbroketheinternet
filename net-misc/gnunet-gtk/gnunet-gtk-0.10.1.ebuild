@@ -1,6 +1,8 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
+# author: lynX
+# author: krosos (krosos.sdf.org)
 
 EAPI=5
 
@@ -48,7 +50,10 @@ src_unpack() {
 }
 
 src_configure() {
-	econf --with-gnunet=/usr || die "econf failed"
+		econf \
+				--docdir="${EPREFIX}/usr/share/doc/${PF}" \
+				--with-gnunet=/usr || die "econf failed"
+
 }
 
 src_compile() {
@@ -58,4 +63,3 @@ src_compile() {
 src_install() {
 	emake DESTDIR="${D}" install || die "emake install failed"
 }
-
