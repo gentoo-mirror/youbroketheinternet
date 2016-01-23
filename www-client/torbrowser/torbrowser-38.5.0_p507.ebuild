@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -13,12 +13,11 @@ if [[ ${MOZ_ESR} == 1 ]]; then
 fi
 
 # see https://gitweb.torproject.org/builders/tor-browser-bundle.git/tree/gitian/versions?h=maint-5.0
-TOR_PV="5.0.3"
+TOR_PV="5.0.7"
 EGIT_COMMIT="tor-browser-${MOZ_PV}-5.0-2-build2"
-EGIT_CLONE_TYPE="shallow"
 
 # Patch version
-PATCH="${MY_PN}-38.0-patches-0.3"
+PATCH="${MY_PN}-38.0-patches-04"
 
 MOZCONFIG_OPTIONAL_WIFI=1
 MOZCONFIG_OPTIONAL_JIT="enabled"
@@ -37,13 +36,14 @@ LICENSE="BSD CC-BY-3.0 MPL-2.0 GPL-2 LGPL-2.1"
 IUSE="egl hardened test"
 
 EGIT_REPO_URI="https://git.torproject.org/tor-browser.git"
+EGIT_CLONE_TYPE="shallow"
 BASE_SRC_URI="https://dist.torproject.org/${PN}/${TOR_PV}"
 ARCHIVE_SRC_URI="https://archive.torproject.org/tor-package-archive/${PN}/${TOR_PV}"
 # custom patch of SRC_URI  --lynX
 SRC_URI="https://gitweb.torproject.org/tor-browser.git/snapshot/${PATCH}.tar.xz -> ${PATCH}.tar.xz
     http://dev.gentoo.org/~anarchy/mozilla/patchsets/${PATCH}.tar.xz
-	http://dev.gentoo.org/~axs/mozilla/patchsets/${PATCH}.tar.xz
-	http://dev.gentoo.org/~polynomial-c/mozilla/patchsets/${PATCH}.tar.xz
+	https://dev.gentoo.org/~axs/mozilla/patchsets/${PATCH}.tar.xz
+	https://dev.gentoo.org/~polynomial-c/mozilla/patchsets/${PATCH}.tar.xz
 	x86? (
 		${BASE_SRC_URI}/tor-browser-linux32-${TOR_PV}_en-US.tar.xz
 		${ARCHIVE_SRC_URI}/tor-browser-linux32-${TOR_PV}_en-US.tar.xz
@@ -55,8 +55,8 @@ SRC_URI="https://gitweb.torproject.org/tor-browser.git/snapshot/${PATCH}.tar.xz 
 
 ASM_DEPEND=">=dev-lang/yasm-1.1"
 
-RDEPEND=">=dev-libs/nss-3.19.2
-	>=dev-libs/nspr-4.10.8"
+RDEPEND=">=dev-libs/nss-3.20.1
+	>=dev-libs/nspr-4.10.10"
 
 DEPEND="${RDEPEND}
 	${ASM_DEPEND}
@@ -97,6 +97,8 @@ src_prepare() {
 	# Apply gentoo firefox patches
 	EPATCH_SUFFIX="patch" \
 	EPATCH_FORCE="yes" \
+	EPATCH_EXCLUDE="8011_bug1194520-freetype261_until_moz43.patch \
+			8010_bug114311-freetype26.patch" \
 	epatch "${WORKDIR}/firefox"
 
 	# Revert "Change the default Firefox profile directory to be TBB-relative"
@@ -298,7 +300,8 @@ pkg_postinst() {
 		elog ""
 		elog "To get the advanced functionality of Torbutton (network information,"
 		elog "new identity), Torbrowser needs to access a control port."
-		elog "See 99torbrowser.example in /usr/share/doc/${PF} and check \"man tor\""
+		elog "See 99torbrowser.example in /usr/share/doc/${PF} and"
+		elog "https://github.com/MeisterP/torbrowser-overlay/blob/master/Readme.md"
 		elog "for further information."
 	fi
 

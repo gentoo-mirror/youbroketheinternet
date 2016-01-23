@@ -25,9 +25,25 @@ Github is not a safe infrastructure for a GNU Internet.
 
 == dev-libs/openssl ==
 
-The regular portage openssl files disallow the use of elliptic
-curve cryptography. I don't understand such utter madness.
-pybitmessage needs openssl with proper ECC.
+The regular portage openssl files disallow the use of certain
+elliptic curve cryptography that pybitmessage happens to need.
+
+== dev-scheme/guile ==
+
+guix needs newer guile to compile
+
+== media-libs/vid-stab ==
+
+Remove camera shaking from shaken videos. A plug-in for
+kdenlive. Simply recompile kdenlive after installing this.
+
+== media-video/miro ==
+
+== net-im/qtox ==
+
+== net-im/ricochet ==
+
+== net-im/utox ==
 
 == net-misc/gnunet ==
 
@@ -78,4 +94,8 @@ web browser in existence as of 2015.
 == www-client/torbrowser-launcher ==
 
 I don't use this currently.
+
+== www-servers/onionshare ==
+
+One more great ebuild from Poncho.
 

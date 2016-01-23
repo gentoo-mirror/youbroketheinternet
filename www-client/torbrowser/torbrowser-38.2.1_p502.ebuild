@@ -15,6 +15,7 @@ fi
 # see https://gitweb.torproject.org/builders/tor-browser-bundle.git/tree/gitian/versions?h=maint-5.0
 TOR_PV="5.0.2"
 EGIT_COMMIT="tor-browser-${MOZ_PV}-5.0-2-build1"
+EGIT_CLONE_TYPE="shallow"
 
 # Patch version
 PATCH="${MY_PN}-38.0-patches-0.3"
