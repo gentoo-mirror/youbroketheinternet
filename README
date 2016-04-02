@@ -28,9 +28,22 @@ Github is not a safe infrastructure for a GNU Internet.
 The regular portage openssl files disallow the use of certain
 elliptic curve cryptography that pybitmessage happens to need.
 
+== net-libs/gnutls ==
+
+Guix needs to have Guile-2 bindings of GNUtls. The one in portage
+currently links to a Guile-2 that might brick your system.
+
 == dev-scheme/guile ==
 
-guix needs newer guile to compile
+Guix needs newer guile to compile, portage needs to fix
+bug #355355 one day.
+
+== sys-apps/guix ==
+
+GNU Guix is a package manager. It's also an operating system
+(GNU GuixSD). Guix aims to provide updates via GNUnet in the
+future. Currently this ebuild and sys-apps/guix-binary are
+open for debugging here, please provide us with input.
 
 == media-libs/vid-stab ==
 
