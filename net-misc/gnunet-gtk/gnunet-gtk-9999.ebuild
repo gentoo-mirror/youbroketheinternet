@@ -17,7 +17,9 @@ IUSE=""
 
 DEPEND=">=x11-libs/gtk+-2.20.0
 	=net-misc/gnunet-${PV}
-	>=gnome-base/libglade-2.0"
+	>=gnome-base/libglade-2.0
+	dev-libs/libunique
+	dev-util/glade"
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit eutils autotools autotools-utils subversion user
@@ -41,11 +43,11 @@ src_prepare() {
 	fi
 }
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-	AT_M4DIR="${S}/m4" eautoreconf
-}
+#src_unpack() {
+#	unpack ${A}
+#	cd "${S}"
+#	AT_M4DIR="${S}/m4" eautoreconf
+#}
 
 src_configure() {
 	econf --with-gnunet=/usr || die "econf failed"

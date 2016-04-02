@@ -76,7 +76,8 @@ DEPEND="
 
 pkg_setup() {
 	enewgroup gnunetdns
-	enewuser  gnunet
+	enewgroup gnunet
+	enewuser  gnunet -1 -1 /var/lib/gnunet gnunet
 }
 
 src_prepare() {
