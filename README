@@ -45,6 +45,8 @@ kdenlive. Simply recompile kdenlive after installing this.
 
 == net-im/utox ==
 
+== net-libs/gnutls ==
+
 == net-misc/gnunet ==
 
 GNUnet is a mesh network routing system not limited to peer-
@@ -80,6 +82,10 @@ support. Still, it is far too complicated to configure. This
 needs to get a lot simpler. RetroShare is lightweight and
 reasonably safe if used in Tor-only mode with DHT disabled.
 For generic file sharing it's better to use GNUnet.
+
+== sys-apps/guix ==
+
+Attempt to get the Guix package manager to run within Gentoo.
 
 == www-client/torbrowser ==
 
