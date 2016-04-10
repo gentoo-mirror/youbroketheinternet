@@ -1,0 +1,11 @@
+* notes on eapi 5 -> eapi 6 porting
+
+** sources
+https://blogs.gentoo.org/mgorny/2015/11/13/the-ultimate-guide-to-eapi-6/
+https://bitbucket.org/wjn/wjn-overlay/wiki/porting-to-EAPI-6
+
+* general notes on gentoo package maintenance
+
+** sources
+https://blogs.gentoo.org/mgorny/2016/01/16/glep67-or-how-packages-are-going-to-be-maintained/
+
