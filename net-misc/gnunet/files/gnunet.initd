@@ -1,27 +1,33 @@
 #!/sbin/runscript
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 if [ -d /run ] ; then
-	PIDFILE=${PIDFILE:-/run/gnunet-arm.pid}
+	PIDFILE=${PIDFILE:-/run/gnunet/arm-service.pid}
 else
-	PIDFILE=${PIDFILE:-/var/run/gnunet-arm.pid}
+	PIDFILE=${PIDFILE:-/var/run/gnunet/arm-service.pid}
 fi
 
-SYSTEM_CONF="/etc/gnunet/gnunet.conf"
-
 depend() {
+	# FIXME: refine?
 	need net
 }
 
+# humbug.. it probably just needs /home/gnunet to be properly set up.. FIXME
 checkconfig() {
-	if ! test -f $(SYSTEM_CONF); then
-		eerror "You must create $(SYSTEM_CONF) first. Try 'gnunet-setup' for that."
-		return 1
-	fi
-	if ! test -d /home/gnunet; then
-		eerror "You must create /home/gnunet first. Try 'useradd -g gnunet -m gnunet'."
+	local conf="/home/gnunet/.local/share/gnunet/private_key.ecc"
+
+	if [ -e "${conf}" ] ; then
+		if [ -n "$(find /home/gnunet/.local/share/gnunet -maxdepth 1 -name gnunet.conf -perm +0044)" ] ; then
+			eerror "${conf} must not be world or group readable. Try:"
+			eerror "    chmod 600 ${conf}"
+			eerror "    chown gnunet:gnunet ${conf}"
+			return 1
+		fi
+	else
+		eerror "${conf} is needed to run gnunet"
+		eerror "It has to reside in /home/gnunet/.local/share/gnunet/"
 		return 1
 	fi
 }
@@ -40,17 +46,20 @@ start() {
 	fi
 
 	ebegin "Starting ${SVCNAME}"
+	# shouldn't be necessary... but
 	start-stop-daemon --start --user gnunet --name gnunet --pidfile ${PIDFILE} \
-	     --exec /usr/lib/gnunet/libexec/gnunet-service-arm -- -d -c $(SYSTEM_CONF)
+	     --exec /usr/lib/gnunet/libexec/gnunet-service-arm -- -d
 		# flags to be passed to the process appear after the double-dash
 	eend $?
 }
 
 stop() {
 	ebegin "Stopping ${SVCNAME}"
-	start-stop-daemon --stop --signal USR1 --pidfile ${PIDFILE}
-	sleep 3
 	start-stop-daemon --stop --signal QUIT --pidfile ${PIDFILE}
+	sleep 1
+	killall -u gnunet
+	sleep 1
+	rm -rf /tmp/gnunet-gnunet-runtime >/dev/null 2>&1
+	rm -rf /tmp/gnunet-system-runtime >/dev/null 2>&1
 	eend $?
 }
-
