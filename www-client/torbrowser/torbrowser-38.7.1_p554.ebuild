@@ -39,7 +39,9 @@ EGIT_REPO_URI="https://git.torproject.org/tor-browser.git"
 EGIT_CLONE_TYPE="shallow"
 BASE_SRC_URI="https://dist.torproject.org/${PN}/${TOR_PV}"
 ARCHIVE_SRC_URI="https://archive.torproject.org/tor-package-archive/${PN}/${TOR_PV}"
-SRC_URI="http://dev.gentoo.org/~anarchy/mozilla/patchsets/${PATCH}.tar.xz
+# custom patch of SRC_URI  --lynX
+SRC_URI="https://gitweb.torproject.org/tor-browser.git/snapshot/${PATCH}.tar.xz -> ${PATCH}.tar.xz
+    http://dev.gentoo.org/~anarchy/mozilla/patchsets/${PATCH}.tar.xz
 	https://dev.gentoo.org/~axs/mozilla/patchsets/${PATCH}.tar.xz
 	https://dev.gentoo.org/~polynomial-c/mozilla/patchsets/${PATCH}.tar.xz
 	x86? (
