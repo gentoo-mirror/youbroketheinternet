@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="project">
+		<email>some@such.tld</email>
+		<name>YBTI overlay team</name>
+	</maintainer>
+	<upstream>
+	  <bugs-to>
+	    https://gnunet.org/bugs
+	  </bugs-to>
+	  <doc lang="en">
+	    https://gnunet.org
+	  </doc>
+	  <remote-id type="svn">https://gnunet.org/svn/gnunet/</remote-id>
+	</upstream>
+	<use>
+          <flag name='httpd'>provide httpd through microhttpd</flag>
+          <flag name='sqlite'>use sqlite for database</flag>
+	  <flag name='postgresql'>use postgresql for database</flag>
+	  <flag name='mysql'>use mysql for database (default)</flag>
+	  <flag name='nls'>nls</flag>
+	  <flag name='X'>X11 features</flag>
+	  <flag name='dane'>build with gnutls + dane</flag>
+	  <flag name='gnutls'>gnutls</flag>
+	  <flag name='ssl'>openssl</flag>
+	  <flag name='extra'>enable experimental features</flag>
+	  <flag name='conversation'>experimental feature</flag>
+	  <flag name='qr'>experimental feature</flag>
+	  <flag name='tex'>experimental feature</flag>
+	  <flag name='sudo'>use sudo (do we still need this?)</flag>
+  	  <flag name='experimental'>enable experimental features</flag>
+     </use>
+</pkgmetadata>
