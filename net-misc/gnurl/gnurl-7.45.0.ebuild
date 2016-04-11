@@ -64,7 +64,7 @@ src_prepare() {
 		grep -Rl 'SUBDIRS\s*=\s*.*libcurl' docs/ | \
 			xargs sed -i -r '/SUBDIRS\s*=\s*.*libcurl/s:^:#:g'
 		default
-	fi
+#	fi
 }
 
 src_configure() {
