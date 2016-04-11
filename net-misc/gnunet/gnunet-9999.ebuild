@@ -151,15 +151,12 @@ src_configure() {
 
 src_install() {
 	default
-	#emake DESTDIR="${D}" install
-	newinitd "${FILESDIR}"/gnunet.initd gnunet
+	newinitd "${FILESDIR}/gnunet.initd" gnunet
 	insinto /etc/gnunet
-	doins "${FILESDIR}"/gnunet.conf
+	doins "${FILESDIR}/gnunet.conf"
 	keepdir /var/{lib,log}/gnunet
 	fowners gnunet:gnunet /var/lib/gnunet /var/log/gnunet
-	#dodoc README
 }
-#MAKEOPTS="-j1"
 
 pkg_postinst() {
 	einfo
