@@ -9,8 +9,6 @@
 # tweaks since 2015-07 by ng0
 
 EAPI=6
-#Error opening `/dev/net/tun': No such file or directory
-#Fatal: could not initialize tun-interface `vpn-gnunet'  with --removed--
 
 DESCRIPTION="Cryptographic GNU Mesh/Underlay Network Routing Layer"
 HOMEPAGE="https://gnunet.org/"
@@ -98,8 +96,7 @@ RDEPEND="
 		)
 	)
 	sudo? ( app-admin/sudo )
-	>=dev-lang/python-2.7
-"
+	>=dev-lang/python-2.7"
 
 DEPEND="
 	${RDEPEND}
@@ -110,7 +107,8 @@ MAKEOPTS="${MAKEOPTS} -j1"
 pkg_setup() {
 	enewgroup gnunetdns
 	enewgroup gnunet
-	enewuser  gnunet -1 -1 /var/lib/gnunet gnunet
+	enewuser "gnunet" -1 -1 /var/lib/gnunet "gnunet"
+	esethome "gnunet" /var/lib/gnunet
 }
 
 src_prepare() {
@@ -159,6 +157,7 @@ src_install() {
 }
 
 pkg_postinst() {
+	gtk-update-icon-cache
 	einfo
 	einfo "To configure"
 	einfo "	 1) Add actual user(s) to the gnunet group"
