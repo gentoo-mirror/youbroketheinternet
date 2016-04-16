@@ -56,7 +56,7 @@ RDEPEND="
 	sqlite? ( >=dev-db/sqlite-3.0 )
 	>=net-misc/curl-7.21.0
 	>=media-libs/libextractor-0.6.1
-	>=dev-libs/libgcrypt-1.6
+	>=dev-libs/libgcrypt-1.7
 	>=dev-libs/libunistring-0.9.3
 	>=net-misc/gnurl-7.34.0
 	gnutls? ( net-libs/gnutls )
