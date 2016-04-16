@@ -141,17 +141,13 @@ src_configure() {
 
 src_install() {
 	default
-<<<<<<< cda0618d3443378a93276e248645917658f74bac
-	newinitd "${FILESDIR}/gnunet.initd" gnunet
-=======
+	#newinitd "${FILESDIR}/gnunet.initd" gnunet
 	newinitd "${FILESDIR}"/gnunet.initd gnunet
->>>>>>> gnunet, gnunet-gtk: removed 0.10.2_*, changed -9999,
 	insinto /etc/gnunet
-	doins "${FILESDIR}/gnunet.conf"
+	doins "${FILESDIR}"/gnunet.conf
 	keepdir /var/{lib,log}/gnunet
 	fowners gnunet:gnunet /var/lib/gnunet /var/log/gnunet
 }
-#emake DESTDIR="${D}" install
 
 pkg_postinst() {
 	einfo "Updating GTK icon cache"
