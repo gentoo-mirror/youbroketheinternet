@@ -6,11 +6,9 @@ EAPI=6
 
 DESCRIPTION="Graphical front-end tools for GNUnet."
 HOMEPAGE="https://gnunet.org/"
-
 LICENSE="GPL-3"
 SLOT="0"
-IUSE=""
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~ia64-linux ~x86-linux"
+KEYWORDS="~amd64"
 
 DEPEND=">=x11-libs/gtk+-2.20.0
 	=net-misc/gnunet-${PV}
@@ -18,7 +16,6 @@ DEPEND=">=x11-libs/gtk+-2.20.0
 	dev-libs/libunique
 	dev-util/glade"
 
-# autotools banned in EAPI 6
 if [[ ${PV} == "9999" ]] ; then
 	inherit autotools eutils subversion user
 	WANT_AUTOCONF="2.59"
@@ -63,7 +60,7 @@ src_prepare() {
 # }
 
 src_configure() {
-	econf --with-gnunet=/usr
+	econf --with-gnunet="${ROOT}"/usr
 }
 
 src_compile() {
