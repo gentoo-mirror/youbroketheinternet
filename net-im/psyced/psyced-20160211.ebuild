@@ -1,11 +1,11 @@
-EAPI=1
+EAPI=5
 
 DESCRIPTION="Server for Decentralized Messaging and Chat over PSYC, IRC, Jabber/XMPP and more"
 HOMEPAGE="http://www.psyced.org"
 LICENSE="GPL-2"
 EGIT_REPO_URI="git://git.psyced.org/git/psyced"
 
-inherit git-r3
+inherit git-r3 user
 
 # providing actual commit hashes protects against man in
 # the middle attacks on the way to the git repository.  --lynX
@@ -38,7 +38,7 @@ RDEPEND="${DEPEND}
 PROVIDE="virtual/jabber-server virtual/irc-server virtual/psyc-server"
 
 #MYS="${WORKDIR}/${CURRENT}/"
-MYS="${WORKDIR}/${S}/"
+#MYS="${WORKDIR}/${S}/"
 
 pkg_setup() {
 	enewgroup psyc
@@ -50,23 +50,25 @@ pkg_setup() {
 }
 
 src_unpack() {
-	unpack ${A}
-	cd ${MYS}
-	einfo "Unpacking ${PN}"
-	tar xf data.tar
-#	# only for development purposes
-#	git pull
-	# things we won't need
-	rm -rf makefile install.sh local data log erq run INSTALL.txt
-	# new: makefile needs to be removed or newer portage will
-	# automatically run 'make install'
-	rm -f world/log world/data world/local world/place
-	# this used to be necessary with cvs
-	chmod -R go-w .
+	if [[ ${SRC_URI} != "" ]] ; then
+		unpack ${A}
+		cd ${S}
+		einfo "Unpacking data.tar"
+		tar xf data.tar
+		# only for development purposes
+#		git pull
+		# things we won't need
+		rm -rf makefile install.sh local data log erq run INSTALL.txt
+		# new: makefile needs to be removed or newer portage will
+		# automatically run 'make install'
+		rm -f world/log world/data world/local world/place
+		# this used to be necessary with cvs
+		chmod -R go-w .
+	fi
 }
 
 src_install() {
-	cd ${MYS}
+	cd ${S}
 
 	dodir /opt/${PN}
 	einfo "The ${PN} universe and sandbox is kept in /opt/${PN}"
@@ -95,7 +97,8 @@ src_install() {
 
 	dodir /etc/psyc
 	insinto /etc/psyc
-	doins ${FILESDIR}/${PN}.ini
+	#doins ${FILESDIR}/${PN}.ini
+	doins config/${PN}.ini
 	# dispatch-conf or etc-update will handle any collisions
 
 	cat <<X >.initscript
@@ -107,7 +110,7 @@ X
     exeinto /etc/init.d; newexe .initscript ${PN}
 	rm .initscript
 
-    (cd "${MYS}/bin" && dosbin "psyconf") || die "dosbin failed"
+    (cd "${S}/bin" && dosbin "psyconf") || die "dosbin failed"
 
 	# where we find them
 	dosym ../../var/log/${PN} /opt/${PN}/log
@@ -128,7 +131,7 @@ X
 	# or even into /usr/local/lib/${PN}/place !??
 	dosym ../place /opt/${PN}/world/place
 
-	# so we can cvs update without being root
+	# so we can 'git pull' without being root
 	chown -R psyc:psyc ${D}opt/${PN}
 }
 
