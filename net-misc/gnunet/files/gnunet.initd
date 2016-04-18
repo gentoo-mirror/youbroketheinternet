@@ -16,50 +16,47 @@ depend() {
 
 # humbug.. it probably just needs /home/gnunet to be properly set up.. FIXME
 checkconfig() {
-	local conf="/home/gnunet/.local/share/gnunet/private_key.ecc"
-
-	if [ -e "${conf}" ] ; then
-		if [ -n "$(find /home/gnunet/.local/share/gnunet -maxdepth 1 -name gnunet.conf -perm +0044)" ] ; then
-			eerror "${conf} must not be world or group readable. Try:"
-			eerror "    chmod 600 ${conf}"
-			eerror "    chown gnunet:gnunet ${conf}"
-			return 1
-		fi
-	else
-		eerror "${conf} is needed to run gnunet"
-		eerror "It has to reside in /home/gnunet/.local/share/gnunet/"
-		return 1
-	fi
+    local conf="/var/lib/gnunet/.local/share/gnunet/private_key.ecc"
+    if [ -e "${conf}" ] ; then
+ 	if [ -n "$(find /var/lib/gnunet/.local/share/gnunet -maxdepth 1 -name gnunet.conf -perm +0044)" ] ; then
+ 	    eerror "${conf} must not be world or group readable. Try:"
+ 	    eerror "    chmod 600 ${conf}"
+ 	    eerror "    chown gnunet:gnunet ${conf}"
+ 	    return 1
+ 	fi
+    else
+        eerror "${conf} is needed to run gnunet"
+        eerror "It has to reside in /var/lib/gnunet/.local/share/gnunet/"
+        return 1
+    fi
 }
 
 start() {
-	checkconfig || return 1
-
-	local piddir=$(dirname ${PIDFILE})
-	if [ ! -d ${piddir} ] ; then
-		ebegin "Making ${piddir}"
-		mkdir -p ${piddir}
-		eend $?
-		ebegin "Changing permissions of ${piddir}"
-		chown gnunet:gnunet ${piddir}
-		eend $?
-	fi
-
-	ebegin "Starting ${SVCNAME}"
-	# shouldn't be necessary... but
-	start-stop-daemon --start --user gnunet --name gnunet --pidfile ${PIDFILE} \
-	     --exec /usr/lib/gnunet/libexec/gnunet-service-arm -- -d
-		# flags to be passed to the process appear after the double-dash
+    #checkconfig || return 1
+    local piddir=$(dirname ${PIDFILE})
+    if [ ! -d ${piddir} ] ; then
+        ebegin "Making ${piddir}"
+        mkdir -p ${piddir}
 	eend $?
+	ebegin "Changing permissions of ${piddir}"
+	chown gnunet:gnunet ${piddir}
+	eend $?
+    fi
+    ebegin "Starting ${SVCNAME}"
+    # shouldn't be necessary... but
+    start-stop-daemon --start --user gnunet --name gnunet --pidfile ${PIDFILE} \
+	              --exec /usr/lib/gnunet/libexec/gnunet-service-arm -- -d
+    # flags to be passed to the process appear after the double-dash
+    eend $?
 }
 
 stop() {
-	ebegin "Stopping ${SVCNAME}"
-	start-stop-daemon --stop --signal QUIT --pidfile ${PIDFILE}
-	sleep 1
-	killall -u gnunet
-	sleep 1
-	rm -rf /tmp/gnunet-gnunet-runtime >/dev/null 2>&1
-	rm -rf /tmp/gnunet-system-runtime >/dev/null 2>&1
-	eend $?
+    ebegin "Stopping ${SVCNAME}"
+    start-stop-daemon --stop --signal QUIT --pidfile ${PIDFILE}
+    sleep 1
+    killall -u gnunet
+    sleep 1
+    rm -rf /tmp/gnunet-gnunet-runtime >/dev/null 2>&1
+    rm -rf /tmp/gnunet-system-runtime >/dev/null 2>&1
+    eend $?
 }

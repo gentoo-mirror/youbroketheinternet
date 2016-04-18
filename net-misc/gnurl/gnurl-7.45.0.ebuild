@@ -19,8 +19,7 @@ HOMEPAGE="https://gnunet.org/gnurl
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~x86 ~amd64-fbsd ~x86-fbsd ~x64-freebsd ~x86-freebsd ~amd64-linux ~x86-linux"
-#todo-> iuse all.
+KEYWORDS="~amd64"
 IUSE="dane"
 
 RDEPEND=">=net-libs/gnutls-3[dane?]
@@ -53,16 +52,16 @@ src_prepare() {
 		grep -ERl 'include(.*curl/|/curl)' | \
 			xargs sed -i -r \
 				  -e 's:include/curl:include/gnurl:g' \
-				  -e 's:(include.*)curl/:\1gnurl/:g'
+				  -e 's:(include.*)curl/:\1gnurl/:g' || die
 		# FIX: Tune relative 'curl' path in makefiles under include/
 		grep -Rl 'SUBDIRS\s*=\s*curl' | \
-			xargs sed -i -r 's:(SUBDIRS\s*=\s*)curl:\1@PACKAGE@:g'
+			xargs sed -i -r 's:(SUBDIRS\s*=\s*)curl:\1@PACKAGE@:g' || die
 		# FIX: Tune relative 'curl' path in makefiles, install phase
 		grep -Rl 'pkgincludedir\s*=\s*.*curl' | \
-			xargs sed -i -r 's:(pkgincludedir\s*=\s*.*)curl:\1@PACKAGE@:g'
+			xargs sed -i -r 's:(pkgincludedir\s*=\s*.*)curl:\1@PACKAGE@:g' || die
 		# FIX: Skip examples and man3
 		grep -Rl 'SUBDIRS\s*=\s*.*libcurl' docs/ | \
-			xargs sed -i -r '/SUBDIRS\s*=\s*.*libcurl/s:^:#:g'
+			xargs sed -i -r '/SUBDIRS\s*=\s*.*libcurl/s:^:#:g' || die
 		default
 #	fi
 }
