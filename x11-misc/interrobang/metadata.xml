@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="project">
+    <email>BM-2cWq3EEaFeBHNBwXEPnKbq3wrVZZ45z9An</email>
+    <name>collective libertad</name>
+  </maintainer>
+  <use>
+    <flag name='examples'>Install examples, usually source code</flag>
+    <flag name='percontation'>Alternative to compgen for tab default</flag>
+  </use>
+</pkgmetadata>
