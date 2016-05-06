@@ -17,9 +17,9 @@
   </upstream>
   <use>
     <flag name='httpd'>provide httpd through microhttpd</flag>
-    <flag name='sqlite'>use sqlite for database</flag>
+    <flag name='sqlite'>use sqlite for database (default)</flag>
     <flag name='postgresql'>use postgresql for database</flag>
-    <flag name='mysql'>use mysql for database (default)</flag>
+    <flag name='mysql'>use mysql for database</flag>
     <flag name='nls'>nls</flag>
     <flag name='nss'>nss</flag>
     <flag name='bluetooth'>bluetooth</flag>
