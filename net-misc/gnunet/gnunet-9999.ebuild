@@ -32,7 +32,8 @@ else
 	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
 fi
 
-S="${WORKDIR}/${PF}/${PN}"
+#S="${WORKDIR}/${PF}/${PN}"
+S="${WORKDIR}/${PN}"
 
 AUTOTOOLS_IN_SOURCE_BUILD=1
 KEYWORDS="~amd64"
