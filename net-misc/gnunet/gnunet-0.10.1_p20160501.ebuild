@@ -19,18 +19,15 @@ if [[ "${PV}" == "9999" ]]; then
 	inherit eutils autotools subversion user python-any-r1
 	ESVN_REPO_URI="https://gnunet.org/svn/gnunet"
 	ESVN_PROJECT="gnunet"
-	WANT_AUTOCONF="2.59"
-	WANT_AUTOMAKE="1.11"
-	WANT_LIBTOOL="2.2"
-	AUTOTOOLS_AUTORECONF=1
 else
 	inherit eutils autotools user python-any-r1
-	WANT_AUTOCONF="2.59"
-	WANT_AUTOMAKE="1.11"
-	WANT_LIBTOOL="2.2"
-	AUTOTOOLS_AUTORECONF=1
 	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
 fi
+
+WANT_AUTOCONF="2.59"
+WANT_AUTOMAKE="1.11"
+WANT_LIBTOOL="2.2"
+AUTOTOOLS_AUTORECONF=1
 
 #S="${WORKDIR}/${PF}/${PN}"
 S="${WORKDIR}/${PN}"
