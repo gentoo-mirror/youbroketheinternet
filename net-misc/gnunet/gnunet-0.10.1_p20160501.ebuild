@@ -24,7 +24,7 @@ if [[ "${PV}" == "9999" ]]; then
 	WANT_LIBTOOL="2.2"
 	AUTOTOOLS_AUTORECONF=1
 else
-	inherit eutils autotools subversion user python-any-r1
+	inherit eutils autotools user python-any-r1
 	WANT_AUTOCONF="2.59"
 	WANT_AUTOMAKE="1.11"
 	WANT_LIBTOOL="2.2"
