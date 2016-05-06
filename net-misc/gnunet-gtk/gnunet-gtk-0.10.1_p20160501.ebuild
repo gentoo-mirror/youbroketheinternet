@@ -27,7 +27,7 @@ if [[ ${PV} == "9999" ]] ; then
 	ESVN_PROJECT="gnunet-gtk"
 else
 	inherit user
-	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
+	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz -> ${P}.tar.gz"
 fi
 
 src_prepare() {
