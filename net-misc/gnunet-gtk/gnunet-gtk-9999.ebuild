@@ -10,12 +10,18 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
 
-DEPEND=">=x11-libs/gtk+-2.20.0
+IUSE="qr"
+
+DEPEND="virtual/pkgconfig
+	>=x11-libs/gtk+-2.20.0
 	=net-misc/gnunet-${PV}
 	>=gnome-base/libglade-2.0
 	dev-libs/libunique
 	dev-util/glade
-	net-libs/gnutls"
+	net-libs/gnutls
+	media-libs/libextractor
+	qr? ( media-gfx/qrencode )
+	x11-libs/gdk-pixbuf"
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit autotools eutils subversion user
@@ -60,7 +66,9 @@ src_configure() {
 	econf \
 		--with-gnutls \
 		--with-gnunet \
-		--with-glade
+		--with-glade \
+		--with-extractor \
+		$(use_with qr qrencode)
 	default
 }
 

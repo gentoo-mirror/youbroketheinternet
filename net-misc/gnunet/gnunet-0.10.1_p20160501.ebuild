@@ -45,6 +45,7 @@ REQUIRED_USE="?? ( mysql postgresql sqlite )
 			  ?? ( pulseaudio gstreamer )"
 
 RDEPEND="
+	virtual/pkgconfig
 	mysql? ( >=virtual/mysql-5.1 )
 	postgresql? ( >=dev-db/postgresql-8.3:= )
 	sqlite? ( >=dev-db/sqlite-3.0 )
@@ -85,8 +86,16 @@ RDEPEND="
 		)
 	)
 	bluetooth? ( net-wireless/bluez )
-	test? ( ${PYTHON_DEPS} )"
+	test? ( ${PYTHON_DEPS} )
+	net-misc/udpcast"
 #test? ( >=dev-lang/python-2.7:2.7 )
+
+#@grknight   ng0: one tip, don't try to get everything to say yes;  sometimes the configure will try alternatives before it dies
+#ng0         *could be true
+#@_AxS_      ng0: tbh something like this i think most likely needs a build system patch to use pkg-config to find it
+#@_AxS_      also, what grknight said.  just because it's checked for in configure doesnt mean you -need- it
+#	dev-libs/libltdl
+#	dev-libs/jemalloc
 
 DEPEND="
 	${RDEPEND}"
@@ -129,7 +138,8 @@ src_configure() {
 		$(use_with X x) \
 		$(use_with gnutls) \
 		$(use_with bluetooth) \
-		--with-libextractor
+		--with-extractor \
+	#	--with-ltdl
 	# hardened build (untested)
 	use hardened && append-ldflags "--with-gcc-hardening --with-linker-hardening"
 }
