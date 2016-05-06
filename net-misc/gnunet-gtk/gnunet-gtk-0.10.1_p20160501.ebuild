@@ -30,7 +30,7 @@ else
 	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
 fi
 
-S="${WORKDIR}/${PF}"
+S="${WORKDIR}/${PF}/${PN}"
 
 src_prepare() {
 	subversion_src_prepare
