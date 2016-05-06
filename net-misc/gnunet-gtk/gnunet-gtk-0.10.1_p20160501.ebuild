@@ -55,7 +55,7 @@ src_prepare() {
 
 # why?
 src_configure() {
-	econf --with-gnunet="${ROOT}"/usr
+	#econf --with-gnunet="${ROOT}"/usr
 	default
 }
 
