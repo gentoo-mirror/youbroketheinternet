@@ -129,18 +129,19 @@ src_prepare() {
 src_configure() {
 	econf \
 		#--docdir="${EPREFIX}/usr/share/doc/${PF}" \
-		$(use_enable nls) \
+		$(use_with nls) \
 		$(use_enable experimental) \
 		$(use_with httpd microhttpd) \
-		$(use_with mysql) \
-		$(use_with postgresql) \
-		$(use_with sqlite) \
+		$(use_with mysql mysql) \
+		$(use_with postgresql postgresql) \
+		$(use_with sqlite sqlite) \
 		$(use_with X x) \
-		$(use_with gnutls) \
+		$(use_with gnutls gnutls) \
 		$(use_with bluetooth) \
-		--with-extractor \
-	#	--with-ltdl
-	# hardened build (untested)
+		--with-extractor
+		#	--with-ltdl
+		# hardened build (untested)
+		# use_enable nls: --enable-nls not found
 	use hardened && append-ldflags "--with-gcc-hardening --with-linker-hardening"
 }
 # debug those:
