@@ -34,13 +34,14 @@ fi
 S="${WORKDIR}/${PN}"
 
 src_prepare() {
-	subversion_src_prepare
-	eautoreconf
-	default
-	# if [[ ${PV} == "9999" ]] ; then
-	# 	subversion_src_prepare
-	# 	autotools-utils_src_prepare
-	# fi
+	if [[ "${PV}" == "9999" ]]; then
+		subversion_src_prepare
+		eautoreconf
+		default
+	else
+		eautoreconf
+		default
+	fi
 }
 
 # src_unpack() {
@@ -55,9 +56,10 @@ src_configure() {
 	econf --with-gnunet="${ROOT}"/usr
 }
 
-src_compile() {
-	emake
-}
+#src_compile() {
+#	#emake
+#	default
+#}
 
 src_install() {
 	default
