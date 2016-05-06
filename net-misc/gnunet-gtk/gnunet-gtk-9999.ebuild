@@ -18,17 +18,18 @@ DEPEND=">=x11-libs/gtk+-2.20.0
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit autotools eutils subversion user
-	WANT_AUTOCONF="2.59"
-	WANT_AUTOMAKE="1.11"
-	WANT_LIBTOOL="2.2"
-	AUTOTOOLS_AUTORECONF=1
 	SRC_URI=""
 	ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
 	ESVN_PROJECT="gnunet-gtk"
 else
-	inherit user
+	inherit user autotools eutils
 	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
 fi
+
+WANT_AUTOCONF="2.59"
+WANT_AUTOMAKE="1.11"
+WANT_LIBTOOL="2.2"
+AUTOTOOLS_AUTORECONF=1
 
 #S="${WORKDIR}/${PF}/${PN}"
 S="${WORKDIR}/${PN}"
@@ -52,8 +53,9 @@ src_prepare() {
 # 	fi
 # }
 
+# why?
 src_configure() {
-	econf --with-gnunet="${ROOT}"/usr
+	econf --with-gnunet="${ROOT}/usr"
 }
 
 #src_compile() {
