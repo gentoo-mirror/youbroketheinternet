@@ -34,6 +34,6 @@
     <flag name='gstreamer'>build experimental feature 'conversation' with gstreamer backend</flag>
     <flag name='qr'>experimental feature</flag>
     <flag name='tex'>experimental feature</flag>
-
+    <flag name='hardened'>hardened toolchain</flag>
   </use>
 </pkgmetadata>
