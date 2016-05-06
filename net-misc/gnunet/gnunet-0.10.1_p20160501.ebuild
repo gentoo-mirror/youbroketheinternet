@@ -29,8 +29,10 @@ else
 	WANT_AUTOMAKE="1.11"
 	WANT_LIBTOOL="2.2"
 	AUTOTOOLS_AUTORECONF=1
-	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
 fi
+
+S="${WORKDIR}/${PF}"
 
 AUTOTOOLS_IN_SOURCE_BUILD=1
 KEYWORDS="~amd64"
