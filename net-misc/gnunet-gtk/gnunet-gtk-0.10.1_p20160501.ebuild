@@ -14,7 +14,8 @@ DEPEND=">=x11-libs/gtk+-2.20.0
 	=net-misc/gnunet-${PV}
 	>=gnome-base/libglade-2.0
 	dev-libs/libunique
-	dev-util/glade"
+	dev-util/glade
+	net-libs/gnutls"
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit autotools eutils subversion user
@@ -26,7 +27,7 @@ else
 	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
 fi
 
-WANT_AUTOCONF="2.59"
+WANT_AUTOCONF="2.5"
 WANT_AUTOMAKE="1.11"
 WANT_LIBTOOL="2.2"
 AUTOTOOLS_AUTORECONF=1
@@ -55,7 +56,11 @@ src_prepare() {
 
 # why?
 src_configure() {
-	#econf --with-gnunet="${ROOT}"/usr
+	#econf --with-gnunet="${ROOT}"/usr \
+	econf \
+		--with-gnutls \
+		--with-gnunet \
+		--with-glade
 	default
 }
 

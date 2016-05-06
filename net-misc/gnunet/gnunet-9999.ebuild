@@ -24,7 +24,7 @@ else
 	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
 fi
 
-WANT_AUTOCONF="2.59"
+WANT_AUTOCONF="2.5"
 WANT_AUTOMAKE="1.11"
 WANT_LIBTOOL="2.2"
 AUTOTOOLS_AUTORECONF=1
@@ -119,7 +119,7 @@ src_prepare() {
 
 src_configure() {
 	econf \
-		--docdir="${EPREFIX}/usr/share/doc/${PF}" \
+		#--docdir="${EPREFIX}/usr/share/doc/${PF}" \
 		$(use_enable nls) \
 		$(use_enable experimental) \
 		$(use_with httpd microhttpd) \
