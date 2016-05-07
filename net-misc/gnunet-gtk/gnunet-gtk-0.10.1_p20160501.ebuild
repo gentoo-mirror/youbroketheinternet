@@ -83,5 +83,4 @@ src_configure() {
 src_install() {
 	#default
 	emake DESTDIR="${D}" install
-	dodoc -r
 }
