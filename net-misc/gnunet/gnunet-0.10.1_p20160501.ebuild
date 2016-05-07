@@ -2,12 +2,6 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-# taken from https://338909.bugs.gentoo.org/attachment.cgi?id=381924
-# referenced at https://bugs.gentoo.org/show_bug.cgi?id=338909
-# merged with 9999 variant from emery overlay
-# refined 2015-07 by carlo von lynX of youbroketheinternet.org
-# complete rewrite by ng0 (collective libertad)
-
 EAPI=6
 
 DESCRIPTION="Cryptographic GNU Mesh/Underlay Network Routing Layer"
@@ -16,11 +10,11 @@ LICENSE="GPL-3"
 PYTHON_COMPAT=( python2_7 ) # tests are not yet python3 compatible.
 
 if [[ "${PV}" == "9999" ]]; then
-	inherit eutils autotools subversion user python-any-r1
+	inherit autotools subversion user python-any-r1 flag-o-matic
 	ESVN_REPO_URI="https://gnunet.org/svn/gnunet"
 	ESVN_PROJECT="gnunet"
 else
-	inherit eutils autotools user python-any-r1
+	inherit autotools user python-any-r1 flag-o-matic
 	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
 fi
 
@@ -77,8 +71,8 @@ RDEPEND="
 		tex? ( >=app-text/texlive-2012 )
 		conversation? (
 				gstreamer? (
-					   media-libs/gstreamer:1.0
-					   dev-libs/glib:2
+					media-libs/gstreamer:1.0
+					dev-libs/glib:2
 				)
 				pulseaudio? ( >=media-sound/pulseaudio-2.0 )
 				>=media-libs/opus-1.0.1
@@ -110,6 +104,7 @@ pkg_setup() {
 	esethome "gnunet" /var/lib/gnunet
 }
 
+# Here we add and run what bootstrap would do.
 src_prepare() {
 	if [[ "${PV}" == "9999" ]]; then
 		subversion_src_prepare
@@ -117,38 +112,38 @@ src_prepare() {
 		eautoreconf
 		./contrib/pogen.sh || die
 		default
+		eapply_user
 	else
-		# run what ./bootstrap would run:
 		rm -rf libltdl || die
 		eautoreconf
 		./contrib/pogen.sh || die
 		default
+		eapply_user
 	fi
 }
 
 src_configure() {
-	econf \
-		#--docdir="${EPREFIX}/usr/share/doc/${PF}" \
-		$(use_with nls) \
-		$(use_enable experimental) \
-		$(use_with httpd microhttpd) \
-		$(use_with mysql mysql) \
-		$(use_with postgresql postgresql) \
-		$(use_with sqlite sqlite) \
-		$(use_with X x) \
-		$(use_with gnutls gnutls) \
-		$(use_with bluetooth) \
-		--with-extractor
-		#	--with-ltdl
-		# hardened build (untested)
-		# use_enable nls: --enable-nls not found
 	use hardened && append-ldflags "--with-gcc-hardening --with-linker-hardening"
+	econf \
+		$(use_with nls ) \
+		$(use_enable experimental ) \
+		$(use_with httpd microhttpd ) \
+		$(use_with mysql ) \
+		$(use_with postgresql ) \
+		$(use_with sqlite ) \
+		$(use_with X x ) \
+		$(use_with gnutls ) \
+		$(use_with bluetooth ) \
+		--with-extractor
 }
+# --docdir="${EPREFIX}/usr/share/doc/${PF}" \
 # debug those:
-#$(use_with ssl) \
+# $(use_with ssl) \
+# --with-ltdl
 
 src_install() {
-	default
+	#default
+	MAKEOPTS="-j1" emake DESTDIR="${D}" install
 	newinitd "${FILESDIR}"/gnunet.initd gnunet
 	insinto /etc/gnunet
 	doins "${FILESDIR}"/gnunet.conf

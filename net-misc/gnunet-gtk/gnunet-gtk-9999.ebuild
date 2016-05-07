@@ -24,12 +24,12 @@ DEPEND="virtual/pkgconfig
 	x11-libs/gdk-pixbuf"
 
 if [[ ${PV} == "9999" ]] ; then
-	inherit autotools eutils subversion user
+	inherit autotools subversion
 	SRC_URI=""
 	ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
 	ESVN_PROJECT="gnunet-gtk"
 else
-	inherit user autotools eutils
+	inherit autotools
 	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
 fi
 
@@ -78,6 +78,6 @@ src_configure() {
 #}
 
 src_install() {
-	default
-	#emake DESTDIR="${D}" install
+	#default
+	emake DESTDIR="${D}" install
 }
