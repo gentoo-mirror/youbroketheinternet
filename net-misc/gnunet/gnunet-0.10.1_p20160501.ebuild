@@ -125,7 +125,6 @@ src_prepare() {
 src_configure() {
 	use hardened && append-ldflags "--with-gcc-hardening --with-linker-hardening"
 	econf \
-		$(use_with nss ) \
 		$(use_enable experimental ) \
 		$(use_with httpd microhttpd ) \
 		$(use_with mysql ) \
