@@ -15,7 +15,7 @@ if [[ "${PV}" == "9999" ]]; then
 	ESVN_PROJECT="gnunet"
 else
 	inherit autotools user python-any-r1 flag-o-matic
-	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
+	SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
 fi
 
 WANT_AUTOCONF="2.5"
@@ -92,8 +92,8 @@ RDEPEND="
 #	dev-libs/jemalloc
 
 DEPEND="
-	${RDEPEND}"
-	#sys-devel/automake:1.14"
+	${RDEPEND}
+	sys-devel/automake:1.14"
 
 MAKEOPTS="${MAKEOPTS} -j1"
 
@@ -114,9 +114,9 @@ src_prepare() {
 		default
 		eapply_user
 	else
-		rm -rf libltdl || die
-		eautoreconf
-		./contrib/pogen.sh || die
+		#rm -rf libltdl || die
+		#eautoreconf
+		#./contrib/pogen.sh || die
 		default
 		eapply_user
 	fi
@@ -141,7 +141,8 @@ src_configure() {
 
 src_install() {
 	#default
-	MAKEOPTS="-j1" emake DESTDIR="${D}" install
+	#MAKEOPTS="-j1"
+	emake DESTDIR="${D}" install
 	newinitd "${FILESDIR}"/gnunet.initd gnunet
 	insinto /etc/gnunet
 	doins "${FILESDIR}"/gnunet.conf
