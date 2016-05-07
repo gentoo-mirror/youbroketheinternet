@@ -125,7 +125,7 @@ src_prepare() {
 src_configure() {
 	use hardened && append-ldflags "--with-gcc-hardening --with-linker-hardening"
 	econf \
-		$(use_with nls ) \
+		$(use_with nss ) \
 		$(use_enable experimental ) \
 		$(use_with httpd microhttpd ) \
 		$(use_with mysql ) \
@@ -133,7 +133,6 @@ src_configure() {
 		$(use_with sqlite ) \
 		$(use_with X x ) \
 		$(use_with gnutls ) \
-		$(use_with bluetooth ) \
 		--with-extractor
 }
 # --docdir="${EPREFIX}/usr/share/doc/${PF}" \
