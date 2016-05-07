@@ -100,8 +100,8 @@ MAKEOPTS="${MAKEOPTS} -j1"
 pkg_setup() {
 	enewgroup gnunetdns
 	enewgroup gnunet
-	enewuser "gnunet" -1 -1 /var/lib/gnunet "gnunet"
-	esethome "gnunet" /var/lib/gnunet
+	enewuser gnunet -1 -1 /var/lib/gnunet gnunet
+	#esethome gnunet /var/lib/gnunet
 }
 
 # Here we add and run what bootstrap would do.
@@ -176,4 +176,9 @@ pkg_postinst() {
 	elog "Once you have configured your peer, run (as the 'gnunet' user)"
 	elog "\"gnunet-arm -s\" to start the peer. You can then run the various"
 	elog "GNUnet-tools as your \"normal\" user (who should only be in the group 'gnunet')."
+}
+
+pkg_postrm() {
+	elog "You have to manually remove the previously created gnunet user"
+	elog "and the gnunet + gnunetdns groups."
 }
