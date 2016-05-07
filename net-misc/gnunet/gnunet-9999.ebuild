@@ -148,6 +148,7 @@ src_install() {
 	doins "${FILESDIR}"/gnunet.conf
 	keepdir /var/{lib,log}/gnunet
 	fowners gnunet:gnunet /var/lib/gnunet /var/log/gnunet
+	dodoc -r
 }
 
 pkg_postinst() {

@@ -12,7 +12,7 @@ KEYWORDS="~amd64"
 
 IUSE="qr"
 
-DEPEND="virtual/pkgconfig
+RDEPEND="virtual/pkgconfig
 	>=x11-libs/gtk+-2.20.0
 	=net-misc/gnunet-${PV}
 	>=gnome-base/libglade-2.0
@@ -22,6 +22,9 @@ DEPEND="virtual/pkgconfig
 	media-libs/libextractor
 	qr? ( media-gfx/qrencode )
 	x11-libs/gdk-pixbuf"
+
+DEPEND="${RDEPEND}
+		sys-devel/automake:1.14"
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit autotools subversion
@@ -68,8 +71,8 @@ src_configure() {
 		--with-gnunet \
 		--with-glade \
 		--with-extractor \
-		$(use_with qr qrencode)
-	default
+		$(use_with qr qrencode )
+	#default
 }
 
 #src_compile() {
@@ -80,4 +83,5 @@ src_configure() {
 src_install() {
 	#default
 	emake DESTDIR="${D}" install
+	dodoc -r
 }
