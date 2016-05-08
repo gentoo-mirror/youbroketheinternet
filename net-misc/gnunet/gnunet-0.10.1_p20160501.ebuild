@@ -30,13 +30,9 @@ AUTOTOOLS_IN_SOURCE_BUILD=1
 KEYWORDS="~amd64"
 SLOT="0"
 IUSE="+httpd +sqlite postgresql mysql nls nss +X +gnutls +dane +bluetooth ssl experimental extra conversation pulseaudio gstreamer qr tex test hardened"
-# Current svn numbers no longer need to be patched.
-#if [[ ${PV} != "9999" ]] ; then
-#	PATCHES=( "${FILESDIR}"/install.diff )
-#fi
 RESTRICT="test"
 REQUIRED_USE="?? ( mysql postgresql sqlite )
-			  ?? ( pulseaudio gstreamer )"
+			?? ( pulseaudio gstreamer )"
 
 RDEPEND="
 	virtual/pkgconfig
@@ -59,10 +55,10 @@ RDEPEND="
 	nss? ( dev-libs/nss )
 	dev-libs/gmp:0=
 	X? (
-	   x11-libs/libXt
-	   x11-libs/libXext
-	   x11-libs/libX11
-	   x11-libs/libXrandr
+		x11-libs/libXt
+		x11-libs/libXext
+		x11-libs/libX11
+		x11-libs/libXrandr
 	)
 	dev-libs/jansson
 	>=sci-mathematics/glpk-4.43
@@ -85,7 +81,6 @@ RDEPEND="
 #test? ( >=dev-lang/python-2.7:2.7 )
 
 #@grknight   ng0: one tip, don't try to get everything to say yes;  sometimes the configure will try alternatives before it dies
-#ng0         *could be true
 #@_AxS_      ng0: tbh something like this i think most likely needs a build system patch to use pkg-config to find it
 #@_AxS_      also, what grknight said.  just because it's checked for in configure doesnt mean you -need- it
 #	dev-libs/libltdl
@@ -179,6 +174,8 @@ pkg_postinst() {
 }
 
 pkg_postrm() {
+	elog " "
 	elog "You have to manually remove the previously created gnunet user"
 	elog "and the gnunet + gnunetdns groups."
+	elog " "
 }
