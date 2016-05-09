@@ -33,7 +33,7 @@ S="${WORKDIR}/${PN}"
 AUTOTOOLS_IN_SOURCE_BUILD=1
 KEYWORDS="~amd64"
 SLOT="0"
-IUSE="+httpd +sqlite postgresql mysql nls nss +X +gnutls +dane +bluetooth ssl experimental extra conversation pulseaudio gstreamer qr tex test hardened"
+IUSE="+httpd +sqlite postgresql mysql nls nss +X +gnutls +dane +bluetooth ssl experimental extra conversation pulseaudio gstreamer qr tex test hardened +sudo"
 RESTRICT="test"
 REQUIRED_USE="?? ( mysql postgresql sqlite )
 			?? ( pulseaudio gstreamer )
@@ -83,7 +83,8 @@ RDEPEND="
 	)
 	bluetooth? ( net-wireless/bluez )
 	test? ( ${PYTHON_DEPS} )
-	net-misc/udpcast"
+	net-misc/udpcast
+	sudo? ( app-admin/sudo )"
 #test? ( >=dev-lang/python-2.7:2.7 )
 #@grknight   ng0: one tip, don't try to get everything to say yes;  sometimes the configure will try alternatives before it dies
 #@_AxS_      ng0: tbh something like this i think most likely needs a build system patch to use pkg-config to find it
@@ -96,6 +97,7 @@ DEPEND="
 	sys-devel/automake:1.14"
 
 #MAKEOPTS="${MAKEOPTS} -j1"
+MAKEOPTS="-j1"
 
 pkg_setup() {
 	enewgroup gnunetdns
@@ -132,7 +134,8 @@ src_configure() {
 		$(use_with sqlite ) \
 		$(use_with X x ) \
 		$(use_with gnutls ) \
-		--with-extractor
+		--with-extractor \
+		$(use_with sudo )
 }
 # --docdir="${EPREFIX}/usr/share/doc/${PF}" \
 # debug those:

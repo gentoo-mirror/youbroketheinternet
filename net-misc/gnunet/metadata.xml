@@ -34,6 +34,7 @@
     <flag name='gstreamer'>build experimental feature 'conversation' with gstreamer backend</flag>
     <flag name='qr'>experimental feature</flag>
     <flag name='tex'>experimental feature</flag>
-    <flag name='hardened'>hardened toolchain</flag>
+	<flag name='hardened'>hardened toolchain</flag>
+	<flag name='sudo'>if you do not enable this, the GNS NSS library will not be installed</flag>
   </use>
 </pkgmetadata>
