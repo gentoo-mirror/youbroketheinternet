@@ -33,6 +33,10 @@ implementing Multi-User Dungeon games (MUDs).
 The regular portage openssl files disallow the use of certain
 elliptic curve cryptography that pybitmessage happens to need.
 
+== dev-qt/qzxing ==
+
+Qt library for QR code generation and decoding.
+
 == dev-scheme/guile ==
 
 Guix needs newer guile to compile, portage needs to fix
@@ -104,6 +108,13 @@ GNU Guix is a package manager. It's also an operating system
 future. Currently this ebuild and sys-apps/guix-binary are
 open for debugging here, please provide us with input.
 
+== sys-apps/guix-bin ==
+
+GNU Guix is a package manager for reproducible building. It
+is therefore legitimate to use its binary installation as
+you can check its correctness later, by rebuilding the exact
+identical binary files.
+
 == www-client/torbrowser ==
 
 By fulfilling most requirements of protocol standards, all web browsers
@@ -121,4 +132,8 @@ I don't use this currently.
 == www-servers/onionshare ==
 
 One more great ebuild from Poncho.
+
+== x11-misc/interrobang ==
+
+A tiny launcher menu packing a big bang (syntax).
 

@@ -7,10 +7,10 @@ inherit user eutils
 
 DESCRIPTION="The Guix Package Manager, binary version."
 HOMEPAGE="https://guixsd.org"
-SRC_URI="amd64? ( mirror://gnu-alpha/guix/${P}.x86_64-linux.tar.xz )
-         x86? ( mirror://gnu-alpha/guix/${P}.i686-linux.tar.xz )
-		 mips? ( mirror://gnu-alpha/guix/${P}.mips64el-linux.tar.xz )
-		 arm? ( mirror://gnu-alpha/guix/${P}.armhf-linux.tar.xz )"
+SRC_URI="amd64? ( mirror://gnu-alpha/guix/${P}ary.x86_64-linux.tar.xz )
+         x86? ( mirror://gnu-alpha/guix/${P}ary.i686-linux.tar.xz )
+		 mips? ( mirror://gnu-alpha/guix/${P}ary.mips64el-linux.tar.xz )
+		 arm? ( mirror://gnu-alpha/guix/${P}ary.armhf-linux.tar.xz )"
 RESTRICT="mirror"
 
 LICENSE="GPL-3"

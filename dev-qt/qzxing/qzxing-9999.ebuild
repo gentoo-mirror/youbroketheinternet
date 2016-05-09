@@ -4,7 +4,7 @@
 
 EAPI=6
 
-DESCRIPTION="qzxing"
+DESCRIPTION="Qt library for QR code generation and decoding"
 HOMEPAGE="https://github.com/bratao/qzxing
 		  https://projects.developer.nokia.com/QZXing"
 
