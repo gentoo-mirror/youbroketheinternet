@@ -65,20 +65,18 @@ src_prepare() {
 
 # why?
 src_configure() {
-	#econf --with-gnunet="${ROOT}"/usr \
 	econf \
 		--with-gnutls \
-		--with-gnunet \
+		--with-gnunet="${ROOT}/usr" \
 		--with-glade \
 		--with-extractor \
 		$(use_with qr qrencode )
-	#default
 }
 
-#src_compile() {
-#	#emake
-#	default
-#}
+src_compile() {
+#	emake
+	default
+}
 
 src_install() {
 	#default
