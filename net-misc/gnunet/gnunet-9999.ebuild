@@ -95,7 +95,7 @@ DEPEND="
 	${RDEPEND}
 	sys-devel/automake:1.14"
 
-MAKEOPTS="${MAKEOPTS} -j1"
+#MAKEOPTS="${MAKEOPTS} -j1"
 
 pkg_setup() {
 	enewgroup gnunetdns
