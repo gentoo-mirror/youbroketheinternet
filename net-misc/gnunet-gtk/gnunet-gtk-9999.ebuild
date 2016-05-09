@@ -23,8 +23,8 @@ RDEPEND="virtual/pkgconfig
 	qr? ( media-gfx/qrencode )
 	x11-libs/gdk-pixbuf"
 
-DEPEND="${RDEPEND}
-		sys-devel/automake:1.14"
+DEPEND="${RDEPEND}"
+#		sys-devel/automake:1.14"
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit autotools subversion
@@ -64,10 +64,11 @@ src_prepare() {
 # }
 
 # why?
+# --with-gnunet="${ROOT}/usr"
 src_configure() {
 	econf \
 		--with-gnutls \
-		--with-gnunet="${ROOT}/usr" \
+		--with-gnunet="/usr" \
 		--with-glade \
 		--with-extractor \
 		$(use_with qr qrencode )
