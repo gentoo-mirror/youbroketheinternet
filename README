@@ -83,6 +83,12 @@ what the problem is. Luckily this package is optional.
 Trimmed down variation of curl without all the cruft. GNUnet
 uses this.
 
+== net-misc/powwow ==
+
+Enhanced telnet client with automation macros for interaction
+with Multi-User Domains (MUDs). Nowadays it is frequently used
+as a text-based messaging client with psyced's telnet access.
+
 == net-p2p/pybitmessage ==
 
 Cryptographic anonymizing text publication system. Not a lot better

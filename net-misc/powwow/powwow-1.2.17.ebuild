@@ -4,7 +4,7 @@
 
 EAPI=6
 
-DESCRIPTION="MUD and telnet client"
+DESCRIPTION="Enhanced telnet client with automation macros for MUD interaction use"
 HOMEPAGE="http://hoopajoo.net/projects/powwow.html"
 inherit autotools eutils prefix
 SRC_URI="http://hoopajoo.net/static/projects/${P}.tar.gz"
