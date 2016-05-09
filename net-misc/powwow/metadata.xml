@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-  <maintainer type="project">
-    <email>BM-2cWq3EEaFeBHNBwXEPnKbq3wrVZZ45z9An</email>
-    <name>collective libertad</name>
-  </maintainer>
+	<maintainer type="project">
+		<email>BM-2cWq3EEaFeBHNBwXEPnKbq3wrVZZ45z9An</email>
+		<name>collective libertad</name>
+	</maintainer>
+	<maintainer type="project">
+		<name>youbroketheinternet</name>
+	</maintainer>
   <use>
-    <flag name='psyced'>use patch to change command separating character from ; to §</flag>
+    <flag name='cmdsep'>patch the command separating character from ; to § (considered to be useful for chats)</flag>
   </use>
 </pkgmetadata>
