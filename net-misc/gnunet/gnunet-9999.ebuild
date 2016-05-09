@@ -13,15 +13,19 @@ if [[ "${PV}" == "9999" ]]; then
 	inherit autotools subversion user python-any-r1 flag-o-matic
 	ESVN_REPO_URI="https://gnunet.org/svn/gnunet"
 	ESVN_PROJECT="gnunet"
+	WANT_AUTOCONF="2.5"
+	WANT_AUTOMAKE="1.11"
+	WANT_LIBTOOL="2.2"
+	AUTOTOOLS_AUTORECONF=1
 else
 	inherit autotools user python-any-r1 flag-o-matic
 	SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
 fi
 
-WANT_AUTOCONF="2.5"
-WANT_AUTOMAKE="1.11"
-WANT_LIBTOOL="2.2"
-AUTOTOOLS_AUTORECONF=1
+#WANT_AUTOCONF="2.5"
+#WANT_AUTOMAKE="1.11"
+#WANT_LIBTOOL="2.2"
+#AUTOTOOLS_AUTORECONF=1
 
 #S="${WORKDIR}/${PF}/${PN}"
 S="${WORKDIR}/${PN}"
@@ -32,7 +36,9 @@ SLOT="0"
 IUSE="+httpd +sqlite postgresql mysql nls nss +X +gnutls +dane +bluetooth ssl experimental extra conversation pulseaudio gstreamer qr tex test hardened"
 RESTRICT="test"
 REQUIRED_USE="?? ( mysql postgresql sqlite )
-			?? ( pulseaudio gstreamer )"
+			?? ( pulseaudio gstreamer )
+			experimental? ( || ( extra ) )
+			extra? ( || ( experimental ) )"
 
 RDEPEND="
 	virtual/pkgconfig
@@ -79,7 +85,6 @@ RDEPEND="
 	test? ( ${PYTHON_DEPS} )
 	net-misc/udpcast"
 #test? ( >=dev-lang/python-2.7:2.7 )
-
 #@grknight   ng0: one tip, don't try to get everything to say yes;  sometimes the configure will try alternatives before it dies
 #@_AxS_      ng0: tbh something like this i think most likely needs a build system patch to use pkg-config to find it
 #@_AxS_      also, what grknight said.  just because it's checked for in configure doesnt mean you -need- it
