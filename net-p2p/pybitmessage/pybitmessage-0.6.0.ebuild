@@ -1,9 +1,6 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-p2p/pybitmessage/pybitmessage-0.4.2.ebuild,v 1.3 2014/08/10 17:39:29 ago Exp $
-#
-# Versions prior to 0.4.4 cannot properly connect via Tor
-# so I intentionally removed those...  --lynX
+# $Id$
 
 EAPI=5
 
@@ -18,13 +15,14 @@ SRC_URI="https://github.com/Bitmessage/PyBitmessage/archive/v${PV}.tar.gz -> ${P
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="amd64 x86"
-IUSE=""
+KEYWORDS="~amd64 ~x86"
+IUSE="libressl"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 DEPEND="${PYTHON_DEPS}"
 RDEPEND="${DEPEND}
-	dev-libs/openssl[-bindist]
+	!libressl? ( dev-libs/openssl:0[-bindist] )
+	libressl? ( dev-libs/libressl )
 	dev-python/PyQt4[${PYTHON_USEDEP}]"
 
 S=${WORKDIR}/PyBitmessage-${PV}
@@ -32,7 +30,7 @@ S=${WORKDIR}/PyBitmessage-${PV}
 src_compile() { :; }
 
 src_install () {
-	cat >> "${T}"/${PN}-wrapper <<-EOF
+	cat >> "${T}"/${PN}-wrapper <<-EOF || die
 	#!/usr/bin/env python
 	import os
 	import sys
