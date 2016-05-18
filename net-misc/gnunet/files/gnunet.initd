@@ -14,26 +14,40 @@ depend() {
 	need net
 }
 
-# humbug.. it probably just needs /var/lib/gnunet to be properly set up.. FIXME
-checkconfig() {
-	local conf="/var/lib/gnunet/.local/share/gnunet/private_key.ecc"
+GNUNET_PATH="/usr"
+SUID_ROOT_HELPERS="exit nat-server nat-client transport-bluetooth transport-wlan vpn"
 
-	if [ -e "${conf}" ] ; then
-		if [ -n "$(find /var/lib/gnunet/.local/share/gnunet -maxdepth 1 -name gnunet.conf -perm +0044)" ] ; then
-			eerror "${conf} must not be world or group readable. Try:"
-			eerror "    chmod 600 ${conf}"
-			eerror "    chown gnunet:gnunet ${conf}"
-			return 1
+chmodown_execbin() {
+	if [ -x $1 ]; then
+		if [ "$3" ]; then
+			chown $3 $1 2>/dev/null && chmod $2 $1
+		else
+			chmod $2 $1
 		fi
-	else
-		eerror "${conf} is needed to run gnunet"
-		eerror "It has to reside in /var/lib/gnunet/.local/share/gnunet/"
-		return 1
 	fi
 }
 
+checkconfig() {
+	if [ -n "$(find /var/lib/gnunet/.local/share/gnunet -maxdepth 1 -name gnunet.conf -perm +0044)" ] ; then
+		eerror "${conf} must not be world or group readable. Try:"
+		eerror "    chmod 600 ${conf}"
+		eerror "    chown gnunet:gnunet ${conf}"
+		return 1
+	fi
+
+	# taken from dangole's lede config.. thx!
+	local libexec="${GNUNET_PATH}/lib/gnunet/libexec"
+	[ -e ${libexec}/.permfix ] && return
+	for helper in $SUID_ROOT_HELPERS; do
+		chmodown_execbin ${libexec}/gnunet-helper-$helper u+s
+	done
+	chmodown_execbin ${libexec}/gnunet-helper-dns 4750 root:gnunetdns
+	chmodown_execbin ${libexec}/gnunet-service-dns 2750 gnunet:gnunetdns
+	touch ${libexec}/.permfix
+}
+
 start() {
-	# checkconfig || return 1
+	checkconfig || return 1
 
 	local piddir=$(dirname ${PIDFILE})
 	if [ ! -d ${piddir} ] ; then
@@ -63,3 +77,4 @@ stop() {
 	rm -rf /tmp/gnunet-system-runtime >/dev/null 2>&1
 	eend $?
 }
+
