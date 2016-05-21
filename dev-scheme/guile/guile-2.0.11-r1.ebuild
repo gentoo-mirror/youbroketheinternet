@@ -10,7 +10,7 @@ SRC_URI="mirror://gnu/guile/${P}.tar.gz"
 
 LICENSE="LGPL-3+"
 SLOT="0/2.0.11"
-KEYWORDS="*"
+KEYWORDS="~"
 IUSE="debug debug-malloc +deprecated emacs networking nls +regex static +threads"
 
 RESTRICT="mirror"
