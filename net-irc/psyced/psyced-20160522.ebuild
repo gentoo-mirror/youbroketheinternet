@@ -1,6 +1,6 @@
 EAPI=5
 
-DESCRIPTION="Server for Decentralized Messaging and Chat over PSYC, IRC, Jabber/XMPP and more"
+DESCRIPTION="Server for Federated Messaging and Chat over PSYC, IRC, XMPP and more"
 HOMEPAGE="http://www.psyced.org"
 LICENSE="GPL-2"
 EGIT_REPO_URI="git://git.psyced.org/git/psyced"
@@ -14,12 +14,12 @@ case ${PV} in
 	SRC_URI="http://www.${PN}.org/files/${P}.tar.bz2"
     # same as EGIT_COMMIT="e7a194e703b90e47e330dc0e0281b939c741bf75"
 	;;
-"20160424")
-    EGIT_COMMIT="1cc3dc1dc8b060ab70b785e5b33f3e5b1ea99f7e"
+"20160522")
+    EGIT_COMMIT="0120646dd2ed210881f2fa385f2bfe69744e41b6"
 	;;
 *)
 	# last seen change
-    EGIT_COMMIT="fb3748221d86dd612e85562cdab7a708574c0025"
+    EGIT_COMMIT="0120646dd2ed210881f2fa385f2bfe69744e41b6"
 	;;
 esac
 # therefore, for security reasons "9999" doesn't actually
