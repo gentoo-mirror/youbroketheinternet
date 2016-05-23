@@ -98,7 +98,7 @@ src_compile() {
 			einfo "Compiling ${P} with mySQL support."
 			myopts="${myopts} --enable-use-mysql"
 		}
-		use postgresql && {
+		use postgres && {
 			einfo "Compiling ${P} with PostgreSQL support."
 			myopts="${myopts} --enable-use-pgsql"
 		}
