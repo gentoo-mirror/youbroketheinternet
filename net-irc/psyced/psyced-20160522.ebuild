@@ -12,15 +12,15 @@ LICENSE="GPL-2"
 
 # providing actual commit hashes protects against man in
 # the middle attacks on the way to the git repository.  --lynX
-if [[ $PV == "20160211" ]]; then
+if [[ "${PV}" == "20160211" ]]; then
 	inherit user
 	SRC_URI="http://www.${PN}.org/files/${P}.tar.bz2"
 	# same as EGIT_COMMIT="e7a194e703b90e47e330dc0e0281b939c741bf75"
-elif [[ $PV == "20160522" ]]; then
+elif [[ "${PV}" == "20160522" ]]; then
 	inherit git-r3 user
 	EGIT_REPO_URI="git://git.psyced.org/git/psyced"
 	EGIT_COMMIT="0120646dd2ed210881f2fa385f2bfe69744e41b6"
-elif [[ $PV == "9999" ]]; then
+elif [[ "${PV}" == "9999" ]]; then
 	inherit git-r3 user
 	EGIT_REPO_URI="git://git.psyced.org/git/psyced"
 	# last seen change
@@ -56,7 +56,7 @@ pkg_setup() {
 }
 
 src_unpack() {
-	if [[ ${SRC_URI} == "20160211" ]] ; then
+	if [[ ${PV} == "20160211" ]] ; then
 		unpack ${A}
 		cd "${S}"
 		einfo "Unpacking data.tar"
