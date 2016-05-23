@@ -31,7 +31,9 @@ esac
 # to obtain the commit of a particular release, execute
 # 'git tag', 'git reset --hard <tag>', then 'git log'.
 
-SLOT="1"
+# maybe this was historically reasoned, I package this with SLOT 0 now
+#SLOT="1"
+SLOT="0"
 KEYWORDS="x86 ~ppc ~sparc ~amd64"
 IUSE="debug"
 
