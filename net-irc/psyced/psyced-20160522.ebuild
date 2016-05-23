@@ -56,7 +56,7 @@ pkg_setup() {
 }
 
 src_unpack() {
-	if [[ ${SRC_URI} != "" ]] ; then
+	if [[ ${SRC_URI} == "20160211" ]] ; then
 		unpack ${A}
 		cd "${S}"
 		einfo "Unpacking data.tar"
