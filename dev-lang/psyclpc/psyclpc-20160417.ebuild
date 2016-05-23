@@ -12,7 +12,7 @@ HOMEPAGE="http://lpc.psyc.eu/"
 LICENSE="GPL-2"
 EGIT_REPO_URI="git://git.psyced.org/git/psyclpc"
 
-DOCS=( ANNOUNCE CHANGELOG* FAQ HELP )
+DOCS=( ANNOUNCE CHANGELOG-psyclpc FAQ HELP )
 
 inherit git-r3 elisp-common
 
@@ -20,23 +20,23 @@ inherit git-r3 elisp-common
 # the middle attacks on the way to the git repository.  --lynX
 case ${PV} in
 "20121010")
-    EGIT_COMMIT="76c91004b366c6e18a72184f7baaada87cebee35"
-    ;;
+	EGIT_COMMIT="76c91004b366c6e18a72184f7baaada87cebee35"
+	;;
 "20130927")
-    EGIT_COMMIT="727399dbcf4dfc5b94c6b4a6fdc7b46f2c1597c0"
-    ;;
+	EGIT_COMMIT="727399dbcf4dfc5b94c6b4a6fdc7b46f2c1597c0"
+	;;
 "20160211")
-    EGIT_COMMIT="368f85d527f2ab798faa123fe2b47108f341215e"
-    ;;
+	EGIT_COMMIT="368f85d527f2ab798faa123fe2b47108f341215e"
+	;;
 "20160417")
 	# last snapshot available via http
-    SRC_URI="http://www.psyced.org/files/${P}.tar.xz"
+	SRC_URI="http://www.psyced.org/files/${P}.tar.xz"
 	EGIT_REPO_URI=""
-    ;;
+	;;
 *)
-    # last seen change
-    EGIT_COMMIT="b29bdca5a13abfc70c03f0b51aa9df84d491349c"
-    ;;
+	# last seen change
+	EGIT_COMMIT="b29bdca5a13abfc70c03f0b51aa9df84d491349c"
+	;;
 esac
 # therefore, for security reasons "9999" doesn't actually
 # emerge the latest version. please consult 'git log' and
@@ -48,14 +48,14 @@ SLOT="0"
 # haven't checked for real..
 # but there have been non-gentoo ports to all platforms
 KEYWORDS="x86 ~ppc ~amd64"
-IUSE="debug ssl libressl static zlib ldap ipv6 mysql postgresql berkdb vim-syntax emacs"
+IUSE="debug ssl libressl static zlib ldap ipv6 mysql postgres berkdb vim-syntax emacs"
 
-#REQUIRED_USE="?? ( mysql postgresql berkdb ldap )"
+#REQUIRED_USE="?? ( mysql postgres berkdb ldap )"
 RDEPEND="zlib? ( sys-libs/zlib )
 		ldap? ( net-nds/openldap )
-		berkdb? ( sys-libs/db )
+		berkdb? ( sys-libs/db:= )
 		mysql? ( dev-db/mysql )
-		postgresql? ( dev-db/postgresql )
+		postgres? ( dev-db/postgresql:= )
 		ssl? (
 			!libressl? ( dev-libs/openssl:0=   )
 			libressl? ( dev-libs/libressl:0=   )
@@ -68,9 +68,9 @@ DEPEND="${RDEPEND}
 		>=sys-devel/bison-1.875
 		>=sys-devel/gettext-0.12.1"
 
-use debug && {
-		RESTRICT="${RESTRICT} nostrip"
-}
+#use debug && {
+#		RESTRICT="${RESTRICT} nostrip"
+#}
 
 MYS="${S}/src"
 # MYS="${WORKDIR}/${PN}/src"
