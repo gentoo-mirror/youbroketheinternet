@@ -56,7 +56,7 @@ pkg_setup() {
 }
 
 src_unpack() {
-	if [[ ${PV} == "20160211" ]] ; then
+	if [[ "${PV}" == "20160211" ]] ; then
 		unpack ${A}
 		cd "${S}"
 		einfo "Unpacking data.tar"
