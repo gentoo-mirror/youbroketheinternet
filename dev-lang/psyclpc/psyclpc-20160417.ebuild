@@ -14,24 +14,29 @@ LICENSE="GPL-2"
 
 DOCS=( ANNOUNCE CHANGELOG-psyclpc FAQ HELP )
 
-inherit git-r3 elisp-common
+#inherit git-r3 elisp-common
 
 # providing actual commit hashes protects against man in
 # the middle attacks on the way to the git repository.  --lynX
 if [[ $PV == "20121010" ]]; then
+	inherit git-r3 elisp-common
 	EGIT_REPO_URI="git://git.psyced.org/git/psyclpc"
 	EGIT_COMMIT="76c91004b366c6e18a72184f7baaada87cebee35"
 elif [[ $PV == "20130927" ]]; then
+	inherit git-r3 elisp-common
 	EGIT_REPO_URI="git://git.psyced.org/git/psyclpc"
 	EGIT_COMMIT="727399dbcf4dfc5b94c6b4a6fdc7b46f2c1597c0"
 elif [[ $PV == "20160211" ]]; then
+	inherit git-r3 elisp-common
 	EGIT_COMMIT="368f85d527f2ab798faa123fe2b47108f341215e"
 	EGIT_REPO_URI="git://git.psyced.org/git/psyclpc"
 elif [[ $PV == "20160417" ]]; then
+	inherit elisp-common
 	# last snapshot available via http
 	SRC_URI="http://www.psyced.org/files/${P}.tar.xz"
 	#EGIT_REPO_URI=""
 elif [[ $PV == "9999" ]]; then
+	inherit git-r3 elisp-common
 	# last seen change
 	EGIT_REPO_URI="git://git.psyced.org/git/psyclpc"
 	EGIT_COMMIT="b29bdca5a13abfc70c03f0b51aa9df84d491349c"
