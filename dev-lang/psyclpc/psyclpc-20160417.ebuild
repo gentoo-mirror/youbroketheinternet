@@ -18,31 +18,26 @@ inherit git-r3 elisp-common
 
 # providing actual commit hashes protects against man in
 # the middle attacks on the way to the git repository.  --lynX
-case ${PV} in
-"20121010")
+if [[ $PV == "20121010" ]]; then
 	EGIT_COMMIT="76c91004b366c6e18a72184f7baaada87cebee35"
-	;;
-"20130927")
+elif [[ $PV == "20130927" ]]; then
 	EGIT_COMMIT="727399dbcf4dfc5b94c6b4a6fdc7b46f2c1597c0"
-	;;
-"20160211")
+elif [[ $PV == "20160211" ]]; then
 	EGIT_COMMIT="368f85d527f2ab798faa123fe2b47108f341215e"
-	;;
-"20160417")
+elif [[ $PV == "20160417" ]]; then
 	# last snapshot available via http
 	SRC_URI="http://www.psyced.org/files/${P}.tar.xz"
 	EGIT_REPO_URI=""
-	;;
-*)
+elif [[ $PV == "9999" ]]; then
 	# last seen change
 	EGIT_COMMIT="b29bdca5a13abfc70c03f0b51aa9df84d491349c"
-	;;
-esac
-# therefore, for security reasons "9999" doesn't actually
-# emerge the latest version. please consult 'git log' and
-# update the last EGIT_COMMIT to obtain a newer version.
-# to obtain the commit of a particular release, execute
-# 'git tag', 'git reset --hard <tag>', then 'git log'.
+	# therefore, for security reasons "9999" doesn't actually
+	# emerge the latest version. please consult 'git log' and
+	# update the last EGIT_COMMIT to obtain a newer version.
+	# to obtain the commit of a particular release, execute
+	# 'git tag', 'git reset --hard <tag>', then 'git log'.
+#elif [[ $PV == "999999" ]]; then
+fi
 
 SLOT="0"
 # haven't checked for real..
@@ -57,8 +52,8 @@ RDEPEND="zlib? ( sys-libs/zlib )
 		mysql? ( dev-db/mysql )
 		postgres? ( dev-db/postgresql:= )
 		ssl? (
-			!libressl? ( dev-libs/openssl:0=   )
-			libressl? ( dev-libs/libressl:0=   )
+			!libressl? ( dev-libs/openssl:0= )
+			libressl? ( dev-libs/libressl:0= )
 		)
 		vim-syntax? ( >=app-editors/vim-core-7 )
 		emacs? ( virtual/emacs )"
