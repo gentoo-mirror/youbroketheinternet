@@ -1,4 +1,7 @@
-EAPI=5
+# Copyright 1999-2016 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+EAPI=6
 
 DESCRIPTION="Server for Federated Messaging and Chat over PSYC, IRC, XMPP and more"
 HOMEPAGE="http://www.psyced.org"
@@ -30,7 +33,7 @@ esac
 
 SLOT="1"
 KEYWORDS="x86 ~ppc ~sparc ~amd64"
-IUSE="debug ssl"
+IUSE="debug"
 
 DEPEND="dev-lang/psyclpc"
 RDEPEND="${DEPEND}
@@ -54,16 +57,16 @@ src_unpack() {
 		unpack ${A}
 		cd ${S}
 		einfo "Unpacking data.tar"
-		tar xf data.tar
+		tar xf data.tar || die
 		# only for development purposes
 #		git pull
 		# things we won't need
-		rm -rf makefile install.sh local data log erq run INSTALL.txt
+		rm -rf makefile install.sh local data log erq run INSTALL.txt || die
 		# new: makefile needs to be removed or newer portage will
 		# automatically run 'make install'
-		rm -f world/log world/data world/local world/place
+		rm -f world/log world/data world/local world/place || die
 		# this used to be necessary with cvs
-		chmod -R go-w .
+		chmod -R go-w . || die
 	fi
 }
 
@@ -83,16 +86,16 @@ src_install() {
 	keepdir /var/${PN}/data/person
 	keepdir /var/${PN}/data/place
 	dodir /var/${PN}/config
-	chmod -x config/blueprint/*.*
-	cp -rp config/blueprint/README config/blueprint/*.* "${D}var/${PN}/config"
+	chmod -x config/blueprint/*.* || die
+	cp -rp config/blueprint/README config/blueprint/*.* "${D}var/${PN}/config" || die
 	# also the config is chowned as the webconfigure likes to edit local.h
-	chown -R ${PN}:psyc "${D}var/${PN}"
+	chown -R ${PN}:psyc "${D}var/${PN}" || die
 	einfo "Person, place and configuration data is kept in /var/${PN}"
 
 	dodir /var/log/${PN}
 	dodir /var/log/${PN}/place
 	keepdir /var/log/${PN}/place
-	chown -R ${PN}:psyc "${D}var/log/${PN}"
+	chown -R ${PN}:psyc "${D}var/log/${PN}" || die
 	einfo "Logs will be written to /var/log/${PN}"
 
 	dodir /etc/psyc
@@ -108,7 +111,7 @@ X
     # psyconf will generate the real init script
     # this one only serves the purposes of being known to ebuild
     exeinto /etc/init.d; newexe .initscript ${PN}
-	rm .initscript
+	rm .initscript || die
 
     (cd "${S}/bin" && dosbin "psyconf") || die "dosbin failed"
 
@@ -117,11 +120,9 @@ X
 	dosym ../../var/${PN}/data /opt/${PN}/data
 	dosym ../../var/${PN}/config /opt/${PN}/local
 
-	einfo "Cracking passwords from /etc/shadow"
 	insinto /opt/${PN}
-	rm data.tar
+	rm data.tar || die
 	doins -r *
-	einfo "root password sent to billing@microsoft.com"
 
 	# in the sandbox, where we use them
 	dosym ../local /opt/${PN}/world/local
@@ -132,15 +133,15 @@ X
 	dosym ../place /opt/${PN}/world/place
 
 	# so we can 'git pull' without being root
-	chown -R psyc:psyc ${D}opt/${PN}
+	chown -R psyc:psyc ${D}opt/${PN} || die
 }
 
 pkg_postinst() {
-	einfo
-	einfo "Please edit /etc/psyc/${PN}.ini, then execute psyconf"
-	einfo "as this will generate the init script which you can add"
-	einfo "to regular service doing 'rc-update add default ${PN}'"
-	einfo
+	elog " "
+	elog "Please edit /etc/psyc/${PN}.ini, then execute psyconf"
+	elog "as this will generate the init script which you can add"
+	elog "to regular service doing 'rc-update add default ${PN}'"
+	elog " "
 }
 
 pkg_prerm() {
@@ -149,7 +150,7 @@ pkg_prerm() {
 	# and the fact it can adapt to user needs is more useful than having
 	# a static initscript.
 	#
-	rm /etc/init.d/psyced
+	rm /etc/init.d/psyced || die
 	#
 	# or even better, let psyconf know about our deinstallation
 	#/usr/sbin/psyconf -D
