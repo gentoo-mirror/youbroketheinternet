@@ -11,7 +11,7 @@ EGIT_REPO_URI="git://git.psyced.org/git/psyced"
 # providing actual commit hashes protects against man in
 # the middle attacks on the way to the git repository --
 # then again, apparently a 'git fsck' is necessary to
-# detect manipulated repositories (MITM etc)     --lynX
+# detect manipulated repositories			--lynX
 case ${PV} in
 "20160211")
 	# this version misses a line in proto.h and doesn't run:
