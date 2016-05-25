@@ -71,6 +71,10 @@ Metadata protecting Instant Messenger tool operating
 peer-to-peer over Tor Hidden Services without using
 servers.
 
+== net-im/toxic ==
+
+Person-to-person encrypted telephony application with CLI-UI.
+
 == net-im/utox ==
 
 Person-to-person encrypted telephony application.

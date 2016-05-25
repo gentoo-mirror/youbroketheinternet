@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer>
+		<email>infrastructure@tox.chat</email>
+		<name>The Tox Project</name>
+	</maintainer>
+	<use>
+		<flag name="av">Enable audio support</flag>
+		<flag name="libnotify">Enable desktop notification support.</flag>
+		<flag name="sound-notify">Adds support for sound notifications.</flag>
+		<flag name="X">Adds support for X11</flag>
+
+	</use>
+</pkgmetadata>
