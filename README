@@ -135,6 +135,21 @@ web browser in existence as of 2015.
 
 I don't use this currently.
 
+== www-plugins/certpatrol ==
+
+Torbrowser/Firefox add-on that monitors HTTPS certificates for
+unexpected changes and warns of man-in-the-middle attacks.
+
+== www-plugins/cfc ==
+
+Torbrowser/Firefox add-on that circumvents Cloudflare CAPTCHAs
+and other nuisance of the broken web.
+
+== www-plugins/exif_viewer ==
+
+Torbrowser/Firefox add-on to inspect EXIF image metadata while browsing
+the web.
+
 == www-servers/onionshare ==
 
 One more great ebuild from Poncho.
