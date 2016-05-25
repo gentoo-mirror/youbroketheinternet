@@ -139,4 +139,3 @@ pkg_postinst() {
 pkg_postrm() {
 		use emacs && elisp-site-regen
 }
-
