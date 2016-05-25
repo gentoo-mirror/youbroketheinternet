@@ -42,6 +42,16 @@ Qt library for QR code generation and decoding.
 Guix needs newer guile to compile, portage needs to fix
 bug #355355 one day.
 
+== eclass/git-r3 ==
+
+Added 'git fsck' after fetch to protect from MITM attacks
+during git network transactions. This is used by ebuilds
+that compile from git rather than from tarballs.
+
+== eclass/mozilla-addon ==
+
+Used by the Torbrowser add-ons below.
+
 == media-libs/vid-stab ==
 
 Remove camera shaking from shaken videos. A plug-in for
@@ -49,16 +59,26 @@ kdenlive. Simply recompile kdenlive after installing this.
 
 == media-video/miro ==
 
-== net-im/psyced ==
-
-Server for federated messaging and chat using PSYC, IRC,
-XMPP and other protocols.
+Podcast TV.
 
 == net-im/qtox ==
 
+Person-to-person encrypted telephony application.
+
 == net-im/ricochet ==
 
+Metadata protecting Instant Messenger tool operating
+peer-to-peer over Tor Hidden Services without using
+servers.
+
 == net-im/utox ==
+
+Person-to-person encrypted telephony application.
+
+== net-irc/psyced ==
+
+Server for federated messaging and chat using PSYC, IRC,
+XMPP and other protocols.
 
 == net-libs/gnutls ==
 
