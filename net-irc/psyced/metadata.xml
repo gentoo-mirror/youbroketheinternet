@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<maintainer type="person">
+	<email>psyc://loupsycedyglgamf.onion/~lynX</email>
+	<name>carlo von lynX</name>
+</maintainer>
+<longdescription>
+psyced is a multi-protocol chat and messaging daemon that federates
+over XMPP and PSYC while accepting IRC, PSYC and XMPP clients.
+Compared to regular IRC servers it comes with programmable channels
+which make bots unnecessary, it comes with authenticated users and
+persistency of conversations, making IRC services and bouncers
+unnecessary. By disallowing the /mode feature of IRC it reduces the
+risk of channel warfare. It also provides a built-in HTTP server
+and many other experimental features such as NNTP, RSS, WAP.
+</longdescription>
+</pkgmetadata>

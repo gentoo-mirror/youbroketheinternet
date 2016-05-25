@@ -43,7 +43,7 @@ esac
 
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
-IUSE="debug"
+# IUSE="debug"
 
 DEPEND="dev-lang/psyclpc"
 RDEPEND="${DEPEND}
@@ -62,7 +62,6 @@ pkg_setup() {
 src_unpack() {
 	if [[ "${SRC_URI}" != "" ]] ; then
 		unpack ${A}
-		cd "${S}"
 		einfo "Unpacking data.tar"
 		tar xf data.tar || die
 		# only for development purposes
@@ -78,8 +77,6 @@ src_unpack() {
 }
 
 src_install() {
-	cd "${S}"
-
 	dodir /opt/${PN}
 	einfo "The ${PN} sandbox is kept in /opt/${PN}/world"
 
