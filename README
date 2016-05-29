@@ -42,6 +42,16 @@ Qt library for QR code generation and decoding.
 Guix needs newer guile to compile, portage needs to fix
 bug #355355 one day.
 
+== eclass/git-r3 ==
+
+Added 'git fsck' after fetch to protect from MITM attacks
+during git network transactions. This is used by ebuilds
+that compile from git rather than from tarballs.
+
+== eclass/mozilla-addon ==
+
+Used by the Torbrowser add-ons below.
+
 == media-libs/vid-stab ==
 
 Remove camera shaking from shaken videos. A plug-in for
@@ -49,16 +59,30 @@ kdenlive. Simply recompile kdenlive after installing this.
 
 == media-video/miro ==
 
-== net-im/psyced ==
-
-Server for federated messaging and chat using PSYC, IRC,
-XMPP and other protocols.
+Podcast TV.
 
 == net-im/qtox ==
 
+Person-to-person encrypted telephony application.
+
 == net-im/ricochet ==
 
+Metadata protecting Instant Messenger tool operating
+peer-to-peer over Tor Hidden Services without using
+servers.
+
+== net-im/toxic ==
+
+Person-to-person encrypted telephony application with CLI-UI.
+
 == net-im/utox ==
+
+Person-to-person encrypted telephony application.
+
+== net-irc/psyced ==
+
+Server for federated messaging and chat using PSYC, IRC,
+XMPP and other protocols.
 
 == net-libs/gnutls ==
 
@@ -134,6 +158,21 @@ web browser in existence as of 2015.
 == www-client/torbrowser-launcher ==
 
 I don't use this currently.
+
+== www-plugins/certpatrol ==
+
+Torbrowser/Firefox add-on that monitors HTTPS certificates for
+unexpected changes and warns of man-in-the-middle attacks.
+
+== www-plugins/cfc ==
+
+Torbrowser/Firefox add-on that circumvents Cloudflare CAPTCHAs
+and other nuisance of the broken web.
+
+== www-plugins/exif_viewer ==
+
+Torbrowser/Firefox add-on to inspect EXIF image metadata while browsing
+the web.
 
 == www-servers/onionshare ==
 
