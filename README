@@ -2,7 +2,7 @@ youbroketheinternet-overlay
 ===========================
 
 We produce original ebuilds for some items but we also borrow and
-ebuilds from other sources and republish them via a secure authen-
+build from other sources, then republish them via a secure authen-
 tication medium, a Tor onion. Since all of git, rsync and https 
 protocols can be man in the middled, using a self-authenticating 
 onion is the way to go. Makes you nervous? Why.. this is not about
@@ -10,7 +10,8 @@ anonymity. All the known problems related to onion services are
 about de-anonymization. There are no known cases of authenticity 
 failure, which is what we expect from this. So we copy other
 people's ebuilds because we don't want to integrate insecure
-overlays into our operating system build procedures.
+overlays into our operating system build procedures. So, if your
+ebuild is in here, it's an honor for us to be hosting a copy.
 
 Please drop by 
 	    irc://loupsycedyglgamf.onion:67/welcome
