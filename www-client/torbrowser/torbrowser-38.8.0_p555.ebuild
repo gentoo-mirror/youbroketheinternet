@@ -39,9 +39,7 @@ EGIT_REPO_URI="https://git.torproject.org/tor-browser.git"
 EGIT_CLONE_TYPE="shallow"
 BASE_SRC_URI="https://dist.torproject.org/${PN}/${TOR_PV}"
 ARCHIVE_SRC_URI="https://archive.torproject.org/tor-package-archive/${PN}/${TOR_PV}"
-# custom patch of SRC_URI  --lynX
-SRC_URI="https://gitweb.torproject.org/tor-browser.git/snapshot/${PATCH}.tar.xz -> ${PATCH}.tar.xz
-	http://dev.gentoo.org/~anarchy/mozilla/patchsets/${PATCH}.tar.xz
+SRC_URI="http://dev.gentoo.org/~anarchy/mozilla/patchsets/${PATCH}.tar.xz
 	https://dev.gentoo.org/~axs/mozilla/patchsets/${PATCH}.tar.xz
 	https://dev.gentoo.org/~polynomial-c/mozilla/patchsets/${PATCH}.tar.xz
 	x86? (
@@ -102,14 +100,14 @@ src_prepare() {
 	epatch "${WORKDIR}/firefox"
 
 	# Revert "Change the default Firefox profile directory to be TBB-relative"
-	epatch "${FILESDIR}/5.0-Change_the_default_Firefox_profile_directory_to_be_TBB-relative.patch"
+	epatch "${FILESDIR}/${PN}-38.8.0-Change_the_default_Firefox_profile_directory.patch"
 
 	# FIXME: https://trac.torproject.org/projects/tor/ticket/10925
 	# Except lightspark-plugin and freshplayer-plugin from blocklist
-	epatch "${FILESDIR}/${PN}-38.2.0-allow-lightspark-and-freshplayerplugin.patch"
+	epatch "${FILESDIR}/${PN}-38.8.0-allow-lightspark-and-freshplayerplugin.patch"
 
 	# FIXME: prevent warnings in bundled nss
-	epatch "${FILESDIR}/${PN}-38.2.0-nss-fixup-warnings.patch"
+	epatch "${FILESDIR}/${PN}-38.8.0-nss-fixup-warnings.patch"
 
 	# Allow user to apply any additional patches without modifing ebuild
 	epatch_user
