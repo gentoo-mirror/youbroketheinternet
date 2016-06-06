@@ -12,13 +12,14 @@
 	</use>
 	<upstream>
 		<remote-id type="github">hsleisink/hiawatha</remote-id>
-	</upstream>
 	<maintainer type="person">
-		<email>ng0@n0.is</email>
-		<name>Nils Gillmann</name>
-	</maintainer>
-	<maintainer type="project">
-		<email>proxy-maint@gentoo.org</email>
-		<name>Proxy Maintainers</name>
-	</maintainer>
+	        <email>ng0@n0.is</email>
+											<name>Nils Gillmann</name>
+													</maintainer>
+															<maintainer type="project">
+																				<email>proxy-maint@gentoo.org</email>
+																								<name>Proxy Maintainers</name>
+																										</maintainer>
+
+	</upstream>
 </pkgmetadata>
