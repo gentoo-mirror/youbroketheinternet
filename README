@@ -3,17 +3,17 @@ youbroketheinternet-overlay
 
 We produce original ebuilds for some items but we also borrow and
 build from other sources, then republish them via a secure authen-
-tication medium, a Tor onion. Since all of git, rsync and https 
-protocols can be man in the middled, using a self-authenticating 
+tication medium, a Tor onion. Since all of git, rsync and https
+protocols can be man in the middled, using a self-authenticating
 onion is the way to go. Makes you nervous? Why.. this is not about
-anonymity. All the known problems related to onion services are 
-about de-anonymization. There are no known cases of authenticity 
+anonymity. All the known problems related to onion services are
+about de-anonymization. There are no known cases of authenticity
 failure, which is what we expect from this. So we copy other
 people's ebuilds because we don't want to integrate insecure
 overlays into our operating system build procedures. So, if your
 ebuild is in here, it's an honor for us to be hosting a copy.
 
-Please drop by 
+Please drop by
 	    irc://loupsycedyglgamf.onion:67/welcome
 	 or http://loupsycedyglgamf.onion/PSYC/
 	 or torify telnet loupsycedyglgamf.onion
@@ -55,6 +55,15 @@ that compile from git rather than from tarballs.
 == eclass/mozilla-addon ==
 
 Used by the Torbrowser add-ons below.
+Note: Currently you have to symlink the extensions manualy into
+your `$HOME/.mozilla/{torbrowser,firefox}/$profile/extensions/`
+folder, then if you run into problems (with cfc for example)
+you have to disable `xpinstall.signatures.required` in
+about:config (Firefox Config), and maybe even add the
+extension to the file
+`$HOME/.mozilla/{torbrowser,firefox}/$profile/extensions.ini`
+
+We'll adjust this eclass sooner or later.
 
 == media-libs/vid-stab ==
 
@@ -189,4 +198,3 @@ One more great ebuild from Poncho.
 == x11-misc/interrobang ==
 
 A tiny launcher menu packing a big bang (syntax).
-
