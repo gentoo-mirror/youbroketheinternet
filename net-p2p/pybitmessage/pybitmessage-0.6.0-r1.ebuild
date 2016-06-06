@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
+# Commented all qt5 occurences until upstream is patched.
+
 EAPI=5
 
 PYTHON_COMPAT=( python2_7 )
@@ -16,9 +18,10 @@ SRC_URI="https://github.com/Bitmessage/PyBitmessage/archive/v${PV}.tar.gz -> ${P
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="ssl libressl qt4 qt5"
-REQUIRED_USE="${PYTHON_REQUIRED_USE}
-	^^ ( qt4 qt5 )"
+IUSE="ssl libressl +qt4"
+#qt5
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+#	^^ ( qt4 qt5 )"
 
 DEPEND="${PYTHON_DEPS}"
 RDEPEND="${DEPEND}
@@ -26,8 +29,8 @@ RDEPEND="${DEPEND}
 		!libressl? ( dev-libs/openssl:0[-bindist] )
 		libressl? ( dev-libs/libressl )
 	)
-	qt4? ( dev-python/PyQt4[${PYTHON_USEDEP}] )
-	qt5? ( dev-python/PyQt5[${PYTHON_USEDEP}] )"
+	qt4? ( dev-python/PyQt4[${PYTHON_USEDEP}] )"
+#	qt5? ( dev-python/PyQt5[${PYTHON_USEDEP}] )"
 
 S=${WORKDIR}/PyBitmessage-${PV}
 
