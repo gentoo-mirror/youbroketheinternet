@@ -55,7 +55,8 @@ that compile from git rather than from tarballs.
 == eclass/mozilla-addon ==
 
 Used by the Torbrowser add-ons below.
-Note: Currently you have to symlink the extensions manualy into
+
+Note: Currently you have to symlink the extensions manually into
 your `$HOME/.mozilla/{torbrowser,firefox}/$profile/extensions/`
 folder, then if you run into problems (with cfc for example)
 you have to disable `xpinstall.signatures.required` in
