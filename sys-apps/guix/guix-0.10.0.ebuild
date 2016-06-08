@@ -6,14 +6,14 @@ EAPI=5
 inherit user eutils
 
 DESCRIPTION="The Guix Package Manager."
-HOMEPAGE="https://guixsd.org"
+HOMEPAGE="https://www.gnu.org/s/guix"
 SRC_URI="mirror://gnu-alpha/${PN}/${P}.tar.gz"
-RESTRICT="mirror"
+#RESTRICT="mirror"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86 ~mips ~arm"
-IUSE=""
+IUSE="test"
 
 #FIXME: gcc's g++ with support for the c++11 standard ?
 #FIXME: package dev-scheme/guile-json
@@ -24,8 +24,8 @@ IUSE=""
 #        celebrating its 6th anniversary this year.
 #        You will also need to use gnutls from this overlay,
 #        which links to guile here.
-DEPEND=">=dev-scheme/guile-2.0.11[networking]
-		dev-libs/libgcrypt
+DEPEND=">=dev-scheme/guile-2.0.11-r99[networking]
+	dev-libs/libgcrypt
 	>=dev-db/sqlite-3.0
 	app-arch/bzip2
 	sys-devel/gcc
@@ -75,17 +75,17 @@ src_install() {
 #FIXME: Either Shepperd on Gentoo or Shepperd to OpenRC import.
 # FIXME: use upstream directories, not this mess we have now.
 pkg_preinst() {
-		enewgroup guixbuild
-	enewuser guixbuilder01 -1 -1 -1 guixbuild
-	enewuser guixbuilder02 -1 -1 -1 guixbuild
-	enewuser guixbuilder03 -1 -1 -1 guixbuild
-	enewuser guixbuilder04 -1 -1 -1 guixbuild
-	enewuser guixbuilder05 -1 -1 -1 guixbuild
-	enewuser guixbuilder06 -1 -1 -1 guixbuild
-	enewuser guixbuilder07 -1 -1 -1 guixbuild
-	enewuser guixbuilder08 -1 -1 -1 guixbuild
-	enewuser guixbuilder09 -1 -1 -1 guixbuild
-	enewuser guixbuilder10 -1 -1 -1 guixbuild
+	enewgroup guixbuild
+	enewuser guixbuilder01 -1 /sbin/nologin "/var/empty" guixbuild
+	enewuser guixbuilder02 -1 /sbin/nologin "/var/empty" guixbuild
+	enewuser guixbuilder03 -1 /sbin/nologin "/var/empty" guixbuild
+	enewuser guixbuilder04 -1 /sbin/nologin "/var/empty" guixbuild
+	enewuser guixbuilder05 -1 /sbin/nologin "/var/empty" guixbuild
+	enewuser guixbuilder06 -1 /sbin/nologin "/var/empty" guixbuild
+	enewuser guixbuilder07 -1 /sbin/nologin "/var/empty" guixbuild
+	enewuser guixbuilder08 -1 /sbin/nologin "/var/empty" guixbuild
+	enewuser guixbuilder09 -1 /sbin/nologin "/var/empty" guixbuild
+	enewuser guixbuilder10 -1 /sbin/nologin "/var/empty" guixbuild
 }
 
 # To use substitutes from hydra.gnu.org or one of its mirrors (see Substitutes), authorize them:
