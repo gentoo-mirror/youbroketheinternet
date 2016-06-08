@@ -68,13 +68,15 @@ src_test() {
 
 src_install() {
 	emake install DESTDIR="${D}"
-	insinto /etc/init.d
-	"${FILESDIR}"/guix
+	#insinto /etc/init.d
+	#"${FILESDIR}"/guix
+	newinitd "${FILESDIR}"/guix guix
+	keepdir /run/guix
+	fowners :guixbuild /run/guix
 }
 
 #FIXME: Merge OpenRC startup file into guix master
 #FIXME: Either Shepperd on Gentoo or Shepperd to OpenRC import.
-# FIXME: use upstream directories, not this mess we have now.
 pkg_preinst() {
 	enewgroup guixbuild
 	enewuser guixbuilder01 -1 /sbin/nologin "/var/empty" guixbuild
