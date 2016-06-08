@@ -14,8 +14,7 @@
 		<remote-id type="github">hsleisink/hiawatha</remote-id>
 	</upstream>
 	<maintainer type="person">
-		<email>ng0@we.make.package.n0.is</email>
-		<name>Nils Gillmann</name>
+		<name>ng0</name>
 	</maintainer>
 	<maintainer type="project">
 		<email>proxy-maint@gentoo.org</email>

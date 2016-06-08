@@ -1,5 +1,6 @@
 # Distributed under the terms of the GNU General Public License v3
-# author: ng0 <Nils Gillmann> <niasterisk@grrlz.net>
+# author: <Nils Gillmann> <--removed-->
+# further changes by ng0
 
 EAPI=5
 
@@ -8,7 +9,7 @@ inherit user eutils
 DESCRIPTION="The Guix Package Manager, binary version."
 HOMEPAGE="https://guixsd.org"
 SRC_URI="amd64? ( mirror://gnu-alpha/guix/${P}ary.x86_64-linux.tar.xz )
-         x86? ( mirror://gnu-alpha/guix/${P}ary.i686-linux.tar.xz )
+		 x86? ( mirror://gnu-alpha/guix/${P}ary.i686-linux.tar.xz )
 		 mips? ( mirror://gnu-alpha/guix/${P}ary.mips64el-linux.tar.xz )
 		 arm? ( mirror://gnu-alpha/guix/${P}ary.armhf-linux.tar.xz )"
 RESTRICT="mirror"
@@ -41,8 +42,8 @@ S="${WORKDIR}"
 # this finishes root level setup rest see postsetup notes
 
 DEPEND="!sys-apps/guix
-        >=dev-scheme/guile-2.0.11[networking]
-        dev-libs/libgcrypt
+		>=dev-scheme/guile-2.0.11[networking]
+		dev-libs/libgcrypt
 	>=dev-db/sqlite-3.0
 	app-arch/bzip2
 	sys-devel/gcc
@@ -91,7 +92,7 @@ src_install() {
 }
 
 pkg_preinst() {
-        enewgroup guixbuild
+		enewgroup guixbuild
 	enewuser guixbuilder01 -1 -1 -1 guixbuild
 	enewuser guixbuilder02 -1 -1 -1 guixbuild
 	enewuser guixbuilder03 -1 -1 -1 guixbuild

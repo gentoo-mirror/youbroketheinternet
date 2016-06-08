@@ -1,5 +1,6 @@
 # Distributed under the terms of the GNU General Public License v3
-# author: ng0 <Nils Gillmann> <niasterisk@grrlz.net>
+# author: <Nils Gillmann> <--removed-->
+# further changes by ng0
 
 EAPI=5
 inherit user eutils
@@ -24,7 +25,7 @@ IUSE=""
 #        You will also need to use gnutls from this overlay,
 #        which links to guile here.
 DEPEND=">=dev-scheme/guile-2.0.11[networking]
-        dev-libs/libgcrypt
+		dev-libs/libgcrypt
 	>=dev-db/sqlite-3.0
 	app-arch/bzip2
 	sys-devel/gcc
@@ -74,7 +75,7 @@ src_install() {
 #FIXME: Either Shepperd on Gentoo or Shepperd to OpenRC import.
 # FIXME: use upstream directories, not this mess we have now.
 pkg_preinst() {
-        enewgroup guixbuild
+		enewgroup guixbuild
 	enewuser guixbuilder01 -1 -1 -1 guixbuild
 	enewuser guixbuilder02 -1 -1 -1 guixbuild
 	enewuser guixbuilder03 -1 -1 -1 guixbuild
