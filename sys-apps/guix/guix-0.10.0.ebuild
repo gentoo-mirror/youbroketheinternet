@@ -3,12 +3,13 @@
 # further changes by ng0
 
 EAPI=5
-inherit user eutils
+inherit user eutils autotools
 
 DESCRIPTION="The Guix Package Manager."
 HOMEPAGE="https://www.gnu.org/s/guix"
 SRC_URI="mirror://gnu-alpha/${PN}/${P}.tar.gz"
 #RESTRICT="mirror"
+RESTRICT="bincheck"
 
 LICENSE="GPL-3"
 SLOT="0"
