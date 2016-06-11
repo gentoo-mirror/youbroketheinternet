@@ -9,6 +9,15 @@
 # @DESCRIPTION:
 # Third generation eclass for easing maintenance of live ebuilds using
 # git as remote repository.
+#
+# Patched by symlynX to allow for gits via Tor. Why Tor? Because
+# unlike HTTPS it provides end-to-end authenticity which is not
+# susceptible to man-in-the-middle attacks, so all gits should
+# migrate to Tor, cjdns or gnunet-vpn. But the latter two do
+# not need custom changes to this file to do their job.
+#
+# @FIXME: Should we automatically define EGIT_SOCKS="torsocks"
+#		  when we see that /etc/tor/torsocks.conf exists?
 
 case "${EAPI:-0}" in
 	0|1|2|3|4|5|6)
@@ -539,7 +548,18 @@ git-r3_fetch() {
 	for r in "${repos[@]}"; do
 		einfo "Fetching \e[1m${r}\e[22m ..."
 
-		local fetch_command=( git fetch "${r}" )
+		if [[ ${r} == https?://* ]]; then
+			# if we're not using git protocol, web proxy takes care of things
+			EGIT_SOCKS = ""
+		elif [[ ! ${EGIT_SOCKS} ]] && [[ ${r} == git://*.onion/* ]]; then
+			if ROOT=/ has_version 'net-proxy/torsocks'; then
+				EGIT_SOCKS="torsocks"
+			else
+				die "Properly configured net-proxy/torsocks required to fetch git from onion."
+			fi
+		fi
+
+		local fetch_command=( ${EGIT_SOCKS} git fetch "${r}" )
 		local clone_type=${EGIT_CLONE_TYPE}
 
 		if [[ ${r} == https://* ]] && ! ROOT=/ has_version 'dev-vcs/git[curl]'; then
@@ -592,7 +612,7 @@ git-r3_fetch() {
 			else
 				# tag or commit id...
 				# let ls-remote figure it out
-				local tagref=$(git ls-remote "${r}" "refs/tags/${remote_ref}")
+				local tagref=$(${EGIT_SOCKS} git ls-remote "${r}" "refs/tags/${remote_ref}")
 
 				# if it was a tag, ls-remote obtained a hash
 				if [[ ${tagref} ]]; then
@@ -662,7 +682,7 @@ git-r3_fetch() {
 					# find out what branch we fetched as HEAD
 					local head_branch=$(_git-r3_find_head \
 						refs/git-r3/HEAD \
-						< <(git ls-remote --heads "${r}" || die))
+						< <(${EGIT_SOCKS} git ls-remote --heads "${r}" || die))
 
 					# and move it to its regular place
 					git update-ref --no-deref "${head_branch}" \
@@ -673,12 +693,9 @@ git-r3_fetch() {
 				fi
 			fi
 
-			# consistency check, in case we got man-in-the-middle't  --lynX
-			git fsck
-
 			# now let's see what the user wants from us
 			local full_remote_ref=$(
-				git rev-parse --verify --symbolic-full-name "${remote_ref}"
+				${EGIT_SOCKS} git rev-parse --verify --symbolic-full-name "${remote_ref}"
 			)
 
 			if [[ ${full_remote_ref} ]]; then
@@ -704,6 +721,9 @@ git-r3_fetch() {
 	fi
 	[[ ${success} ]] || die "Unable to fetch from any of EGIT_REPO_URI"
 
+	# consistency check, in case we got man-in-the-middle't  --lynX
+	git fsck
+
 	# submodules can reference commits in any branch
 	# always use the 'mirror' mode to accomodate that, bug #503332
 	local EGIT_CLONE_TYPE=mirror
@@ -712,7 +732,7 @@ git-r3_fetch() {
 	if git cat-file -e "${local_ref}":.gitmodules &>/dev/null; then
 		local submodules
 		_git-r3_set_submodules \
-			"$(git cat-file -p "${local_ref}":.gitmodules || die)"
+			"$(${EGIT_SOCKS} git cat-file -p "${local_ref}":.gitmodules || die)"
 
 		while [[ ${submodules[@]} ]]; do
 			local subname=${submodules[0]}
@@ -724,7 +744,7 @@ git-r3_fetch() {
 			# note: git cat-file does not work for submodules
 			if [[ $(git ls-tree -d "${local_ref}" "${path}") ]]
 			then
-				local commit=$(git rev-parse "${local_ref}:${path}" || die)
+				local commit=$(${EGIT_SOCKS} git rev-parse "${local_ref}:${path}" || die)
 
 				if [[ ! ${commit} ]]; then
 					die "Unable to get commit id for submodule ${subname}"

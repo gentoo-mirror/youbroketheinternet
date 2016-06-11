@@ -27,6 +27,19 @@ patch or make your copy of this git available on your own onion.
 Github is not a safe infrastructure for a GNU Internet.
 
 
+=== dev-perl/Net-PSYC ===
+
+Perl implementation of the PSYC protocol together with
+
+- git2psyc: git hook to deliver PSYC notifications on commit
+- psycion: curses based PSYC client
+- psycmp3: PSYC-controllable console mp3 player
+- remotor: text-based remote control for Tor routers
+- syslog2psyc: forwarding of syslog events via PSYC
+
+and several more nifty tools for automation of 
+notification and messaging.
+
 == dev-lang/psyclpc ==
 
 LPC bytecode interpreter used by psyced. Works also for
@@ -52,24 +65,32 @@ Added 'git fsck' after fetch to protect from MITM attacks
 during git network transactions. This is used by ebuilds
 that compile from git rather than from tarballs.
 
+Added support for fetching gits from onions using torsocks.
+You can generally fetch gits via Tor if you define
+	EGIT_SOCKS="torsocks"
+in your env.
+
 == eclass/mozilla-addon ==
 
-Used by the Torbrowser add-ons below.
+Used by the Torbrowser add-ons below. You need to define
+the "target_torbrowser" USE flag if you want the add-ons
+to be installed directly into your browser.
 
-Note: Currently you have to symlink the extensions manually into
-your `$HOME/.mozilla/{torbrowser,firefox}/$profile/extensions/`
-folder, then if you run into problems (with cfc for example)
-you have to disable `xpinstall.signatures.required` in
-about:config (Firefox Config), and maybe even add the
-extension to the file
-`$HOME/.mozilla/{torbrowser,firefox}/$profile/extensions.ini`
+You can also symlink the extensions manually into your
+`$HOME/.mozilla/{torbrowser,firefox}/$profile/extensions/`
+folder.
 
-We'll adjust this eclass sooner or later.
+With the newer versions of Firefox and Torbrowser you
+even have to disable `xpinstall.signatures.required` in
+about:config. Thank you Firefox for being paranoid against
+your own hard disk.
 
 == media-libs/vid-stab ==
 
 Remove camera shaking from shaken videos. A plug-in for
 kdenlive. Simply recompile kdenlive after installing this.
+kdenlive should have it in its dependencies, but in fact
+the kdenlive ebuild is missing several dependencies.
 
 == media-video/miro ==
 
