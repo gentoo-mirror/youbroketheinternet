@@ -13,27 +13,30 @@ EGIT_REPO_URI="git://git.psyced.org/git/psyced"
 # then again, apparently a 'git fsck' is necessary to
 # detect manipulated repositories			--lynX
 case ${PV} in
+	# snapshot-based versions first:
 "20160211")
 	# this version misses a line in proto.h and doesn't run:
+	# same as EGIT_COMMIT="e7a194e703b90e47e330dc0e0281b939c741bf75"
+"20160525")
+	# same as EGIT_COMMIT="498f12819bfe6ef54e4eeabae8017389f433860a"
+	# or git tag psyced-20160525
 	inherit user
 	SRC_URI="http://www.${PN}.org/files/${P}.tar.bz2"
-	# same as EGIT_COMMIT="e7a194e703b90e47e330dc0e0281b939c741bf75"
 	;;
+	# git-based versions:
 "20160522")
 	inherit git-r3 user
 	EGIT_COMMIT="0120646dd2ed210881f2fa385f2bfe69744e41b6"
 	;;
-"20160525")
-	inherit user
-	SRC_URI="http://www.${PN}.org/files/${P}.tar.bz2"
-	# same as EGIT_COMMIT="498f12819bfe6ef54e4eeabae8017389f433860a"
-	# or git tag psyced-20160525
+"20160612")
+	inherit git-r3 user
+	EGIT_COMMIT="952d09e5f2fb0008b456f672a8b92fc928ef73aa"
 	;;
 *)
 	inherit git-r3 user
 	# last seen change
-	EGIT_COMMIT="498f12819bfe6ef54e4eeabae8017389f433860a"
-	# therefore, for security reasons "9999" doesn't actually
+	EGIT_COMMIT="952d09e5f2fb0008b456f672a8b92fc928ef73aa"
+	# therefore, for security reasons "9999" doesn't necessarily
 	# emerge the latest version. please consult 'git log' and
 	# update the last EGIT_COMMIT to obtain a newer version.
 	# to obtain the commit of a particular release, execute
