@@ -92,6 +92,12 @@ kdenlive. Simply recompile kdenlive after installing this.
 kdenlive should have it in its dependencies, but in fact
 the kdenlive ebuild is missing several dependencies.
 
+== media-sound/rxaudio-bin ==
+
+A *shareware* from 1998: A remote controllable MP3 engine
+used by psycmp3 from dev-perl/Net-PSYC. Source code was never
+released. Original website has disappeared. But it works.
+
 == media-video/miro ==
 
 Podcast TV.

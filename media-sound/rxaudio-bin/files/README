@@ -1,0 +1,25 @@
+rxaudio: My only little guilty pleasure.
+
+The rxaudio binary is originally from around 1997. It has 
+served a reliable service on my systems ever since and is
+used by psycmp3 to fulfil the job of a flexible command
+line mp3 player.
+
+I wouldn't mind having psycmp3 use a free software API
+but somebody has to do the porting. Last time I checked
+the free APIs weren't as advanced and flexible as the
+xaudio API from back then, so some functionality would
+disappear.
+
+It is extremily unlikely that the small business that 
+released the xaudio package back then implanted any
+backdoors, so I don't worry about this little imperfect
+dependency here.
+
+Instructions on how to comply with the Shareware license
+is archived at...
+
+https://web.archive.org/web/19980629121122/http://www.xaudio.com/register.html
+
+Good luck!
+
