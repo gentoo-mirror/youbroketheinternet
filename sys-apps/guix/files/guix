@@ -2,13 +2,6 @@
 # Copyright 2016 the youbroketheinternet-overlay team
 # Distributed under the terms of the GNU General Public License v2 or later
 
-# Status: !!FIXME!!
-# Reasons:
-# Hangs ~10-15 minutes on shutdown/reboot of system.
-# Might or might not produce weird things in guix subsystem
-# Does not go into background when you run it not on boot,
-# ie: blocks the terminal.
-
 PIDFILE=/var/run/guix/guix-daemon.pid
 GRACEFUL_TIMEOUT=${GRACEFUL_TIMEOUT:-60}
 #extra_commands="checkconfig"
@@ -37,7 +30,7 @@ depend() {
 start() {
 	checkpath -d -m 0755 -o :guixbuild /var/run/guix
 	ebegin "Starting Guix"
-	start-stop-daemon --start --pidfile "${PIDFILE}" --quiet --exec /usr/bin/guix-daemon -- --build-users-group=guixbuild --listen=/var/lib/guix/daemon-socket/socket > /dev/null 2>&1
+	start-stop-daemon --start --pidfile "${PIDFILE}" --quiet --exec /usr/bin/guix-daemon -- --build-users-group=guixbuild --listen=/var/lib/guix/daemon-socket/socket --substitute-urls='https://mirror.hydra.gnu.or https://hydra.gnu.org' > /dev/null 2>&1
 	eend $?
 }
 
@@ -59,7 +52,11 @@ start() {
 
 stop() {
        ebegin "Stopping Guix"
-       start-stop-daemon --stop --pidfile "${PIDFILE}" --exec /usr/bin/guix-daemon
+       #start-stop-daemon --stop --pidfile "${PIDFILE}" --exec /usr/bin/guix-daemon
+       start-stop-daemon --stop --signal QUIT --pidfile "${PIDFILE}"
+       sleep 1
+       killall guix-daemon
+       sleep 1
        eend $?
 }
 
