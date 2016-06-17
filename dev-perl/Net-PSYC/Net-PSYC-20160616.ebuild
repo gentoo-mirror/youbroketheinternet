@@ -21,18 +21,15 @@ inherit git-r3 user
 # then again, apparently a 'git fsck' is necessary to
 # detect manipulated repositories			--lynX
 case ${PV} in
-"20160610")
-	EGIT_COMMIT="482ac3b9994de468b61646b25f08ed2244540690"
-	;;
-"20160611")
-	EGIT_COMMIT="e99091979ef3bd71050865d18d54d57367015d7b"
-	;;
 "20160616")
 	EGIT_COMMIT="a2108a9e2722413d2841349055401363d741e0a6"
 	;;
+"20160617")
+	EGIT_COMMIT="e39508daad92f49017b10f61009821dd4234fdbc"
+	;;
 *)
 	# last seen change
-	EGIT_COMMIT="a2108a9e2722413d2841349055401363d741e0a6"
+	EGIT_COMMIT="e39508daad92f49017b10f61009821dd4234fdbc"
 	# therefore, for security reasons "9999" doesn't actually
 	# emerge the latest version. please consult 'git log' and
 	# update the last EGIT_COMMIT to obtain a newer version.
@@ -42,8 +39,10 @@ case ${PV} in
 esac
 
 # some perl library items used by some scripts.. FIXME
-DEPEND="dev-lang/perl"
-# also an optional dependency for rxaudio-bin
+DEPEND="dev-lang/perl
+	    dev-perl/Curses"
+RDEPEND="media-sound/rxaudio-bin"
+
 
 src_compile() {
 	# extra check for cryptographic consistency
@@ -57,6 +56,6 @@ src_install() {
 	#insinto ${VENDOR_LIB}
 	insinto /usr/lib/perl5/vendor_perl
 	doins -r lib/perl5/*
-	dodoc -r README TODO cgi contrib hooks
+	dodoc -r *.txt cgi contrib hooks
 }
 
