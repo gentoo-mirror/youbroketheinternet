@@ -1,14 +1,12 @@
 # Distributed under the terms of the GNU General Public License v3
-# author: <Nils Gillmann> <--removed-->
-# further changes by ng0
+# Copyright (c) 2016 ng0 <fill-in-email-or-bm>
 
 EAPI=5
 inherit user eutils autotools
 
-DESCRIPTION="The Guix Package Manager."
+DESCRIPTION="The GNU Guix Package Manager."
 HOMEPAGE="https://www.gnu.org/s/guix"
 SRC_URI="mirror://gnu-alpha/${PN}/${P}.tar.gz"
-#RESTRICT="mirror"
 RESTRICT="bincheck"
 
 LICENSE="GPL-3"
@@ -16,7 +14,6 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86 ~mips ~arm"
 IUSE="test"
 
-#FIXME: gcc's g++ with support for the c++11 standard ?
 #FIXME: package dev-scheme/guile-json
 #BEWARE: ABSOLUTELY use guile from this overlay if
 #        you don't want to break your system.
@@ -37,16 +34,23 @@ RDEPEND="${DEPEND}"
 
 pkg_setup() {
 	enewgroup guixbuild
-	enewuser guixbuilder01 -1 -1 -1 guixbuild
-	enewuser guixbuilder02 -1 -1 -1 guixbuild
-	enewuser guixbuilder03 -1 -1 -1 guixbuild
-	enewuser guixbuilder04 -1 -1 -1 guixbuild
-	enewuser guixbuilder05 -1 -1 -1 guixbuild
-	enewuser guixbuilder06 -1 -1 -1 guixbuild
-	enewuser guixbuilder07 -1 -1 -1 guixbuild
-	enewuser guixbuilder08 -1 -1 -1 guixbuild
-	enewuser guixbuilder09 -1 -1 -1 guixbuild
-	enewuser guixbuilder10 -1 -1 -1 guixbuild
+	for i in `seq -w 1 10`;
+	do
+		enewuser guixbuilder$i -1 /sbin/nologin /var/empty guixbuild;
+	done
+	# this should replace this long sequence of adding users,
+	# refer to section 2.4.1 of `info guix`:
+	#	enewuser guixbuilder01 -1 /sbin/nologin "/var/empty" guixbuild or:
+	#	enewuser guixbuilder01 -1 -1 -1 guixbuild
+	#	enewuser guixbuilder02 -1 -1 -1 guixbuild
+	#	enewuser guixbuilder03 -1 -1 -1 guixbuild
+	#	enewuser guixbuilder04 -1 -1 -1 guixbuild
+	#	enewuser guixbuilder05 -1 -1 -1 guixbuild
+	#	enewuser guixbuilder06 -1 -1 -1 guixbuild
+	#	enewuser guixbuilder07 -1 -1 -1 guixbuild
+	#	enewuser guixbuilder08 -1 -1 -1 guixbuild
+	#	enewuser guixbuilder09 -1 -1 -1 guixbuild
+	#	enewuser guixbuilder10 -1 -1 -1 guixbuild
 }
 
 src_configure() {
@@ -68,39 +72,42 @@ src_test() {
 
 src_install() {
 	emake install DESTDIR="${D}"
-	#insinto /etc/init.d
-	#"${FILESDIR}"/guix
 	newinitd "${FILESDIR}"/guix guix
 	keepdir /run/guix
 	fowners :guixbuild /run/guix
+
 }
 
-#FIXME: Merge OpenRC startup file into guix master
-#FIXME: Either Shepperd on Gentoo or Shepperd to OpenRC import.
-pkg_preinst() {
-	enewgroup guixbuild
-	enewuser guixbuilder01 -1 /sbin/nologin "/var/empty" guixbuild
-	enewuser guixbuilder02 -1 /sbin/nologin "/var/empty" guixbuild
-	enewuser guixbuilder03 -1 /sbin/nologin "/var/empty" guixbuild
-	enewuser guixbuilder04 -1 /sbin/nologin "/var/empty" guixbuild
-	enewuser guixbuilder05 -1 /sbin/nologin "/var/empty" guixbuild
-	enewuser guixbuilder06 -1 /sbin/nologin "/var/empty" guixbuild
-	enewuser guixbuilder07 -1 /sbin/nologin "/var/empty" guixbuild
-	enewuser guixbuilder08 -1 /sbin/nologin "/var/empty" guixbuild
-	enewuser guixbuilder09 -1 /sbin/nologin "/var/empty" guixbuild
-	enewuser guixbuilder10 -1 /sbin/nologin "/var/empty" guixbuild
-}
+#FIXME: Merge OpenRC startup file into guix master ... once it is no longer absolutely horrible.
+#pkg_preinst() {
+#	enewgroup guixbuild
+#	enewuser guixbuilder01 -1 /sbin/nologin "/var/empty" guixbuild
+#	enewuser guixbuilder02 -1 /sbin/nologin "/var/empty" guixbuild
+#	enewuser guixbuilder03 -1 /sbin/nologin "/var/empty" guixbuild
+#	enewuser guixbuilder04 -1 /sbin/nologin "/var/empty" guixbuild
+#	enewuser guixbuilder05 -1 /sbin/nologin "/var/empty" guixbuild
+#	enewuser guixbuilder06 -1 /sbin/nologin "/var/empty" guixbuild
+#	enewuser guixbuilder07 -1 /sbin/nologin "/var/empty" guixbuild
+#	enewuser guixbuilder08 -1 /sbin/nologin "/var/empty" guixbuild
+#	enewuser guixbuilder09 -1 /sbin/nologin "/var/empty" guixbuild
+#	enewuser guixbuilder10 -1 /sbin/nologin "/var/empty" guixbuild
+#}
 
 # To use substitutes from hydra.gnu.org or one of its mirrors (see Substitutes), authorize them:
 # guix archive --authorize < ~root/.guix-profile/share/guix/hydra.gnu.org.pub
 # (or on gentoo??: /usr/share/guix/hydra.gnu.org.pub)
 pkg_postinst() {
 	einfo "Warning, this is a test package, thanks for participating"
-	einfo "in trying to get a functional Guix package manager into"
-	einfo "gentoo. please provide us with logs and ideas."
+	einfo "in trying to get a functional GNU Guix package manager into"
+	einfo "Gentoo."
 	einfo "You have to run the following to enable substitutes from"
 	einfo "hydra.gnu.org or one of its mirrors:"
 	einfo "guix archive --authorize < /usr/share/guix/hydra.gnu.org.pub"
 	einfo "you can test functionality with:"
 	einfo "guix pull ; guix package -i hello"
+	einfo ""
+	einfo "You also have to keep your system up to date with"
+	einfo "guix pull  and the commands needed to update"
+	einfo "your profile. It is required to to read the"
+	einfo "manual for further understanding."
 }
