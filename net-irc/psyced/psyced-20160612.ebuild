@@ -14,9 +14,6 @@ EGIT_REPO_URI="git://git.psyced.org/git/psyced"
 # detect manipulated repositories			--lynX
 case ${PV} in
 	# snapshot-based versions first:
-"20160211")
-	# this version misses a line in proto.h and doesn't run:
-	# same as EGIT_COMMIT="e7a194e703b90e47e330dc0e0281b939c741bf75"
 "20160525")
 	# same as EGIT_COMMIT="498f12819bfe6ef54e4eeabae8017389f433860a"
 	# or git tag psyced-20160525
