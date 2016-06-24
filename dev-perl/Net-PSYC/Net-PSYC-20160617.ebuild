@@ -30,9 +30,12 @@ case ${PV} in
 "20160621")
 	EGIT_COMMIT="0df372d54b4a4fbfa38a7e5919cd6bb8929f73da"
 	;;
+"20160624")
+	EGIT_COMMIT="17f02ba08a8d829345ee62921fcee8e7e996e8d2"
+	;;
 *)
 	# last seen change
-	EGIT_COMMIT="0df372d54b4a4fbfa38a7e5919cd6bb8929f73da"
+	EGIT_COMMIT="17f02ba08a8d829345ee62921fcee8e7e996e8d2"
 	# therefore, for security reasons "9999" doesn't actually
 	# emerge the latest version. please consult 'git log' and
 	# update the last EGIT_COMMIT to obtain a newer version.
