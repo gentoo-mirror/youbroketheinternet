@@ -30,10 +30,14 @@ depend() {
 start() {
 	checkpath -d -m 0755 -o :guixbuild /var/run/guix
 	ebegin "Starting Guix"
+<<<<<<< HEAD
 <<<<<<< bb07859b13222617f983d7f41c2a2132351562b2
 =======
 	#start-stop-daemon --start --pidfile "${PIDFILE}" --quiet --exec /usr/bin/guix-daemon -- --build-users-group=guixbuild --listen=/var/lib/guix/daemon-socket/socket --substitute-urls='https://mirror.hydra.gnu.or https://hydra.gnu.org' > /dev/null 2>&1
 >>>>>>> guix and guix-bin ... should build, but I can not test.
+=======
+	#start-stop-daemon --start --pidfile "${PIDFILE}" --quiet --exec /usr/bin/guix-daemon -- --build-users-group=guixbuild --listen=/var/lib/guix/daemon-socket/socket --substitute-urls='https://mirror.hydra.gnu.or https://hydra.gnu.org' > /dev/null 2>&1
+>>>>>>> 82e8c7f8f3e95e82a6a6a0d55e600216d4696832
 	start-stop-daemon --start --pidfile "${PIDFILE}" --quiet --exec /usr/bin/guix-daemon -- --build-users-group=guixbuild --listen=/var/lib/guix/daemon-socket/socket > /dev/null 2>&1
 	eend $?
 }
