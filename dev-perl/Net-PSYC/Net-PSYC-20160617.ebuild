@@ -33,9 +33,12 @@ case ${PV} in
 "20160624")
 	EGIT_COMMIT="17f02ba08a8d829345ee62921fcee8e7e996e8d2"
 	;;
+"20160701")
+	EGIT_COMMIT="a16d49ab9cb0aa969f0ede6e74686ecce5da6fb5"
+	;;
 *)
 	# last seen change
-	EGIT_COMMIT="17f02ba08a8d829345ee62921fcee8e7e996e8d2"
+	EGIT_COMMIT="a16d49ab9cb0aa969f0ede6e74686ecce5da6fb5"
 	# therefore, for security reasons "9999" doesn't actually
 	# emerge the latest version. please consult 'git log' and
 	# update the last EGIT_COMMIT to obtain a newer version.
@@ -47,8 +50,8 @@ esac
 # some perl library items used by some scripts.. FIXME
 DEPEND="dev-lang/perl
 	    dev-perl/Curses"
-RDEPEND="media-sound/rxaudio-bin"
-
+IUSE="rxaudio"
+RDEPEND="rxaudio? ( media-sound/rxaudio-bin )"
 
 src_compile() {
 	# extra check for cryptographic consistency
