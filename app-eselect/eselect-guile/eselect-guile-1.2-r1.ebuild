@@ -10,7 +10,6 @@ HOMEPAGE="http://www.gentoo.org/proj/en/lisp/scheme/"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~ppc-aix ~sparc-fbsd ~x86-fbsd ~x86-freebsd ~ia64-hpux ~x86-interix ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x86-solaris"
-#IUSE=""
 
 # Versions prior to guile-1.8.8-r2 aren't properly slotted
 DEPEND=""

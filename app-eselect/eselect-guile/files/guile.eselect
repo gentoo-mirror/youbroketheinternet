@@ -1,6 +1,5 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id: $
 #
 # DOCUMENTATION
 # Following actions possible
@@ -23,7 +22,7 @@
 # do_clean(): Remove all set symlinks (for pkg_prerm)
 
 DESCRIPTION="Manage /usr/bin/guile* versions"
-MAINTAINER="scheme@gentoo.org"
+MAINTAINER="ng0 <ng0@we.make.ritual.n0.is>"
 SVN_DATE='$Date: $'
 VERSION=$(svn_date_to_version "${SVN_DATE}")
 
