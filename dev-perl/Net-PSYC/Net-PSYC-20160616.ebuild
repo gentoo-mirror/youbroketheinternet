@@ -14,7 +14,7 @@ EGIT_REPO_URI="git://cheettyiapsyciew.onion/perlpsyc
 			   git://git.psyced.org/git/perlpsyc"
 
 inherit git-r3 user
-#nherit perl-module
+#inherit perl-module
 
 # providing actual commit hashes protects against man in
 # the middle attacks on the way to the git repository --
@@ -49,7 +49,7 @@ esac
 
 # some perl library items used by some scripts.. FIXME
 DEPEND="dev-lang/perl
-	    dev-perl/Curses"
+		dev-perl/Curses"
 IUSE="rxaudio"
 RDEPEND="rxaudio? ( media-sound/rxaudio-bin )"
 
@@ -66,5 +66,6 @@ src_install() {
 	insinto /usr/lib/perl5/vendor_perl
 	doins -r lib/perl5/*
 	dodoc -r *.txt cgi contrib hooks
+	insinto /usr/lib/psyc/ion
+	doins -r lib/psycion/*
 }
-
