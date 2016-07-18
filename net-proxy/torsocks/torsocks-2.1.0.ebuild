@@ -11,7 +11,11 @@ MY_PF="${PN}-${MY_PV}"
 S=${WORKDIR}/${MY_PF}
 
 DESCRIPTION="Use most socks-friendly applications with Tor"
-HOMEPAGE="https://github.com/dgoulet/torsocks"
+HOMEPAGE="https://torproject.org"
+# This moved on to https://gitweb.torproject.org/torsocks.git but
+# someone needs to find the commit that was 1.2 release if it
+# exists in the new infrastructure.
+#HOMEPAGE="https://github.com/dgoulet/torsocks"
 SRC_URI="https://github.com/dgoulet/torsocks/archive/v${MY_PV}.tar.gz -> ${MY_PF}.tar.gz"
 
 LICENSE="GPL-2"

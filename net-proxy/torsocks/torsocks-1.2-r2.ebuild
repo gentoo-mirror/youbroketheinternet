@@ -7,7 +7,11 @@ EAPI="4"
 inherit autotools eutils multilib
 
 DESCRIPTION="Use most socks-friendly applications with Tor"
-HOMEPAGE="https://code.google.com/p/torsocks"
+#HOMEPAGE="https://code.google.com/p/torsocks"
+HOMEPAGE="https://torproject.org"
+# This moved on to https://gitweb.torproject.org/torsocks.git but
+# someone needs to find the commit that was 1.2 release if it
+# exists in the new infrastructure.
 SRC_URI="https://${PN}.googlecode.com/files/${PN}-1.2.tar.gz"
 
 LICENSE="GPL-2"
