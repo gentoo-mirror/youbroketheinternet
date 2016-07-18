@@ -41,14 +41,20 @@ src_configure() {
 	default
 }
 
+# FIXME: powwow.6 still sends manual into games section
+#
+# the games section stems from the days when systems administrators
+# would decide whether students are allowed to play games or not,
+# so it is generally questionable to put *anything* into section 6.
+#
 src_install() {
 	default
 }
 
 pkg_postinst() {
 	elog " "
-	elog "You enabled the cmdsep useflag which changed"
-	elog "the CMDSEP from \";\" to \"§\" which is useful"
-	elog "for conversations."
+	elog "You enabled the cmdsep useflag which changes the"
+	elog "CMDSEP from \';\' to \'\\\', this way allowing you"
+	elog "to wink in conversations.  ;-)"
 	elog " "
 }
