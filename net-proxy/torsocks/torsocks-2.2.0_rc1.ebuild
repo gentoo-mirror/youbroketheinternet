@@ -7,16 +7,18 @@ EAPI=5
 
 inherit autotools eutils multilib versionator
 
-MY_PV="$(replace_version_separator 3 -)"
-MY_PF="${PN}-${MY_PV}"
-S=${WORKDIR}/${MY_PF}
+#MY_PV="$(replace_version_separator 3 -)"
+#MY_PF="${PN}-${MY_PV}"
+#S=${WORKDIR}/${MY_PF}
 
 DESCRIPTION="Use most socks-friendly applications with Tor"
-HOMEPAGE="https://github.com/dgoulet/torsocks"
-# I need to fix this upstream I guess... Incredible funny.
-# I guess with the next official release torsocks will be on dist.torproject.org.
+#HOMEPAGE="https://github.com/dgoulet/torsocks"
+HOMEPAGE="https://torproject.org"
+# We need to fix this upstream (gentoo).
+# I guess with the next version release torsocks tarball will be on dist.torproject.org.
 #SRC_URI="https://github.com/dgoulet/torsocks/archive/v${MY_PV}.tar.gz -> ${MY_PF}.tar.gz"
-SRC_URI="https://people.torproject.org/~dgoulet/torsocks/torsocks-${MY_PV}.tar.bz2 -> ${MY_PF}.tar.bz2"
+#SRC_URI="https://people.torproject.org/~dgoulet/torsocks/torsocks-${MY_PV}.tar.bz2 -> ${MY_PF}.tar.bz2"
+SRC_URI="https://people.torproject.org/~dgoulet/torsocks/torsocks-${PV}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
