@@ -13,10 +13,7 @@ S=${WORKDIR}/${MY_PF}
 
 DESCRIPTION="Use most socks-friendly applications with Tor"
 HOMEPAGE="https://torproject.org"
-# We need to fix this upstream (gentoo).
-# I guess with the next version release torsocks tarball will be on dist.torproject.org.
-#SRC_URI="https://github.com/dgoulet/torsocks/archive/v${MY_PV}.tar.gz -> ${MY_PF}.tar.gz"
-#SRC_URI="https://people.torproject.org/~dgoulet/torsocks/torsocks-${MY_PV}.tar.bz2 -> ${MY_PF}.tar.bz2"
+# (I guess) With the next version release torsocks tarball will be on dist.torproject.org.
 SRC_URI="https://people.torproject.org/~dgoulet/torsocks/torsocks-${MY_PV}.tar.bz2 -> ${MY_PF}.tar.bz2"
 
 LICENSE="GPL-2"
@@ -31,9 +28,13 @@ RDEPEND="${DEPEND}"
 src_prepare() {
 	sed -i -e "/dist_doc_DATA/s/^/#/" Makefile.am doc/Makefile.am || die
 
-	# Disable tests requiring network access.
-	sed -i -e '/^\.\/test_dns$/d' tests/test_list || \
-		die "failed to disable network tests"
+	# # Disable tests requiring network access.
+	# sed -i -e '/^\.\/test_dns$/d' tests/test_list || \
+	# 	die "failed to disable network tests"
+
+	# Guix sourced patch:
+	epatch "${FILESDIR}"/${PN}-dns-test.patch
+	epatch_user
 
 	eautoreconf
 }
