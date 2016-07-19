@@ -8,7 +8,7 @@ EAPI="5"
 inherit eutils flag-o-matic
 
 DESCRIPTION="Scheme interpreter. Also The GNU extension language"
-HOMEPAGE="https://www.gnu.org/software/guile/"
+HOMEPAGE="https://www.gnu.org/s/guile"
 SRC_URI="mirror://gnu/guile/${P}.tar.gz"
 
 LICENSE="LGPL-3+"
