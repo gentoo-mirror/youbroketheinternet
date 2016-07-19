@@ -21,7 +21,7 @@ RDEPEND=">=app-admin/eselect-1.2.6
 	!<dev-scheme/guile-1.8.8-r3"
 
 # We don't have any source directory to work on.
-S="${T}"
+#S="${T}"
 
 src_install() {
 	insinto /usr/share/eselect/modules
