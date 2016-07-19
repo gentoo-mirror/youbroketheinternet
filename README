@@ -176,6 +176,11 @@ needs to get a lot simpler. RetroShare is lightweight and
 reasonably safe if used in Tor-only mode with DHT disabled.
 For generic file sharing it's better to use GNUnet.
 
+== net-proxy/torsocks ==
+
+Make proxy-unaware applications access the Internet through
+Tor. Includes the notorious 'torify' command.
+
 == sys-apps/guix ==
 
 GNU Guix is a package manager. It's also an operating system

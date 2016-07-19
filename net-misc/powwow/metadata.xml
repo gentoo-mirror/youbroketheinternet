@@ -9,6 +9,6 @@
 		<name>youbroketheinternet</name>
 	</maintainer>
   <use>
-    <flag name='cmdsep'>patch the command separating character from ; to § (considered to be useful for chats)</flag>
+    <flag name='cmdsep'>patch the command separator character from ; to \\ (winking is essential to any fine chat)</flag>
   </use>
 </pkgmetadata>
