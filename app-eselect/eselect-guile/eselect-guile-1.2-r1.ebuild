@@ -5,7 +5,8 @@
 EAPI=5
 
 DESCRIPTION="Manage multiple Guile versions on one system"
-HOMEPAGE="http://www.gentoo.org/proj/en/lisp/scheme/"
+#HOMEPAGE="http://www.gentoo.org/proj/en/lisp/scheme/"
+#There is no homepage at the moment.
 
 LICENSE="GPL-2"
 SLOT="0"
