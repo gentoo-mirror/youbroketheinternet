@@ -1,1 +1,4 @@
-# none
+# masked for testing
+>=dev-scheme/guile-2.0.12-r99
+sys-apps/guix
+sys-apps/guix-bin

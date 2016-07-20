@@ -1,6 +1,7 @@
 From: psyc://loupsycedyglgamf.onion/~ng0 <BM-2cSj8qEigE3CMaLU3CwPZf7T3LvzvnttsC>
-Date: Mon Apr 25 21:42:50 +0200 2016
-Subject: fix defines.h for psyced chat
+Date: Mon Apr 25 21:42:51 +0200 2016
+Subject: You can't wink in a chat with a semicolon CMDSEP. Let's use a backslash instead
+Edited-by: lynX
 
 --- powwow-1.2.17/defines.h
 +++ powwow-1.2.17/defines.h
@@ -9,7 +10,7 @@ Subject: fix defines.h for psyced chat
  #define ESC2		'`'	/* other special escape char */
  #define STRESC2		"`"
 -#define CMDSEP		';'	/* command separator character */
-+#define CMDSEP		'§'	/* command separator character */
++#define CMDSEP		'\\'	/* command separator character */
  #define SPECIAL_CHARS	"{}();\"=" /* specials chars needing escape */
  #define MPI		"~$#E"	/* MUME protocol introducer */
  #define MPILEN		4	/* strlen(MPI) */

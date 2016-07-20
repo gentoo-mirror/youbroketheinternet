@@ -1,0 +1,10 @@
+# This list is used to avoid multiple name/email instances of the same
+# contributors reported by "git log" and "git shortlog" commands.
+
+ng0 <ng0@we.make.ritual.n0.is> <ng0@shikahr>
+ng0 <ng0@we.make.ritual.n0.is> <krosos_public@mailchuck.com>
+ng0 <ng0@we.make.ritual.n0.is> <niasterisk@grrlz.net>
+ng0 <ng0@we.make.ritual.n0.is> <ng0@libertad.pw>
+ng0 <ng0@we.make.ritual.n0.is> <BM-2cSj8qEigE3CMaLU3CwPZf7T3LvzvnttsC>
+ng0 <ng0@we.make.ritual.n0.is> <http://krosos.sdf.org>
+ng0 <ng0@we.make.ritual.n0.is> ngg0
