@@ -37,7 +37,7 @@ Perl implementation of the PSYC protocol together with
 - remotor: text-based remote control for Tor routers
 - syslog2psyc: forwarding of syslog events via PSYC
 
-and several more nifty tools for automation of 
+and several more nifty tools for automation of
 notification and messaging.
 
 == dev-lang/psyclpc ==
@@ -57,7 +57,15 @@ Qt library for QR code generation and decoding.
 == dev-scheme/guile ==
 
 Guix needs newer guile to compile, portage needs to fix
-bug #355355 one day.
+bug #355355 one day. Extended testing phase, use at your
+own risk.
+
+== app-eselect/eselect-guile ==
+
+Original eselect for use with our -r99 guile versions. Like
+the Guile ebuilds we have to point out that they were tested
+but breakage might occur as the ebuilds are in extended
+testing phase. Use at your own risk.
 
 == eclass/git-r3 ==
 
