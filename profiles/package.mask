@@ -1,4 +1,7 @@
 # masked for testing
 >=dev-scheme/guile-2.0.12-r99
+>=dev-scheme/guile-2.0.11-r99
+
+# masked as it requires OpenRC service debugging
 sys-apps/guix
 sys-apps/guix-bin
