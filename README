@@ -58,7 +58,9 @@ Qt library for QR code generation and decoding.
 
 Guix needs newer guile to compile, portage needs to fix
 bug #355355 one day. Extended testing phase, use at your
-own risk.
+own risk. You can use the -r3 and -r99 versions with the
+eselect, but as for numerous breakage occurences of autoconf
+those are now masked in the overlay.
 
 == app-eselect/eselect-guile ==
 
