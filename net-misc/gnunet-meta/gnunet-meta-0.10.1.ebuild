@@ -8,15 +8,16 @@ DESCRIPTION="Meta package for GNUnet"
 HOMEPAGE="https://gnunet.org"
 SRC_URI=""
 
-LICENSE="metapackage"
+# metapackage
+LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE="gtk experimental gnurl curl"
 REQUIRED_USE="?? ( curl gnurl )"
 
 RDEPEND="
-	net-misc/gnunet-${PV}
-	experimental? ( net-misc/gnunet-${PV}[experimental,extra] )
-	gtk? ( net-misc/gnunet-gtk-${PV} )
-	gnurl? ( net-misc/gnunet-${PV}[gnurl] )
-	curl? ( net-misc/gnunet-${PV}[curl,-gnurl] )"
+	=net-misc/gnunet-${PV}
+	experimental? ( =net-misc/gnunet-${PV}[experimental,extra] )
+	gtk? ( =net-misc/gnunet-gtk-${PV} )
+	gnurl? ( =net-misc/gnunet-${PV}[gnurl] )
+	curl? ( =net-misc/gnunet-${PV}[curl,-gnurl] )"
