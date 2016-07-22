@@ -17,9 +17,11 @@ if [[ "${PV}" == "9999" ]]; then
 	WANT_AUTOMAKE="1.11"
 	WANT_LIBTOOL="2.2"
 	AUTOTOOLS_AUTORECONF=1
+	S="${WORKDIR}/${PN}"
 else
 	inherit autotools user python-any-r1 flag-o-matic
 	SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
+	S="${WORKDIR}/${PF}"
 fi
 
 #WANT_AUTOCONF="2.5"
@@ -27,8 +29,8 @@ fi
 #WANT_LIBTOOL="2.2"
 #AUTOTOOLS_AUTORECONF=1
 
-#S="${WORKDIR}/${PF}/${PN}"
-S="${WORKDIR}/${PN}"
+
+
 
 AUTOTOOLS_IN_SOURCE_BUILD=1
 KEYWORDS="~amd64"
