@@ -9,7 +9,8 @@ HOMEPAGE="https://gnunet.org/"
 LICENSE="GPL-3"
 PYTHON_COMPAT=( python2_7 ) # tests are not yet python3 compatible.
 
-if [[ "${PV}" == "999999" ]]; then
+case ${PV} in
+"999999")
 	inherit autotools subversion user python-any-r1 flag-o-matic
 	ESVN_REPO_URI="https://gnunet.org/svn/gnunet"
 	ESVN_PROJECT="gnunet"
@@ -18,13 +19,26 @@ if [[ "${PV}" == "999999" ]]; then
 	WANT_AUTOMAKE="1.11"
 	WANT_LIBTOOL="2.2"
 	AUTOTOOLS_AUTORECONF=1
-else
+	S="${WORKDIR}/${PN}"
+	;;
+"9999")
+	inherit autotools subversion user python-any-r1 flag-o-matic
+	ESVN_REPO_URI="https://gnunet.org/svn/gnunet"
+	ESVN_PROJECT="gnunet"
+	WANT_AUTOCONF="2.5"
+	WANT_AUTOMAKE="1.11"
+	WANT_LIBTOOL="2.2"
+	AUTOTOOLS_AUTORECONF=1
+	S="${WORKDIR}/${PN}"
+	;;
+"0.10.1")
 	inherit autotools user python-any-r1 flag-o-matic
 	SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
-fi
-
+	S="${WORKDIR}/${PN}"
+	;;
+*)
+esac
 #S="${WORKDIR}/${PF}/${PN}"
-S="${WORKDIR}/${PN}"
 
 AUTOTOOLS_IN_SOURCE_BUILD=1
 KEYWORDS="~amd64"
@@ -94,6 +108,7 @@ MAKEOPTS="-j1"
 
 pkg_setup() {
 	export GNUNET_HOME="${GNUNET_HOME:=/var/lib/gnunet}"
+	# this does not work, someone fix this.
 	export GNUNET_PREFIX="${EPREFIX}/usr/lib"
 	enewgroup gnunetdns
 	enewgroup gnunet
@@ -115,10 +130,14 @@ src_prepare() {
 		./contrib/pogen.sh || die
 		default
 		eapply_user
+	elif [[ "${PV}" == "9999" ]]; then
+		subversion_src_prepare
+		rm -rf libltdl || die
+		eautoreconf
+		./contrib/pogen.sh || die
+		default
+		eapply_user
 	else
-		#rm -rf libltdl || die
-		#eautoreconf
-		#./contrib/pogen.sh || die
 		default
 		eapply_user
 	fi
@@ -136,10 +155,8 @@ src_configure() {
 		--with-extractor \
 		$(use_with sudo )
 }
-# --docdir="${EPREFIX}/usr/share/doc/${PF}" \
 
 src_install() {
-	#default
 	emake DESTDIR="${D}" install
 	newinitd "${FILESDIR}/${PN}.initd" gnunet
 	insinto /etc/gnunet
@@ -176,6 +193,9 @@ pkg_postinst() {
 	elog "Once you have configured your peer, run (as the 'gnunet' user)"
 	elog "\"gnunet-arm -s\" to start the peer. You can then run the various"
 	elog "GNUnet-tools as your \"normal\" user (who should only be in the group 'gnunet')."
+	elog " "
+	elog "Please emerge a network time protocol daemon or use other means to keep accurate"
+	elog "time on your device, otherwise you might experience problems."
 }
 
 pkg_postrm() {

@@ -3,17 +3,17 @@
 <pkgmetadata>
   <maintainer type="person">
     <name>ng0</name>
+    <email>ng0@we.make.ritual.n0.is</email>
     <description>maintainer</description>
   </maintainer>
   <upstream>
     <bugs-to>https://gnunet.org/bugs</bugs-to>
     <doc lang="en">https://gnunet.org</doc>
-    <remote-id type="svn">https://gnunet.org/svn/gnunet/</remote-id>
   </upstream>
   <use>
     <flag name='httpd'>provide httpd through microhttpd</flag>
     <flag name='sqlite'>use sqlite for database (default)</flag>
-    <flag name='postgresql'>use postgresql for database</flag>
+    <flag name='postgres'>use postgresql for database</flag>
     <flag name='mysql'>use mysql for database</flag>
     <flag name='nls'>nls</flag>
     <flag name='nss'>nss</flag>
