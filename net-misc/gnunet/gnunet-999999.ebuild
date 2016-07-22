@@ -13,6 +13,7 @@ if [[ "${PV}" == "999999" ]]; then
 	inherit autotools subversion user python-any-r1 flag-o-matic
 	ESVN_REPO_URI="https://gnunet.org/svn/gnunet"
 	ESVN_PROJECT="gnunet"
+	ESVN_REVISION="37273"
 	WANT_AUTOCONF="2.5"
 	WANT_AUTOMAKE="1.11"
 	WANT_LIBTOOL="2.2"
