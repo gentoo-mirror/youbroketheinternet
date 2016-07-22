@@ -9,3 +9,6 @@
 # masked as it requires OpenRC service debugging:
 sys-apps/guix
 sys-apps/guix-bin
+
+# masked for testing
+=net-misc/gnurl-9999
