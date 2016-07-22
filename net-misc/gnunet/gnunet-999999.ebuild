@@ -33,6 +33,7 @@ IUSE="debug +httpd +sqlite postgres mysql nls nss +X +gnutls dane +bluetooth ssl
 	pulseaudio gstreamer qr tex test +sudo +gnurl curl curl_ssl_gnutls"
 REQUIRED_USE="?? ( mysql postgres sqlite )
 		?? ( pulseaudio gstreamer )
+		?? ( curl gnurl )
 		experimental? ( || ( extra ) )
 		extra? ( || ( experimental ) )"
 
@@ -44,7 +45,7 @@ RDEPEND="
 	>=dev-libs/libgcrypt-1.6
 	>=dev-libs/libunistring-0.9.3
 	curl? (
-		gnurl? ( >=net-misc/gnurl-7.34.0 )
+		gnurl? ( net-misc/gnurl )
 		!gnurl? ( >=net-misc/curl-7.21.0[curl_ssl_gnutls] )
 	)
 	gnutls? ( net-libs/gnutls )
