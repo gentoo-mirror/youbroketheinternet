@@ -20,5 +20,5 @@ RDEPEND="
 	=net-misc/gnunet-${PV}
 	experimental? ( =net-misc/gnunet-${PV}[experimental,extra] )
 	gtk? ( =net-misc/gnunet-gtk-${PV} )
-	gnurl? ( =net-misc/gnunet-${PV}[gnurl] )
+	gnurl? ( =net-misc/gnunet-${PV}[gnurl,curl] )
 	curl? ( =net-misc/gnunet-${PV}[curl,-gnurl] )"
