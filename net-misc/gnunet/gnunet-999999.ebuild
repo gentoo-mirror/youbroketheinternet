@@ -94,6 +94,7 @@ MAKEOPTS="-j1"
 
 pkg_setup() {
 	export GNUNET_HOME="${GNUNET_HOME:=/var/lib/gnunet}"
+	export GNUNET_PREFIX="${EPREFIX}/usr/lib"
 	enewgroup gnunetdns
 	enewgroup gnunet
 	enewuser gnunet -1 /bin/sh "${GNUNET_HOME}" gnunet
