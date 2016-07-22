@@ -123,7 +123,7 @@ pkg_setup() {
 
 # Here we add and run what bootstrap would do.
 src_prepare() {
-	if [[ "${PV}" == "999999" ]]; then
+	if [[ "${PV}" == "0.10.1_pre01021" ]]; then
 		subversion_src_prepare
 		rm -rf libltdl || die
 		eautoreconf
