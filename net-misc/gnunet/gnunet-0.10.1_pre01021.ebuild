@@ -10,7 +10,7 @@ LICENSE="GPL-3"
 PYTHON_COMPAT=( python2_7 ) # tests are not yet python3 compatible.
 
 case ${PV} in
-"999999")
+"0.10.1_pre01021")
 	inherit autotools subversion user python-any-r1 flag-o-matic
 	ESVN_REPO_URI="https://gnunet.org/svn/gnunet"
 	ESVN_PROJECT="gnunet"
