@@ -41,7 +41,7 @@ case ${PV} in
 	ESVN_PROJECT="gnunet-gtk"
 	S="${WORKDIR}/${PN}"
 	;;
-"999999")
+"0.10.1_pre01021")
 	inherit autotools subversion
 	SRC_URI=""
 	ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
@@ -61,7 +61,7 @@ case ${PV} in
 esac
 
 src_prepare() {
-	if [[ "${PV}" == "999999" ]]; then
+	if [[ "${PV}" == "0.10.1_pre01021" ]]; then
 		subversion_src_prepare
 		eautoreconf
 		default
