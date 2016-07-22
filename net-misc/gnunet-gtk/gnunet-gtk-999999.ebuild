@@ -27,24 +27,46 @@ RDEPEND="
 
 DEPEND="${RDEPEND}"
 #		sys-devel/automake:1.14"
-
-if [[ ${PV} == "999999" ]] ; then
+#S="${WORKDIR}/${PN}"
+case ${PV} in
+"0.10.1")
+	inherit autotools
+	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
+	S="${WORKDIR}/${PN}"
+	;;
+"9999")
+	inherit autotools subversion
+	SRC_URI=""
+	ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
+	ESVN_PROJECT="gnunet-gtk"
+	S="${WORKDIR}/${PN}"
+	;;
+"999999")
 	inherit autotools subversion
 	SRC_URI=""
 	ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
 	ESVN_PROJECT="gnunet-gtk"
 	ESVN_REVISION="37273"
-else
-	inherit autotools
-	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
-fi
-
-S="${WORKDIR}/${PN}"
+	S="${WORKDIR}/${PN}"
+	;;
+*)
+# last working change
+       inherit autotools subversion
+       SRC_URI=""
+       ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
+       ESVN_PROJECT="gnunet-gtk"
+       ESVN_REVISION="37273"
+       S="${WORKDIR}/${PN}"
+       ;;
+esac
 
 src_prepare() {
 	if [[ "${PV}" == "999999" ]]; then
-		#eapply "${FILESDIR}"/os_installation.c.patch
 		subversion_src_prepare
+		eautoreconf
+		default
+	elif [[ "${PV}" == "9999" ]]; then
+	     	subversion_src prepare
 		eautoreconf
 		default
 	else
@@ -53,33 +75,15 @@ src_prepare() {
 	fi
 }
 
-# src_unpack() {
-# 	if [[ ${PV} != "9999" ]] ; then
-#            unpack ${A}
-#            cd "${S}"
-#            AT_M4DIR="${S}/m4" eautoreconf
-# 	fi
-# }
-
-#src_configure() {
-#	econf \
-#		--with-gnunet="${ROOT}"/usr
-#		--with-gnutls
-#		--with-glade
-#		--with-extractor
-#		$(use_with qr qrencode )
-#}
 src_configure() {
 	econf \
 		--with-gnunet="/usr"
 }
 
 src_compile() {
-#	emake
 	default
 }
 
 src_install() {
 	default
-	#emake DESTDIR="${D}" install
 }
