@@ -1,2 +1,0 @@
-		eutils, user eclass removed
-		for src_install(): is it default or is it not default for EAPI 6?
