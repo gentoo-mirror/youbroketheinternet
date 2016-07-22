@@ -15,8 +15,8 @@ IUSE="gtk experimental gnurl curl"
 REQUIRED_USE="?? ( curl gnurl )"
 
 RDEPEND="
-		net-misc/gnunet
-		experimental? ( net-misc/gnunet[experimental,extra] )
-		gtk? ( net-misc/gnunet-gtk )
-		gnurl? ( net-misc/gnunet[gnurl] )
-		curl? ( net-misc/gnunet[curl,-gnurl] )"
+	net-misc/gnunet-${PV}
+	experimental? ( net-misc/gnunet-${PV}[experimental,extra] )
+	gtk? ( net-misc/gnunet-gtk-${PV} )
+	gnurl? ( net-misc/gnunet-${PV}[gnurl] )
+	curl? ( net-misc/gnunet-${PV}[curl,-gnurl] )"

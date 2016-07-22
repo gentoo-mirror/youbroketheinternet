@@ -33,6 +33,7 @@ if [[ ${PV} == "999999" ]] ; then
 	SRC_URI=""
 	ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
 	ESVN_PROJECT="gnunet-gtk"
+	ESVN_REVISION="37273"
 else
 	inherit autotools
 	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
