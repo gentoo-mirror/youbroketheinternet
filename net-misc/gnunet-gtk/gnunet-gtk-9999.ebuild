@@ -1,6 +1,6 @@
 # Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
+# Coypright © 2016 ng0
 
 EAPI=6
 
@@ -10,43 +10,63 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
 
-IUSE="qr"
+IUSE="debug qr"
 
-RDEPEND="virtual/pkgconfig
-	>=x11-libs/gtk+-2.20.0
+RDEPEND="
+	x11-libs/gtk+:3
 	=net-misc/gnunet-${PV}
 	>=gnome-base/libglade-2.0
-	dev-libs/libunique
-	dev-util/glade
-	net-libs/gnutls
-	media-libs/libextractor
-	qr? ( media-gfx/qrencode )
-	x11-libs/gdk-pixbuf"
+	dev-libs/libunique:3
+	dev-util/glade:*"
+	#net-libs/gnutls
+	#media-libs/libextractor
+	#qr? ( media-gfx/qrencode )
+	#x11-libs/gdk-pixbuf
+	#dev-util/glade"
+	#virtual/pkgconfig
 
 DEPEND="${RDEPEND}"
 #		sys-devel/automake:1.14"
-
-if [[ ${PV} == "9999" ]] ; then
+#S="${WORKDIR}/${PN}"
+case ${PV} in
+"0.10.1")
+	inherit autotools
+	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
+	S="${WORKDIR}/${PN}"
+	;;
+"9999")
 	inherit autotools subversion
 	SRC_URI=""
 	ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
 	ESVN_PROJECT="gnunet-gtk"
-else
-	inherit autotools
-	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
-fi
-
-WANT_AUTOCONF="2.5"
-WANT_AUTOMAKE="1.11"
-WANT_LIBTOOL="2.2"
-AUTOTOOLS_AUTORECONF=1
-
-#S="${WORKDIR}/${PF}/${PN}"
-S="${WORKDIR}/${PN}"
+	S="${WORKDIR}/${PN}"
+	;;
+"999999")
+	inherit autotools subversion
+	SRC_URI=""
+	ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
+	ESVN_PROJECT="gnunet-gtk"
+	ESVN_REVISION="37273"
+	S="${WORKDIR}/${PN}"
+	;;
+*)
+# last working change
+       inherit autotools subversion
+       SRC_URI=""
+       ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
+       ESVN_PROJECT="gnunet-gtk"
+       ESVN_REVISION="37273"
+       S="${WORKDIR}/${PN}"
+       ;;
+esac
 
 src_prepare() {
-	if [[ "${PV}" == "9999" ]]; then
+	if [[ "${PV}" == "999999" ]]; then
 		subversion_src_prepare
+		eautoreconf
+		default
+	elif [[ "${PV}" == "9999" ]]; then
+	     	subversion_src prepare
 		eautoreconf
 		default
 	else
@@ -55,31 +75,15 @@ src_prepare() {
 	fi
 }
 
-# src_unpack() {
-# 	if [[ ${PV} != "9999" ]] ; then
-#            unpack ${A}
-#            cd "${S}"
-#            AT_M4DIR="${S}/m4" eautoreconf
-# 	fi
-# }
-
-# why?
-# --with-gnunet="${ROOT}/usr"
 src_configure() {
 	econf \
-		--with-gnutls \
-		--with-gnunet="/usr" \
-		--with-glade \
-		--with-extractor \
-		$(use_with qr qrencode )
+		--with-gnunet="/usr"
 }
 
 src_compile() {
-#	emake
 	default
 }
 
 src_install() {
-	#default
-	emake DESTDIR="${D}" install
+	default
 }
