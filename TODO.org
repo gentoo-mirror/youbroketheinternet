@@ -1,5 +1,8 @@
 * TODO - various tasks which need to be worked on
 
+When you work on this and finished an item, make sure to
+point it out in this file.
+
 ** */*
 
 - Update to EAPI 6.
