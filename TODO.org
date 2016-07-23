@@ -1,0 +1,28 @@
+* TODO - various tasks which need to be worked on
+
+** */*
+
+- Update to EAPI 6.
+
+** net-misc/gnunet
+
+- Debug the openrc service and improve it to function like intended
+  (see post setup notes). Either fix the service or adjust the ebuild.
+
+** net-p2p/retroshare
+
+- Check if we are affected by the annual sourceforge stupidity of changing
+  URLs of download locations.
+
+** sys-apps/guix
+
+- Debug the openrc service!
+- Check the ebuild for mistakes.
+
+** sys-apps/guix-bin
+
+- Make it functional.
+
+** www-plugins/*
+
+- Fix this: use() is wrong in the ebuilds.
