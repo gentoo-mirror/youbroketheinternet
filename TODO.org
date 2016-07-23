@@ -29,3 +29,7 @@ point it out in this file.
 ** www-plugins/*
 
 - Fix this: use() is wrong in the ebuilds.
+** dev-perl/Net-PSYC
+
+- fix the last minor problems in Makefile and/or expand it -> ng0 will do it.
+- psycion segfaults when torified. debug this.
