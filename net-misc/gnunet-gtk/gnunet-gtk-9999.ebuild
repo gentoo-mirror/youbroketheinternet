@@ -8,7 +8,19 @@ DESCRIPTION="Graphical front-end tools for GNUnet."
 HOMEPAGE="https://gnunet.org/"
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64"
+
+case ${PV} in
+"0.10.1_pre01021")
+	KEYWORDS="amd64"
+	;;
+"9999")
+	KEYWORDS="~amd64"
+	;;
+"0.10.1")
+	KEYWORDS="~amd64"
+	;;
+*)
+esac
 
 IUSE="debug qr"
 
