@@ -41,7 +41,20 @@ esac
 #S="${WORKDIR}/${PF}/${PN}"
 
 AUTOTOOLS_IN_SOURCE_BUILD=1
-KEYWORDS="~amd64"
+
+case ${PV} in
+"0.10.1_pre01021")
+	KEYWORDS="amd64"
+	;;
+"9999")
+	KEYWORDS="~amd64"
+	;;
+"0.10.1")
+	KEYWORDS="~amd64"
+	;;
+*)
+esac
+
 SLOT="0"
 IUSE="debug +httpd +sqlite postgres mysql nls nss +X +gnutls dane +bluetooth ssl libressl experimental extra conversation \
 	pulseaudio gstreamer qr tex test +sudo +gnurl +curl curl_ssl_gnutls"
