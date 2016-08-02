@@ -9,8 +9,13 @@ point it out in this file.
 
 ** net-misc/gnunet
 
+- _!Fix the postinst message!_
+- Last dependency checks
 - Debug the openrc service and improve it to function like intended
   (see post setup notes). Either fix the service or adjust the ebuild.
+*** ng0
+  I think the service is fixed now, we need to make it customizable and
+  then we can include it in gnunet source.
 
 ** net-p2p/retroshare
 
