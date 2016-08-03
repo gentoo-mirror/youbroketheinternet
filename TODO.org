@@ -44,3 +44,7 @@ point it out in this file.
 - drop it once #355355 has been sorted out upstream
 - now: update (sync) gnutls with portage
 
+** www-client/palemoon
+
+- patch it to remove default start page (which contains advertisment)
+- write an update fetcher - its home page is behind the Great Firewall of Cloudflare
