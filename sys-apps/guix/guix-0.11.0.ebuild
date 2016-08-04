@@ -1,5 +1,5 @@
 # Distributed under the terms of the GNU General Public License v3
-# Copyright (c) 2016 ng0 <fill-in-email-or-bm>
+# Copyright (c) 2016 ng0 <https://we.make.ritual.n0.is>
 
 EAPI=5
 inherit user eutils autotools
@@ -22,7 +22,7 @@ IUSE="test"
 #        celebrating its 6th anniversary this year.
 #        You will also need to use gnutls from this overlay,
 #        which links to guile here.
-DEPEND=">=dev-scheme/guile-2.0.11-r99[networking]
+DEPEND=">=dev-scheme/guile-2.0.12[networking]
 	dev-libs/libgcrypt
 	>=dev-db/sqlite-3.0
 	app-arch/bzip2
@@ -108,6 +108,6 @@ pkg_postinst() {
 	einfo ""
 	einfo "You also have to keep your system up to date with"
 	einfo "guix pull  and the commands needed to update"
-	einfo "your profile. It is required to to read the"
+	einfo "your profile. It is required (read: mandatory) to to read the"
 	einfo "manual for further understanding."
 }
