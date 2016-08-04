@@ -49,3 +49,10 @@ point it out in this file.
 
 - patch it to remove default start page (which contains advertisment)
 - write an update fetcher - its home page is behind the Great Firewall of Cloudflare
+** www-client/torbrowser-bundle
+
+- we do not actually use this or have tested
+  this. for maintenance ease we should drop
+  it.
+
+
