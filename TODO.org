@@ -26,6 +26,7 @@ point it out in this file.
 
 - Debug the openrc service!
 - Check the ebuild for mistakes.
+- Update to 0.11 [done]
 
 ** sys-apps/guix-bin
 
@@ -39,11 +40,6 @@ point it out in this file.
 
 - fix the last minor problems in Makefile and/or expand it -> ng0 will do it.
 - psycion segfaults when torified. debug this.
-
-** gnutls + guile
-
-- drop it once #355355 has been sorted out upstream
-- now: update (sync) gnutls with portage
 
 ** www-client/palemoon
 
