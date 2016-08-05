@@ -26,6 +26,7 @@ DOCS=( CHANGES README docs/FEATURES docs/INTERNALS \
 
 S=${WORKDIR}/${MY_P}
 
+# TODO: check if this phase is still appropriate in content!
 src_prepare() {
 		sed -i '/LD_LIBRARY_PATH=/d' configure.ac || die #382241
 
@@ -83,7 +84,8 @@ src_configure() {
 		--disable-smtp \
 		--disable-sspi \
 		--disable-telnet \
-		--disable-tftp
+		--disable-tftp \
+		--disable-smb
 }
 
 src_install() {
