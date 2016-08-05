@@ -36,7 +36,7 @@ pkg_setup() {
 	enewgroup guixbuild
 	for i in `seq -w 1 10`;
 	do
-		enewuser guixbuilder$i -1 /sbin/nologin /var/empty guixbuild;
+		enewuser guixbuilder$i -1 -1 /var/empty guixbuild;
 	done
 	# this should replace this long sequence of adding users,
 	# refer to section 2.4.1 of `info guix`:
