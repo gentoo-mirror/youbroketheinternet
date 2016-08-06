@@ -54,21 +54,6 @@ elliptic curve cryptography that pybitmessage happens to need.
 
 Qt library for QR code generation and decoding.
 
-== dev-scheme/guile ==
-
-Guix needs newer guile to compile, portage needs to fix
-bug #355355 one day. Extended testing phase, use at your
-own risk. You can use the -r3 and -r99 versions with the
-eselect, but as for numerous breakage occurences of autoconf
-those are now masked in the overlay.
-
-== app-eselect/eselect-guile ==
-
-Original eselect for use with our -r99 guile versions. Like
-the Guile ebuilds we have to point out that they were tested
-but breakage might occur as the ebuilds are in extended
-testing phase. Use at your own risk.
-
 == eclass/git-r3 ==
 
 Added 'git fsck' after fetch to protect from MITM attacks
@@ -135,11 +120,6 @@ Person-to-person encrypted telephony application.
 Server for federated messaging and chat using PSYC, IRC,
 XMPP and other protocols.
 
-== net-libs/gnutls ==
-
-Guix needs to have Guile-2 bindings of GNUtls. The one in portage
-currently links to a Guile-2 that might brick your system.
-
 == net-misc/gnunet ==
 
 GNUnet is a mesh network routing system not limited to peer-
@@ -194,8 +174,8 @@ Tor. Includes the notorious 'torify' command.
 == sys-apps/guix ==
 
 GNU Guix is a package manager. It's also an operating system
-(GNU GuixSD). Guix aims to provide updates via GNUnet in the
-future. Currently this ebuild and sys-apps/guix-binary are
+(GNU GuixSD). Guix might provide updates via a distributed network
+in the future. Currently this ebuild and sys-apps/guix-binary are
 open for debugging here, please provide us with input.
 
 == sys-apps/guix-bin ==

@@ -5,6 +5,9 @@
 
 EAPI=5
 
+# Caution! Found this version of torsocks to not be working, or
+# maybe it isn't compatible.
+
 inherit autotools eutils multilib versionator
 
 MY_PV="$(replace_version_separator 3 -)"

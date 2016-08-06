@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-	<maintainer type="person">
-		<name>ng0</name>
-		<description>Proxied maintainer; set to assignee in all bugs</description>
-	</maintainer>
-	<maintainer type="project">
-		<email>proxy-maint@gentoo.org</email>
-		<name>Proxy Maintainers</name>
-	</maintainer>
-	<upstream>
-		<bugs-to>https://gnunet.org/bugs</bugs-to>
-		<doc lang="en">https://gnunet.org</doc>
-	</upstream>
-	<use>
-		<flag name='dane'>dane</flag>
-	</use>
+  <maintainer type="person">
+    <name>ng0</name>
+    <email>ng0@we.make.ritual.n0.is</email>
+    <description>package maintainer</description>
+  </maintainer>
+  <upstream>
+    <bugs-to>https://gnunet.org/bugs</bugs-to>
+    <doc lang="en">https://gnunet.org</doc>
+  </upstream>
+  <use>
+    <flag name='dane'>dane</flag>
+  </use>
 </pkgmetadata>
