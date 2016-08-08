@@ -1,0 +1,46 @@
+# ChangeLog for dev-libs/sway
+# Copyright 1999-2016 Gentoo Foundation; Distributed under the GPL v2
+# (auto-generated from git log)
+
+*sway-9999 (13 May 2016)
+*sway-0.6 (13 May 2016)
+
+  13 May 2016; Ian Delaney <idella4@gentoo.org> +metadata.xml,
+  +sway-0.6.ebuild, +sway-9999.ebuild:
+  add version 0.6 and live ebuild.
+
+  Will be maintained by Jasen Borisov <tajjada@gmail.com>
+  as part of the Gentoo Proxy Maintainers program.
+  Extensively reviewed by many via both IRC & commmentary via the pull request
+
+  Package-Manager: portage-2.2.28
+  Closes: https://github.com/gentoo/gentoo/pull/1458
+
+  Signed-off-by: Ian Delaney <idella4@gentoo.org>
+
+  15 May 2016; Ian Delaney <idella4@gentoo.org> sway-0.6.ebuild,
+  sway-9999.ebuild:
+  enable important USE flags by default.
+
+  According to upstream, these options are considered core
+  functionality, and are recommended to be enabled by default.
+
+  Disabling them results in a very minimal build; probably
+  not what most users would want, or expect.
+
+  Package-Manager: portage-2.2.28
+  Closes: https://github.com/gentoo/gentoo/pull/1467
+
+  Signed-off-by: Ian Delaney <idella4@gentoo.org>
+
+  24 May 2016; Ian Delaney <idella4@gentoo.org> metadata.xml, sway-0.6.ebuild,
+  sway-9999.ebuild:
+  add missing build time dep on pkgconfig
+
+  also use <pkg> in metadata
+
+  Package-Manager: portage-2.2.28
+  Closes: https://github.com/gentoo/gentoo/pull/1504
+
+  Signed-off-by: Ian Delaney <idella4@gentoo.org>
+
