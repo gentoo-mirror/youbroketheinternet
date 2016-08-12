@@ -32,6 +32,10 @@ point it out in this file.
 
 - Make it functional.
 
+** sys-apps/nix
+
+- Add a service.
+
 ** www-plugins/*
 
 - Fix this: use() is wrong in the ebuilds.
