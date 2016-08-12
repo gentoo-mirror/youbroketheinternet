@@ -61,7 +61,6 @@ point it out in this file.
 ** perl
 *** perl-extutils-h2pm
 *** perl-file-touch
-*** perl-io-socket-ssl
 *** perl-ipc-run3-simple
 *** perl-linux-ext2-attributes
 *** perl-net-psyc
