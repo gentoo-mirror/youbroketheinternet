@@ -35,6 +35,7 @@ point it out in this file.
 ** sys-apps/nix
 
 - Add a service.
+- Debug it.
 
 ** www-plugins/*
 
