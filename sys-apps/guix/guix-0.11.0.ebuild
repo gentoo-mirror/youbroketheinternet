@@ -30,7 +30,7 @@ RDEPEND="${DEPEND}"
 
 pkg_setup() {
 	enewgroup guixbuild
-	for i in `seq -w 1 10`;
+	for i in `seq -w 10 19`;
 	do
 		enewuser guixbuilder$i -1 -1 /var/empty guixbuild;
 	done
