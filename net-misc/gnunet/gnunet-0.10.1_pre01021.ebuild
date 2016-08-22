@@ -110,7 +110,6 @@ RDEPEND="
 	)
 	bluetooth? ( net-wireless/bluez )
 	test? ( ${PYTHON_DEPS} )
-	net-misc/udpcast
 	sudo? ( app-admin/sudo )"
 #test? ( >=dev-lang/python-2.7:2.7 )
 
