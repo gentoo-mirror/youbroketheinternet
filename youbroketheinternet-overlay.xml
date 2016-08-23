@@ -7,7 +7,13 @@
 
         Somebody broke the Internet. We'll have to make ourselves a GNU one.
 
-	This overlay is a collaborative maintained Gentoo developer overlay. Some of us are involved with secushare and GNUnet, but we try out all kinds of XKEYSCORE-resistant technology. Some of our unique ebuilds are the full GNUnet suite, a functional guile-2 and software around the psyced programmable communications server. Some ebuilds are experimental/testing - refer to the included README for more info and details. Should you like to get involved, see https://wiki.gentoo.org/wiki/Overlay:Youbroketheinternet
+	This overlay is a collaborative maintained Gentoo developer overlay.
+        Some of us are involved with secushare and GNUnet, but we try out all
+        kinds of XKEYSCORE-resistant technology. Some of our unique ebuilds
+        are the full GNUnet suite, and software around the psyced programmable
+        communications server. Some ebuilds are experimental/testing - refer to
+        the included README for more info and details. If you like to get involved,
+        see https://wiki.gentoo.org/wiki/Overlay:Youbroketheinternet for details.
 
       </description>
       <homepage>http://youbroketheinternet.org/#overlay</homepage>

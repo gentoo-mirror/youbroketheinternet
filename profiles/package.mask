@@ -10,6 +10,9 @@
 sys-apps/guix
 sys-apps/guix-bin
 
+# masked for testing:
+sys-apps/nix
+
 # masked for testing
 =net-misc/gnurl-9999
 
