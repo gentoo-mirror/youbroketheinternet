@@ -1,12 +1,9 @@
-# Copyright 1999-2015 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
-# $Id$
-# Comment: Backport to gentoo overlay.
+# Copyright 2016 ng0 <ng0@we.make.ritual.n0.is>
+# Distributed under the terms of the GNU General Public License v3 or later
+# Comment: Backport to gentoo overlay. Beware, it is RC, so NOT RELEASED,
+# NOT STABLE.
 
 EAPI=5
-
-# Caution! Found this version of torsocks to not be working, or
-# maybe it isn't compatible.
 
 inherit autotools eutils multilib versionator
 
