@@ -1,4 +1,4 @@
-# Copyright © 2016 ng0
+# Copyright © 2016 ng0 <https://n0.is>
 # This files is part of the youbroketheinternet overlay, distributed by the
 # youbroketheinternet overlay team.
 # Distribution under the GPLv3 or later.
