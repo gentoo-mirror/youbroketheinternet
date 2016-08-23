@@ -42,6 +42,9 @@ esac
 
 AUTOTOOLS_IN_SOURCE_BUILD=1
 
+# TODO: Actually this builds on way more architecture, but
+# I can not make assumptions about hardware I can or have
+# currently not access to or test build it on.
 case ${PV} in
 "0.10.1_pre01021")
 	KEYWORDS="amd64"
@@ -55,14 +58,22 @@ case ${PV} in
 *)
 esac
 
+# XXX: Do not slot this, ever.
 SLOT="0"
-IUSE="debug +httpd +sqlite postgres mysql nls nss +X +gnutls dane +bluetooth ssl libressl experimental extra conversation \
+
+IUSE="debug +httpd +sqlite postgres mysql nls nss +X +gnutls dane +bluetooth ssl libressl experimental extra \
 	pulseaudio gstreamer qr tex test +sudo +gnurl +curl curl_ssl_gnutls"
+
+# !!! TODO: Sort run depend, required use, build time use.
 REQUIRED_USE="?? ( mysql postgres sqlite )
 		?? ( pulseaudio gstreamer )
 		experimental? ( || ( extra ) )
 		extra? ( || ( experimental ) )"
 
+# XXX: We do not know if libressl is functional here, at least it does build,
+# so buildtime is safe, runtime should be too. If you find bugs, get in contact
+# with me.
+## Helpful notes: https://gnunet.org/bugs/view.php?id=4618#bugnotes
 RDEPEND="
 	mysql? ( >=virtual/mysql-5.1 )
 	postgres? ( >=dev-db/postgresql-8.3:= )
@@ -98,15 +109,15 @@ RDEPEND="
 	extra? (
 		qr? ( >=media-gfx/zbar-0.10[python] )
 		tex? ( >=app-text/texlive-2012 )
-		conversation? (
-			gstreamer? (
-				media-libs/gstreamer:1.0
-				dev-libs/glib:2
-			)
-			pulseaudio? ( >=media-sound/pulseaudio-2.0 )
-			>=media-libs/opus-1.0.1
-			>=media-libs/libogg-1.3.0
-		)
+	)
+	gstreamer? (
+		media-libs/gstreamer:1.0
+		dev-libs/glib:2
+	)
+	pulseaudio? (
+		>=media-sound/pulseaudio-2.0 )
+		>=media-libs/opus-1.0.1
+		>=media-libs/libogg-1.3.0
 	)
 	bluetooth? ( net-wireless/bluez )
 	test? ( ${PYTHON_DEPS} )
@@ -116,6 +127,9 @@ RDEPEND="
 DEPEND="${RDEPEND}
 	sys-devel/automake:1.14"
 
+# TODO: We should run tests on Gentoo, currently this fails.
+
+# XXX: parallel building fails, run one job only.
 MAKEOPTS="-j1"
 
 pkg_setup() {
