@@ -17,16 +17,19 @@ point it out in this file.
   I think the service is fixed now, we need to make it customizable and
   then we can include it in gnunet source.
 
-** net-p2p/retroshare
+** DONE net-p2p/retroshare
 
 - Check if we are affected by the annual sourceforge stupidity of changing
   URLs of download locations.
 
+*** ng0
+I don't use it, won't fix it. Marking it as DONE as in WONTFIX.
+
 ** sys-apps/guix
 
-- Debug the openrc service!
-- Check the ebuild for mistakes.
-- Update to 0.11 [done]
+*** Debug the openrc service!
+*** Check the ebuild for mistakes.
+*** DONE Update to 0.11 [done]
 
 ** sys-apps/guix-bin
 
@@ -43,8 +46,8 @@ point it out in this file.
 
 ** dev-perl/Net-PSYC
 
-- fix the last minor problems in Makefile and/or expand it -> ng0 will do it.
-- psycion segfaults when torified. debug this.
+*** fix the last minor problems in Makefile and/or expand it -> ng0 will do it.
+*** DONE psycion segfaults when torified. debug this.
 
 ** www-client/palemoon
 
@@ -52,10 +55,9 @@ point it out in this file.
 - write an update fetcher - its home page is behind the Great Firewall of Cloudflare
 ** DONE www-client/torbrowser-bundle
 
-- we do not actually use this or have tested
-  this. for maintenance ease we should drop
-  it.
-
+*** DONE we do not actually use this or have tested
+    this. for maintenance ease we should drop
+    it.
 
 
 * TODO (packages to be moved to guix)
@@ -70,8 +72,8 @@ point it out in this file.
 *** perl-linux-ext2-attributes
 *** perl-net-psyc
 *** perl-unix-mknod
-** qt
-*** qzxing
+** DONE qt
+*** qzxing -> impossible, broken with latest (5.7) QT.
 ** vid-stab
 ** miro
 ** tox
@@ -81,10 +83,10 @@ point it out in this file.
 ** ricochet
 ** onioncircuits
 ** bitmessage
-*** pybitmessage
+*** DONE pybitmessage
 ** retroshare
 ** palemoon
 ** hiawatha
 ** onionshare
-** interrobang
+** DONE interrobang
 
