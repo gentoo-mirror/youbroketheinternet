@@ -1,5 +1,5 @@
-# Distributed under the terms of the GNU General Public License v3
-# Copyright (c) 2016 ng0 <https://we.make.ritual.n0.is>
+# Copyright (c) 2016 ng0 <https://n0.is>
+# Distributed under the terms of the GNU General Public License v3 or later
 
 # Something is horribly broken and I don't know if it's the service
 # or the way we package this. FIXME!
