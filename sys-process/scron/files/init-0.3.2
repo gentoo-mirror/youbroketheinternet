@@ -1,0 +1,11 @@
+#!/sbin/runscript
+
+command="crond"
+name="cron daemon"
+pidfile="/var/run/crond.pid"
+extra_started_commands="reload"
+
+reload() {
+	ebegin "Reloading crontab"
+	start-stop-daemon --signal HUP --pidfile "${pidfile}"
+}
