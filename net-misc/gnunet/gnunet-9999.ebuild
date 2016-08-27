@@ -7,7 +7,9 @@ EAPI=6
 DESCRIPTION="Cryptographic GNU Mesh/Underlay Network Routing Layer"
 HOMEPAGE="https://gnunet.org/"
 LICENSE="GPL-3"
-PYTHON_COMPAT=( python2_7 ) # tests are not yet python3 compatible.
+# tests are not yet python3 compatible.
+PYTHON_COMPAT=( python2_7 )
+KEYWORDS="~"
 
 case ${PV} in
 "0.10.1_pre01021")
@@ -61,8 +63,9 @@ esac
 # XXX: Do not slot this, ever.
 SLOT="0"
 
-IUSE="debug +httpd +sqlite postgres mysql nls nss +X +gnutls dane +bluetooth ssl libressl experimental extra \
-	pulseaudio gstreamer qr tex test +sudo +gnurl +curl curl_ssl_gnutls"
+IUSE="debug +httpd +sqlite postgres mysql nls nss +X +gnutls dane +bluetooth \
+      ssl libressl experimental extra pulseaudio gstreamer qr tex test +sudo \
+      +gnurl +curl curl_ssl_gnutls"
 
 # !!! TODO: Sort run depend, required use, build time use.
 REQUIRED_USE="?? ( mysql postgres sqlite )
@@ -82,14 +85,14 @@ RDEPEND="
 	>=dev-libs/libgcrypt-1.6
 	>=dev-libs/libunistring-0.9.3
 	curl? (
-		gnurl? ( >=net-misc/gnurl-7.45.0 )
-		!gnurl? ( >=net-misc/curl-7.21.0[curl_ssl_gnutls] )
+		gnurl? ( >=net-misc/gnurl-7.50.1 )
+		!gnurl? ( >=net-misc/curl-7.50.1[curl_ssl_gnutls] )
 	)
 	gnutls? ( net-libs/gnutls )
 	dane? ( net-libs/gnutls[dane] )
 	ssl? (
-		!libressl? ( dev-libs/openssl:0=  )
-		libressl? ( dev-libs/libressl:0=  )
+		!libressl? ( dev-libs/openssl:0= )
+		libressl? ( dev-libs/libressl:0= )
 	)
 	net-dns/libidn
 	sys-libs/ncurses:0
@@ -114,15 +117,12 @@ RDEPEND="
 		media-libs/gstreamer:1.0
 		dev-libs/glib:2
 	)
-	pulseaudio? (
-		>=media-sound/pulseaudio-2.0 )
-		>=media-libs/opus-1.0.1
-		>=media-libs/libogg-1.3.0
-	)
+	pulseaudio? ( >=media-sound/pulseaudio-2.0 )
+	>=media-libs/opus-1.0.1
+	>=media-libs/libogg-1.3.0
 	bluetooth? ( net-wireless/bluez )
-	test? ( ${PYTHON_DEPS} )
-	sudo? ( app-admin/sudo )"
-#test? ( >=dev-lang/python-2.7:2.7 )
+	sudo? ( app-admin/sudo )
+	test? ( ${PYTHON_DEPS} )"
 
 DEPEND="${RDEPEND}
 	sys-devel/automake:1.14"

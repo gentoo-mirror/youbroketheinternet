@@ -14,7 +14,7 @@ SRC_URI="https://gnunet.org/sites/default/files/${MY_P}.tar.bz2 -> ${MY_P}.tar.b
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~"
 IUSE="dane"
 
 RDEPEND=">=net-libs/gnutls-3[dane?]
