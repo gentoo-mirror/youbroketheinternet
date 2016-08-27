@@ -25,13 +25,12 @@ case ${PV} in
 *)
 esac
 
-IUSE="+gtk experimental +gnurl curl conversation qr"
+IUSE="+gtk experimental +gnurl curl qr"
 REQUIRED_USE="?? ( curl gnurl )"
 
 RDEPEND="
 	=net-misc/gnunet-${PV}
 	experimental? ( =net-misc/gnunet-${PV}[experimental,extra] )
-	conversation? ( =net-misc/gnunet-${PV}[experimental,extra,conversation] )
 	qr? ( =net-misc/gnunet-${PV}[experimental,extra,qr]
 		  =net-misc/gnunet-${PV}[qr] )
 	gtk? ( =net-misc/gnunet-gtk-${PV} )

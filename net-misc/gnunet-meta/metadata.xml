@@ -10,5 +10,6 @@
 		<flag name="experimental">Install experimental features which are not yet stable</flag>
 		<flag name="gnurl">Build gnunet with libgnurl instead of libcurl</flag>
 		<flag name="curl">Build gnunet with curl using gnutls backend</flag>
+		<flag name="qr">qr stuff.</flag>
 	</use>
 </pkgmetadata>
