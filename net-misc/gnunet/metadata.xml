@@ -11,7 +11,7 @@
     <doc lang="en">https://gnunet.org</doc>
   </upstream>
   <use>
-    <flag name='httpd'>provide httpd through microhttpd</flag>
+    <flag name='httpd'>libmicrohttpd</flag>
     <flag name='sqlite'>use sqlite for database (default)</flag>
     <flag name='postgres'>use postgresql for database</flag>
     <flag name='mysql'>use mysql for database</flag>
@@ -22,13 +22,13 @@
     <flag name='dane'>build with gnutls + dane</flag>
     <flag name='gnutls'>gnutls</flag>
     <flag name='ssl'>openssl</flag>
-    <flag name='experimental'>enable experimental features which may not yet compile</flag>
-    <flag name='extra'>required IUSE for experimental features which may not yet compile</flag>
-    <flag name='pulseaudio'>build experimental feature 'conversation' with pulseaudio backend</flag>
-    <flag name='gstreamer'>build experimental feature 'conversation' with gstreamer backend</flag>
+    <flag name='experimental'>enable experimental features</flag>
+    <flag name='extra'>required IUSE for experimental features</flag>
+    <flag name='pulseaudio'>build 'gnunet-conversation' with pulseaudio backend</flag>
+    <flag name='gstreamer'>build 'gnunet-conversation' with gstreamer backend</flag>
     <flag name='qr'>experimental feature</flag>
-    <flag name='tex'>experimental feature</flag>
+    <flag name='tex'>build with texlive (pdflatex) to get 'gnunet-bcd' for business cards</flag>
     <flag name='sudo'>if you do not enable this, the GNS NSS library will not be installed</flag>
-    <flag name="gnurl">build with gnurl</flag>
+    <flag name="gnurl">build with gnurl, this is prefered over building with curl.</flag>
   </use>
 </pkgmetadata>
