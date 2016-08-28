@@ -180,9 +180,10 @@ src_configure() {
 		$(use_with sqlite ) \
 		$(use_with X x ) \
 		$(use_with gnutls ) \
-		--with-extractor \
-		$(use_with sudo )
+		--with-extractor
 }
+#		$(use_with sudo )
+
 
 src_install() {
 	emake DESTDIR="${D}" install
