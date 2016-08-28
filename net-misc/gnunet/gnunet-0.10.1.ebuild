@@ -1,6 +1,5 @@
-# Copyright 1999-2016 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License v2
 # Coypright © 2016 ng0
+# Distributed under the terms of the GNU General Public License v3 or later
 
 EAPI=6
 
@@ -63,8 +62,12 @@ esac
 # XXX: Do not slot this, ever.
 SLOT="0"
 
+# XXX: There is a false warning about root or sudo required for GNS NSS library
+# installation, claiming that it will not be installed if it is missing from the
+# build environment. With current HEAD (Aug 28 2016) it seems that sudo is no
+# longer needed, neither is root. This warning must be fixed in gnunet.
 IUSE="debug +httpd +sqlite postgres mysql nls nss +X +gnutls dane +bluetooth \
-      ssl libressl experimental extra pulseaudio gstreamer qr tex test +sudo \
+      ssl libressl experimental extra pulseaudio gstreamer qr tex test \
       +gnurl +curl curl_ssl_gnutls"
 
 # !!! TODO: Sort run depend, required use, build time use.
@@ -121,7 +124,6 @@ RDEPEND="
 	>=media-libs/opus-1.0.1
 	>=media-libs/libogg-1.3.0
 	bluetooth? ( net-wireless/bluez )
-	sudo? ( app-admin/sudo )
 	test? ( ${PYTHON_DEPS} )"
 
 DEPEND="${RDEPEND}

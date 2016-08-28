@@ -28,7 +28,6 @@
     <flag name='gstreamer'>build 'gnunet-conversation' with gstreamer backend</flag>
     <flag name='qr'>experimental feature</flag>
     <flag name='tex'>build with texlive (pdflatex) to get 'gnunet-bcd' for business cards</flag>
-    <flag name='sudo'>if you do not enable this, the GNS NSS library will not be installed</flag>
     <flag name="gnurl">build with gnurl, this is prefered over building with curl.</flag>
   </use>
 </pkgmetadata>
