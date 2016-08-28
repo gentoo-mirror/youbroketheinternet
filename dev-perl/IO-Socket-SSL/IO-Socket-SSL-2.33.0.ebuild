@@ -28,3 +28,8 @@ DEPEND="${RDEPEND}
 "
 
 SRC_TEST="do"
+
+pkg_postinstall() {
+elog "It's recommended to install either Net::IDN::Encode, Net::LibIDN or URI version>=1.50"
+elog "if you want international name support."
+}
