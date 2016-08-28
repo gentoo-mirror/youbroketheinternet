@@ -1,0 +1,110 @@
+#!/usr/bin/perl
+#
+# Lossless MP4 Scene Extractor	--symlynX 2016
+#
+# Tiny UX simplification frontend for GPAC's MP4Box -splitz
+# (how could you dare to give it an uppercase command
+# name in the first place!)
+#
+# Search engine hints: Video Editing, ffmpeg, Editor, Unix
+
+sub debug() { 0 }
+
+use Getopt::Std;
+getopt;
+
+my $input = shift;
+my $output = shift;
+my $start = shift;
+my $end = shift;
+my $excess = shift;
+my $tmp;
+
+my $MPARMS = '-quiet -fs';
+# $MPARMS .= ' -ao null' unless $opt_l;
+$MPARMS .= ' -ao null' if $opt_q;
+
+$output .= ".mp4" unless $output =~ /\.mp4$/i;
+
+# assumes minutes by default!
+sub timeparse {
+	$_ = shift;
+	my $min = shift;
+	return 3600 * $1 + 60 * $2 + $3 if /^(\d+)\D(\d+)\D(\d+)$/;
+	return $1 if /^\D(\d+)$/;
+	return 60 * $1 if /^(\d+)$/;
+	# guess what the user means depending on previous input
+	my $tmp = 60 * $1 + $2 if /^(\d+)\D(\d+)$/;
+	return $tmp < $min ? $tmp * 60 : $tmp;
+}
+
+$start = &timeparse( $start, 0 );
+  $end = &timeparse( $end, $start );
+
+# $start == 0 is legitimate...
+die <<X if $excess or not $input;
+
+mp4cut, Lossless M4V Scene Extractor
+
+Usage: $0 [<options>] <input-file> <output-file> <start-time> <end-time>
+
+This is a UX frontend for GPAC's MP4Box -splitz function.
+Whoops, -splitz is currently broken so we are using -splitx.
+
+You need to install the gpac package to use this.
+mp4cut allows you to extract pieces of an mp4 file without
+re-encoding neither video nor audio.
+
+It lets you specify cutting times in [<hh>:]<mm>[:<ss>]
+syntax (just like you see them on VLC), then narrow down
+the ideal values simply by re-editing the command line and
+re-running it since MP4Box can only approximate your time
+extraction requests according to the existing MP4 file
+structure. It intercepts MP4Box's automatic file name
+creation "feature" to let *you* decide the name of the file.
+The order of arguments in the command line is intentional
+to maximize usability.
+
+Options are:
+    -v	Show verbose outputs
+    -x	Immediately play the resulting video in mplayer
+
+X
+
+print STDERR <<X unless $opt_q;
+*** Cutting from $start to $end into $output
+X
+
+unless ( $end ) {
+	$end = "9999999";	# shows the available length of the file to edit
+	$start = "9999998" unless $start;
+}
+die "Cannot run MP4Box: $!" unless open(P, "MP4Box -splitx $start:$end '$input' 2>&1 |");
+while ( <P> ) {
+	if ( /xtracting chunk (.+) - duration / ) {
+		$tmp = $1;
+		print;
+	} elsif ( /nput file \((\d+)\S*\) shorter/ ) {
+		print;
+		print "$start% of $1 = ", $start * $1 / 100, "...\n" if $start < 100;
+		exit;
+	} else {
+		print if $opt_v;
+	}
+}
+close P;
+die "Apparently MP4Box created no file" unless $tmp;
+rename($tmp, $output);
+exit unless $opt_x;
+
+die "Cannot run mplayer: $!" unless open(P, "mplayer $MPARMS '$output' 2>&1 |");
+while ( <P> ) {
+	if ( $opt_v ) {
+		print;
+	} else {
+		print if /^(AUDIO|VIDEO):/;
+	}
+}
+close P;
+exit;
+

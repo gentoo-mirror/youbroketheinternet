@@ -98,6 +98,12 @@ released. Original website has disappeared. But it works.
 
 Podcast TV.
 
+== media-video/mp4cut ==
+
+Lossless M4V video editor, or rather, just a command line
+scene extractor with a nifty practical command line UX.
+Based on GPAC, which is amazing but has terrible UX.
+
 == net-im/qtox ==
 
 Person-to-person encrypted telephony application.
@@ -195,6 +201,18 @@ identical binary files.
 
 The package manager from Nix. Currently this ebuild is
 open for debugging here, please provide us with input.
+
+== sys-apps/oneshot ==
+
+Helper tool for Gentoo's emerge. Use it in ways that do not
+cut you bleeding. Partial slot conflict resolution automation
+included.
+
+== sys-fs/dmc ==
+
+Command line usability frontend to dm-crypt's cryptsetup, vaguely similar
+to truecrypt. Also similar to Jaromil's Tomb, but with support for multiple
+file systems. Automates creation and maintenance of encrypted volumes.
 
 == www-client/torbrowser ==
 
