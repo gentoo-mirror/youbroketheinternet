@@ -26,8 +26,12 @@ to submit a patch to this overlay, pass it in form of a textual
 patch or make your copy of this git available on your own onion.
 Github is not a safe infrastructure for a GNU Internet.
 
+If you need some advice on which anti-PRISM tools to install,
+have a look at our 'best current practice' recommendations at
+http://secushare.cheettyiapsyciew.onion/comparison.
 
-=== dev-perl/Net-PSYC ===
+
+== dev-perl/Net-PSYC ==
 
 Perl implementation of the PSYC protocol together with
 
@@ -54,6 +58,17 @@ elliptic curve cryptography that pybitmessage happens to need.
 
 Qt library for QR code generation and decoding. Broken with
 QT-5.7.
+
+== dev-vcs/gitprivacy ==
+
+Probably just a beginning: git-commit-privacy is a tiny
+shell script that hides your working hour habits from
+the repositories you commit to. It otherwise behaves
+exactly like git commit.
+
+== dev-vcs/stagit ==
+
+Static git page generator.
 
 == eclass/git-r3 ==
 
@@ -88,11 +103,21 @@ kdenlive. Simply recompile kdenlive after installing this.
 kdenlive should have it in its dependencies, but in fact
 the kdenlive ebuild is missing several dependencies.
 
+New: lynX added his "deshake" command line tool for
+removing camera shake from video files, since kdenlive
+is such a buggy piece of software and overkill if you do
+not need to do any editing beyond what mp4cut offers.
+
 == media-sound/rxaudio-bin ==
 
 A *shareware* from 1998: A remote controllable MP3 engine
 used by psycmp3 from dev-perl/Net-PSYC. Source code was never
 released. Original website has disappeared. But it works.
+In almost twenty years it never exhibited non-consensual
+Internet access, so there is no reason to expect it to
+contain malware now. The reason it is here is because it
+has a pretty good control API and no-one cared to rewrite
+the powerful psycmp3 player to use a free software API.
 
 == media-video/miro ==
 
@@ -100,7 +125,8 @@ Podcast TV.
 
 == media-video/mp4cut ==
 
-Lossless M4V video editor, or rather, just a command line
+Lossless M4V video editor (M4V = mp4, mov, 3gp and other
+mp4-based file formats), or rather, it's a a command line 
 scene extractor with a nifty practical command line UX.
 Based on GPAC, which is amazing but has terrible UX.
 
@@ -130,14 +156,15 @@ XMPP and other protocols.
 == net-libs/libpsyc ==
 
 A tiny C implementation of the PSYC protocol syntax for
-lightning fast parsing and rendering.
+lightning fast parsing and rendering. Easily beats JSON
+and XML.
 
 == net-misc/gnunet ==
 
 GNUnet is a mesh network routing system not limited to peer-
 to-peer usage, so it belongs into net-misc instead of net-p2p.
-Usage is a bit unorthodox, but it provides anonymous file
-sharing/publication for a start.
+Usage is a bit unorthodox, but it provides censorship-resistant
+anonymous file publication and sharing for a start.
 
 == net-misc/gnunet-gtk ==
 
@@ -155,6 +182,8 @@ uses this.
 Enhanced telnet client with automation macros for interaction
 with Multi-User Domains (MUDs). Nowadays it is frequently used
 as a text-based messaging client with psyced's telnet access.
+That's why we also provide a 'cmdsep' flag to avoid making ";"
+a command separator symbol as it would keep you from winking.
 
 == net-misc/onioncircuits ==
 
@@ -166,9 +195,12 @@ Cryptographic anonymizing text publication system. Not a lot better
 than PGP concerning one-to-one communications (it lacks forward
 secrecy) but its strength is clearly in the ability to broadcast
 from few senders to many recipients. The latest version also works
-over Tor, but that is actually quite a strain on your Tor router
-and will only hide the fact that you are using Bitmessage, it
-probably does not increase your messaging anonymity.
+over Tor but can be quite a strain on your Tor router depending how
+your torrc is configured. It would mostly hide the fact that you
+are using Bitmessage and increase your messaging anonymity only
+when you are posting to large subscription channels. For mere
+private conversation and passive consumption of public channels,
+Tor is not needed.
 
 == net-p2p/retroshare ==
 
