@@ -1,0 +1,237 @@
+#!/usr/bin/perl
+#
+#   It's called oneshot, because with extra world management, 
+#   regular emerge doesn't even make sense.
+
+sub debug() { 0 }
+sub verbose() { 1 }
+
+my $variations = <<X;
+oneshot-quick - Emerge package versions without considering dependencies, use binary packages when available
+oneshot-quick-ask
+oneshot-deep - Emerge packages versions with dependencies, use binary packages when available
+oneshot-deep-ask
+oneshot-quick-any - Emerge packages without considering dependencies, use binary packages when available
+oneshot-quick-any-ask
+oneshot-deep-any - Emerge packages with dependencies, use binary packages when available
+oneshot-deep-any-ask
+oneshot-build-quick - Recompile a package without considering dependencies and binary packages
+oneshot-build-quick-ask
+oneshot-build-deep - Recompile a package without considering binary packages
+oneshot-build-deep-ask
+oneshot-build-update-quick - Recompile a package because of changed USE flags or such 
+oneshot-build-update-quick-ask
+oneshot-build-update-deep - Recompile a package because of changed USE flags or such, considering dependencies
+oneshot-build-update-deep-ask
+oneshot-build-update-any-quick - Build an up to date package without considering dependencies and binary packages
+oneshot-build-update-any-quick-ask
+oneshot-build-update-any-deep - Build an up to date package without considering binary packages
+oneshot-build-update-any-deep-ask
+oneshot-recycle-quick - Install a binary package without considering dependencies
+oneshot-recycle-quick-ask
+oneshot-recycle-deep - Install a binary package taking dependencies in consideration
+oneshot-recycle-deep-ask
+oneshot-recycle-update-quick - Update packages (maintaining version) if binary packages matching new USE flags are available
+oneshot-recycle-update-quick-ask
+oneshot-recycle-update-deep - Update packages and dependencies if binary packages matching new USE flags are available
+oneshot-recycle-update-deep-ask
+oneshot-recycle-update-any-quick - Install most up to date binary packages without consideration of dependencies
+oneshot-recycle-update-any-quick-ask
+oneshot-recycle-update-any-deep - Install most up to date binary packages, considering dependencies
+oneshot-recycle-update-any-deep-ask
+oneshot-unmerge-quick - Remove a specific package version immediately, without consideration of consequences
+oneshot-unmerge-quick-ask
+oneshot-unmerge-deep - Remove a specific package version only if no other packages depend on it
+oneshot-unmerge-deep-ask
+oneshot-unmerge-any-quick - Remove packages immediately, without consideration of consequences
+oneshot-unmerge-any-quick-ask
+oneshot-unmerge-any-deep - Remove packages if no other packages depend on it
+oneshot-unmerge-any-deep-ask
+oneshot-update-quick - Update packages maintaining version, use binary packages when available
+oneshot-update-quick-ask
+oneshot-update-deep - Update packages and dependencies maintaining version, use binary packages when available
+oneshot-update-deep-ask
+oneshot-update-any-quick - Update packages without considering dependencies, use binary packages when available
+oneshot-update-any-quick-ask
+oneshot-update-any-deep - Update packages and dependencies, use binary packages when available
+oneshot-update-any-deep-ask
+oneshot-perlcleaner - Call perlcleaner with a useful set of emerge presets
+oneshot-perlcleaner-ask
+oneshot-revdep - Call revdep-rebuild with a useful set of emerge presets
+oneshot-revdep-ask
+X
+
+use Term::ANSIColor qw(:constants);
+
+my @a = @ARGV;
+my %b = undef;
+my $emerge = '/usr/bin/emerge';
+
+sub say {
+        print STDERR BOLD, "\t=== ", MAGENTA, @_, RESET, "\n";
+}
+
+sub emerge {
+	my $e = shift;
+	say "$emerge $e" if debug;
+	system "$emerge $e";
+	my $rc = $@ or $!;
+	exit $rc if $rc;
+}
+
+sub slurp {
+	my $fd = shift;
+	while (<$fd>) {
+		return if /^\s*STOP\s*$/;
+		if ( /^\s+(\w\S+\/\w\S+?-\d.*?) requires \S+\/\w\S+\s*$/
+		    or /^-\s(\w\S+\/\w\S+?-\d.*?) \(masked by: /
+		    or /^\s+(\w\S+\/\w\S+?-\d.*?) pulled in by:$/ ) {
+			&pushit($1);
+			next;
+		}
+		unless ( /^\[(ebuild|binary) .*\]\s+(\w\S+\/\w\S+?-\d.*?) /
+		    or / (required by) \((\w\S+\/\w\S+?-\d.*?), / ) {
+			next;
+		}
+		&pushit($2);
+	}
+	say "Used entire input." if debug;
+}
+
+sub pushit {
+	$_ = shift;
+	if ( $0 =~ /any/ ) {
+		s/-\d.*?$//;
+	} else {
+		$_ = "=$_";
+	}
+	# maintains original order, but avoids repetitions
+	push @a, $_ unless $b{$_}++;
+}
+
+
+MAIN:
+	if ( $0 =~ /help/ ) {
+		if ( $a[0] and index('install', $a[0]) == 0 ) {
+			$_ = $0;
+			s%/[^/]+$%%;
+			say "Entering '$_'" if verbose;
+			chdir ($_) or die "Could not chdir into '$_': $!";
+			foreach ( split /\s+/, $variations ) {
+				next unless /^oneshot/;
+				say "Hardlinking myself to the name '$_'" if verbose;
+				system "/bin/ln -f '$0' '$_'";
+				die "Could not hardlink myself to '$_': $!" if $!;
+			}
+			exit;
+		}
+		if ( $a[0] and index('variations', $a[0]) == 0 ) {
+			foreach ( split /\n/, $variations) {
+				next if /^#/;
+				print $_, "\n" if /\S - \S/;
+			}
+			exit;
+		}
+		print <<X;
+This is a tool to enhance the usability of portage and reduce
+the risk of cutting yourself bleeding with emerge's army knife.
+
+    Usage: <command> [<options>] <parameters>
+	or <command> [<options>] <matchbox>
+	or <command> [<options>] < <matchbox>
+	or <command> [<options>]
+
+Commands: Type 'oneshot' and hit the command completion to see 
+	  a list of possible commands. If only 'oneshot-help'
+	  appears you should execute 'oneshot-help install' to
+	  link the other names of this program into your system.
+	  Try also 'oneshot-help variations' to see a commented
+	  list of calling variations.
+
+Options:    Any additional options for the actual emerge.
+
+Parameters: Can be any package name or specifier that you can
+	    pass to emerge. Additionally it is permitted to 
+	    leave out the leading '=' sign so you can feed the
+	    list by name completion from within /var/db/pkg.
+	    It is also allowed to pass ebuild file names from
+	    /usr/portage. You can even have ".tbz2" appended,
+	    so you can pass binary package file names.
+
+Matchbox: An edited screen output log from a previous emerge
+execution. This program will extract package names marked with
+a leading [ebuild *] or [binary *] pattern. It will also pick
+packages that are causing slot conflicts, listings of masked
+packages or packages pulling in other packages (from depclean 
+output). This can be practical to automate the reinstall proce-
+dures that portage sometimes requires, but remember to edit that
+file to ensure the correct packages will be treated. Should you
+not want to process the entire input file, insert the word STOP
+on a line by itself.
+X
+		exit;
+	}
+
+	# five lines of code just to output the action description message:
+	$_ = $0;
+	s/-ask$//;
+	m%/([^/]+)$%;
+	say "I was called as $1 this time" if debug;
+	$_ = (grep { /^$1 - / } (split /\n/, $variations))[0];
+	print STDERR BOLD, "\t=== ", CYAN, $_, RESET, "\n" if /^\S+ - .*$/;
+
+	# now we actually start doing something
+	$emerge = '/usr/bin/revdep-rebuild' if $0 =~ /revdep/;
+	$emerge = '/usr/bin/perl-cleaner --all --' if $0 =~ /perl/;
+	if ( $0 =~ /unmerge/ ) {
+		$emerge .= " --rage-clean" if $0 =~ /quick/;	# like --unmerge, but without counting the seconds
+		$emerge .= " --depclean" if $0 =~ /deep/;	# --depclean-lib-check=n ?
+	} else {
+		# --unordered-display makes --tree more readable
+		$emerge .= " --tree --unordered-display" unless $0 =~ /quick/;
+		$emerge .= " --nodeps" if $0 =~ /quick/;
+		$emerge .= " --update --newuse --changed-use --changed-deps=y" if $0 =~ /update/;
+		$emerge .= " --usepkg --binpkg-changed-deps=y --binpkg-respect-use=y" unless $0 =~ /build/;
+		$emerge .= " --usepkgonly --binpkg-changed-deps=n --binpkg-respect-use=n" if $0 =~ /recycle/;
+	}
+	$emerge .= " --ask --changelog" if $0 =~ /ask/;
+	# should we always have --changed-deps=y?
+	# WTF is --use-ebuild-visibility=y ?
+	$emerge .= " --alert --alphabetical --ask-enter-invalid --autounmask-write --buildpkg --buildpkg-exclude 'sys-kernel/*-sources' --keep-going --oneshot --verbose --verbose-conflicts";
+	# --verbose shows the USE flags in the ask listing
+	say "Command: $emerge" if verbose;
+
+	if ($#a < 0) {
+		say "Expecting arguments on STDIN";
+		slurp *STDIN;
+	} else {
+		my $argc = $#a;
+		my $f = $a[0];
+		say "Is $f a file I can slurp?" if debug;
+		if ( not $f =~ /\.(ebuild|tbz2)$/ and -f $f and -r $f ) {
+			open (I, $f) or die $!;
+			slurp *I;
+			close I;
+		}
+		# oops, file didn't contain anything? then it was probably meant as a parameter
+		shift @a if $argc != $#a;
+	}
+	foreach ( @a ) {
+		# so you can pick your parameters from the packages or
+		# portage dirs:
+		if (s/\.(ebuild|tbz2)$//) {
+			s%/(\w\S+?)/%/% if m%\w\S+/(\w\S+?)/(\w\S+?)-\d.*?$% && $1 eq $2;
+		}
+		# merely prepends '=' in front of package specifications
+		# that portage wants to have with a '=' prepended.
+		s/^(\w\S+\/\w\S+?-\d.*?)$/=$1/;
+		# FIXME: should honor 'any' here
+		#
+#		# one by one, useful sometimes, detrimental other times.
+#		# wanting to use this probably means you did something wrong:
+#		emerge $_;
+	}
+	say "Parameters: ", join(' ', @a) if verbose;
+	emerge join(' ', @a) if $#a >= 0;
+	say "Finished arguments." if debug;
+

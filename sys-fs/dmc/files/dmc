@@ -1,0 +1,404 @@
+#!/usr/bin/perl
+#
+# dm-crypt tool with vaguely similar command line syntax to truecrypt.
+# simplifies management of volumes with LUKS and a file system inside.
+# reasons to use LUKS instead of truecrypt are: you can resize file
+# systems + dm-crypt behaves a bit more reliably when doing heavy duty
+# storage transactions. there is nothing wrong with truecrypt's
+# cryptography though!
+#
+#   --vonlynX 2014, 2015
+#
+# TODO: fallocate is cool. maybe we even want an option for 'truncate'
+#	aka using sparse files that factually get allocated on the fly?
+
+use Term::ANSIColor qw(:constants);
+
+use Getopt::Std;
+getopt('tsump');
+# i liked 'sumpf' but it was not worth renaming -t into -f
+
+# urandom is rather slow, zero is faster. by default however we use
+# 'fallocate' instead of 'dd' which reserves an amount of disk space
+# for the volume without changing it at all, which can be considered
+# as slightly disguising. better and much faster than zeroing it out.
+sub RND () { 'if=/dev/' . ($opt_R? 'urandom': 'zero') }
+# remember that this is only relevant if you don't plan to fill the
+# volume up completely - random bytes hide how much of the container
+# has been used. if you're likely to fill the entire space anyway,
+# you might aswell start with a zeroed or fallocated container.
+
+# should i need to access my volumes from microsoft or macos i'd
+# rather install ext4 on them than pick an awful "compatible" fs.
+sub FS () { 'ext4' }
+
+sub debug () { 0 }
+
+# we use undeclared global variables. that's the privilege of using
+# a rapid prototyping and scripting language and to be respected.
+$vol = shift;
+$mnt = shift;
+
+if ($opt_d and not $vol) {
+	# blkid shows the proper dmc mapper device even if
+	# the file system was mounted by its /dev/dm-# path
+	open(M, '/sbin/blkid |') or die "blkid: $!";
+	&findmounts;
+	# under sane conditions these should already be
+	# updated, but conditions are sometimes insane
+	# my 4.0.x kernel just panicked on dmc -d
+	&findmounts if open(M, '/proc/self/mounts');
+	&findmounts if open(M, '/etc/mtab');
+	exit $!;
+}
+
+my $keef = undef;
+my $fs = FS;
+# just in case i use -f instead of -t
+($vol and not $opt_f) or die <<X;
+
+Usage of $0:
+
+dmc <volume> [<mountpath>]		# mount a volume
+dmc -d					# dismount all dmc volumes
+dmc -d <volume> [<mountpath>]		# dismount a volume by filename
+dmc -d <mapper> [<mountpath>]		# dismount a volume by mapper name
+dmc -c <volume> [<mountpath>]		# format and mount an existing volume
+dmc -cs <size> <volume> [<mountpath>]	# create a volume of given size
+dmc -es <size> <volume> [<mountpath>]	# enlarge a volume by given size
+dmc -e <volume> [<mountpath>]		# adapt fs to a manually resized volume
+dmc [-A|-C|-D] <volume>			# add, change or delete a password
+dmc -L <volume>				# list key slots and show status
+dmc -E <volume>				# erase some or all passwords and keys
+
+<size> may end in M for megabytes, G for gigabytes, T for terabytes...
+If <mountpath> is omitted, /dev/shm/<mapper> is created instead.
+Combining action flags such as -c, -e and -d produces unuseful effects.
+
+Options:
+	-R		# use /dev/urandom for volume creation (slow, but
+			#   hides the amount of data stored in the volume)
+	-t <fstype>	# use other file system type than $fs (only needed with -c)
+	-u <name>	# specify user to chown file system to
+	-m <name>	# use this specific mapper nickname
+	-n		# no operation, just pretend
+	-q		# quiet, do not show commands to be executed
+
+X
+
+## HELPERS
+
+sub sys2 {
+	print BOLD, BLUE, join(' ', @_), "\n", RESET unless $opt_q;
+	return system(@_) unless $opt_n;
+}
+sub sys {
+	print BOLD, GREEN, join(' ', @_), "\n", RESET unless $opt_q;
+	if (!$opt_n and system(@_)) {
+		if ($? == -1) {
+			print "\t{failed to execute: $!}\n";
+		} elsif ($? & 127) {
+			printf "\t{command died with sig %d, %s core dump}\n",
+			 ($? & 127),  ($? & 128) ? 'with' : 'without';
+		} else {
+			printf "\t{command exited with value %d}\n", $? >> 8;
+		}
+		exit $? if $?;
+		exit $@ if $@;
+	}
+}
+sub prepare {
+	unless ($nick = $opt_m) {
+		$nick = $vol;
+		$nick =~ s/\.\w+$//;			# remove a trailing extension
+		$nick = $1 if $nick =~ /(\w+)$/;	# use last word of volume name
+	}
+
+	if (not $opt_d and -e $mapper) {
+		srand;
+		$r = int(rand(100));
+		warn <<X;
+Warning: $mapper already exists, using $mapper$r instead
+X
+		$mapper = $mapper . $r;
+		$map = $map . $r;
+		$nick = $nick . $r;
+	}
+
+	# /media is a good idea because the desktop environments will show
+	# device icons for it and make it easy to use for GUI users.
+	# unfortunately it stops the automounter from doing its job. why?
+	if ( -w "/dev/shm" ) {
+		$media = "/dev/shm";
+	} else {
+		$media = "/tmp";
+	}
+	$mnt = "$media/$nick" unless $mnt;
+
+	# the prefix is useful to automate dismounting of all dmcs
+	$map = "dmc-$nick";
+	$mapper = "/dev/mapper/$map";
+}
+sub unmount {
+	if ($opt_n or -r $mapper) {
+		sys2 '/bin/umount', $mnt;	# ignore if already unmounted
+		sys2 '/sbin/cryptsetup', 'luksClose', $map;
+		sys2 '/bin/rmdir', $mnt;
+	} else {
+		print "\t{$mapper already dismounted}\n";
+	}
+}
+my %unmounted = {};
+sub findmounts {
+	while (<M>) {
+		# this matches either input format
+		if (m!^/dev/mapper/dmc-(\S+?):? !) {
+			$vol = $1;
+			next if $unmounted{$vol};
+			undef $mnt;
+			&prepare;
+			&unmount;
+			++$unmounted{$vol};
+		}
+	}
+	close M;
+}
+sub luksDump {
+	sys '/sbin/cryptsetup', 'luksDump', $vol;
+	print "\n";
+}
+sub wordFetch {
+	my $f = shift;
+	print "{found key in $f}\n" if debug;
+	$keef = $f;
+	# double braces allow me to use 'next' locally
+	if (open (F, $f)) {{
+		$_ = <F>;
+		close F;
+		die if length() < 2;
+		next unless s/\s+$//;
+		open (F, ">$f") or
+		    die "Cannot fix trailing whitespace in $f";
+		print F $_;
+		close F;
+		print "{fixed trailing whitespace in $f}\n";
+	}}
+	return 1;
+}
+
+## MAIN
+
+
+&prepare;
+
+die <<X if $nick =~ m:/:;
+
+Invalid volume name. $0 needs volume names to end
+in a word character string <name> or <name>.<extension>
+
+X
+
+if (opendir D, $media) {
+	while (readdir D) {
+		my $p = "$media/$_";
+		# this also checks . and ..
+		# but is that a problem?
+		next unless -d $p;
+		my $f = "$p/.words/$nick";
+		print "{looking for key in $f}\n" if debug;
+		next unless -r $f;
+		last if &wordFetch($f);
+	}
+	closedir D;
+}
+unless ($keef) {
+	my $f = "/root/.words/$nick";
+	&wordFetch($f) if -r $f;
+}
+
+$user = $opt_u || $ENV{SUDO_USER};
+
+if ($opt_d) {
+	&unmount;
+	exit;
+}
+
+if ($opt_L) {
+	&luksDump;
+	goto ADEU;
+}
+if ($opt_A) {
+	&luksDump;
+	sys '/sbin/cryptsetup', 'luksAddKey', '--key-file', $keef, $vol if $keef;
+	sys '/sbin/cryptsetup', 'luksAddKey', $vol unless $keef;
+	&luksDump;
+	exit;
+}
+if ($opt_C) {
+	&luksDump;
+	sys '/sbin/cryptsetup', 'luksChangeKey', '--key-file', $keef, $vol if $keef;
+	sys '/sbin/cryptsetup', 'luksChangeKey', $vol unless $keef;
+	&luksDump;
+	exit;
+}
+if ($opt_D) {
+	&luksDump;
+	# Ignoring $keef for this one... as it might happen by mistake
+	sys '/sbin/cryptsetup', 'luksRemoveKey', $vol;
+	&luksDump;
+	exit;
+}
+if ($opt_E) {
+	&luksDump;
+	print <<X;
+
+If you really want to remove all access keys and make the
+volume inaccessible, copy and paste this command:
+
+/sbin/cryptsetup erase $vol
+/bin/rm $vol
+
+If you need to remove a certain key slot but leave the
+others as they are, here's what you need:
+
+/sbin/cryptsetup luksKillSlot $vol <slot-number>
+
+X
+	exit;
+}
+
+if ($opt_s) {
+	$size = $opt_s;
+	$unit = uc($1) if $size =~ s/(\w)$//i;
+	$size = 1024 * $size if $unit eq 'K';
+	$size = 1024 * 1024 * $size if $unit eq 'M';
+	$size = 1024 * 1024 * 1024 * $size if $unit eq 'G';
+	$size = 1024 * 1024 * 1024 * 1024 * $size if $unit eq 'T';
+
+	# let's use a megabyte large buffer
+	$unit = "bs=1M";
+	$size = $size / (1024 * 1024);
+	$size = "count=$size" if $size;
+}
+
+if ($size and $opt_e) {
+	die "$vol doesn't exist. Did you mean -c instead of -e? " unless -e $vol;
+	# frequent use case, enlarge a currently mounted volume
+	&unmount;
+	# fallocate does not respect -R requirements...
+	if ($opt_R or sys2 '/usr/bin/fallocate', '-o', -s $vol, '-l', $opt_s, $vol) {
+		print "Reverting to 'dd' ...\n" unless $opt_R;
+		sys '/bin/dd', 'oflag=append', 'conv=notrunc', RND, $unit,
+		    $size, "of=$vol";
+	}
+	# otherwise assume the user has resized the volume manually
+} elsif ($opt_c) {
+	# not sure about auto-unmount here
+	if ($size) {
+	    die "$vol already exists. Did you mean -e instead of -c? " if -e $vol;
+	    if ($opt_R or sys2 '/usr/bin/fallocate', '-l', $opt_s, $vol) {
+		print "Reverting to 'dd' ...\n" unless $opt_R;
+		sys '/bin/dd', RND, $unit, $size, "of=$vol";
+	    }
+	}
+	sys '/sbin/cryptsetup', 'luksFormat', '--batch-mode', $vol, $keef if $keef;
+	sys '/sbin/cryptsetup', 'luksFormat', '--batch-mode', $vol unless $keef;
+} elsif ($size) {
+	die <<X;
+
+Option -s is cool but you have to choose between -c and -e to go with it.
+
+X
+}
+
+if ($opt_p) {
+	# ugly, do not use
+	sys "/bin/echo -n '$opt_p' | /sbin/cryptsetup luksOpen --key-file - '$vol' '$map'";
+} elsif ($keef) {
+	sys "/sbin/cryptsetup luksOpen --key-file '$keef' '$vol' '$map'";
+} else {
+	sys '/sbin/cryptsetup', 'luksOpen', $vol, $map;
+}
+
+if ($opt_c) {
+	$fs = $opt_t || FS;
+	# so logical that each file system had to have its own
+	# mkfs flag to pass the device label name.. right?
+	if ( $fs =~ /^ext/ ) {
+		# optimizations of ext* filesystems depending on size happens
+		# automatically as defined in /etc/mke2fs.conf
+		sys '/sbin/mkfs.'. $fs, '-m', '0', '-L', $nick, $mapper;
+		# -m is the percentage of root-reserved blocks. only makes sense
+		# for file systems in production use (system, server etc)
+	} elsif ($fs eq 'btrfs') {
+		sys '/sbin/mkfs.'. $fs, '-L', $nick, $mapper;
+	} elsif ($fs eq 'ntfs') {
+		# zeroing out a virtual volume is silly: Q for quick
+		sys '/sbin/mkfs.'. $fs, '-QIL', $nick, $mapper;
+		# I disables content indexing
+	} elsif ($fs eq 'reiserfs') {
+		sys '/sbin/mkfs.'. $fs, '-l', $nick, $mapper;
+	} elsif ($fs eq 'bfs') {
+		sys '/sbin/mkfs.'. $fs, '-V', $nick, $mapper;
+	} elsif ($fs eq 'minix') {
+		sys '/sbin/mkfs.minix', $mapper;
+	} else { # msdos, fat, vfat
+		sys '/sbin/mkfs.'. $fs, '-n', $nick, $mapper;
+	}
+} else {
+	open(B, '-|', '/sbin/blkid', $mapper) or die "blkid: $!";
+	$_ = <B>;
+	$fs = $1 if / TYPE="(\w+)"/;
+	close B;
+	die "Could not detect filesystem of $mapper" unless $fs or $opt_n;
+}
+
+if ($opt_e) {
+	sys '/sbin/cryptsetup', 'resize', $mapper;
+	# so reasonable there is no fs-independent resize command!
+	# hey wait.. there is a shell script called fsadm that knows
+	# half of the file systems.. but not the ones i need. great!
+	if ($fs eq 'ntfs') {
+		sys '/usr/sbin/ntfsresize', $mapper;
+	} elsif ($fs eq 'btrfs') {
+		# btrfs needs it AFTER mounting!
+	} elsif ($fs eq 'xfs') {
+		# xfs cannot be shrunk!
+		sys '/usr/sbin/xfs_growfs', $mapper;
+	} elsif ($fs eq 'reiserfs') {
+		sys '/usr/sbin/resize_reiserfs', $mapper;
+	} else {
+		sys2 '/sbin/fsck', '-f', $mapper;
+		# sys '/sbin/resize2fs', $mapper;
+		sys '/sbin/fsadm', 'resize', $mapper;
+	}
+}
+
+sys2 '/bin/mkdir', '-p', $mnt unless -d $mnt;
+
+chdir ('/');	# nothing as annoying as having mounted A in dependency of B
+
+if ($fs eq 'ntfs') {
+	sys '/bin/mount', '-v', '-t', $fs, $mapper, $mnt;
+} else {
+	unless ($opt_c or $opt_e) {
+		# would have spared me a system crash recently...
+		sys2 '/sbin/fsck', $mapper if $fs ne 'btrfs';
+		# fsck returns 1 even if it just created lost+found
+		# so we'll ignore the return code. trying to mount it
+		# will be the next thing we want to do anyhow
+		#
+		#sys2 '/sbin/btrfs', 'check', $mapper if $fs eq 'btrfs';
+		# madness. btrfs check takes ages and cannot be sped up.
+	}
+	sys '/bin/mount', $mapper, $mnt;
+}
+
+sys2 "/sbin/btrfs filesystem resize max $mnt" if $opt_e and $fs eq 'btrfs';
+sys '/bin/chown', $user, $mnt if $opt_c and $user;
+
+ADEU:
+
+sys2 '/sbin/cryptsetup', 'status', $mapper unless $opt_q;
+sys '/bin/df', '-Th', $mnt if -d $mnt;
+
