@@ -18,6 +18,7 @@ SRC_URI=""
 
 KEYWORDS="~amd64 ~arm ~ppc64 ~x86"
 SLOT="0"
+DEPEND="dev-lang/perl"
 
 # providing actual commit hashes protects against man in
 # the middle attacks on the way to the git repository.	--lynX
@@ -35,13 +36,17 @@ case ${PV} in
 	EGIT_COMMIT="94a4692bd7dd9a6f5edebc26a50597b3e750e6a7"
 	# Date:   Sat Jan 4 22:00:18 2014 +0100
 	;;
-"0.98b")
-	EGIT_COMMIT="3b35b4ddeb595511593a862849e750c459b99cb8"
-	# Date:   Wed Mar 12 20:42:49 2014 +0100
+"1.0")
+	EGIT_COMMIT="07693ded9ad66832d83f2621025049a4587e76a0"
+	# Date:   Sun Aug 17 11:29:10 2014 +0200
 	;;
-*)
+"1.1")
 	EGIT_COMMIT="97c6ae2719faac74687fe409b5a7258eab06b22e"
 	# Date:   Fri May 29 22:56:28 2015 +0200
+	;;
+*)
+	# nothing new in over a year
+	EGIT_COMMIT="97c6ae2719faac74687fe409b5a7258eab06b22e"
 	;;
 esac
 # therefore, for security reasons "9999" doesn't actually
@@ -56,5 +61,11 @@ src_prepare() {
 		cp "${FILESDIR}"/CMakeLists-0.9 CMakeLists.txt
 		;;
 	esac
+}
+
+src_install() {
+	cmake-utils_src_install
+	exeinto /usr/bin
+	doexe "${FILESDIR}"/deshake
 }
 

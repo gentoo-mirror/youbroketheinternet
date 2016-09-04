@@ -1,0 +1,111 @@
+#!/usr/bin/perl
+#
+# how to stabilize a shaky video clip
+#   --vonlynX 2015
+#
+# see also vid.stab when compiling melt and transcode
+# see also y4mstabilizer
+#
+# took so much work to figure this script out but then
+# i found out .mlt files are smarter than intermediate
+# renderings and therefore it is best to just use
+# kdenlive with its "Stabilize" function in the
+# "Clip Jobs" menu. should you not find it, then you
+# need my vid-stab.ebuild.
+
+	use File::Find;
+	use Getopt::Std;
+	getopts('hazony:F:');
+
+	my $outputmodule = "xvid,wav";
+	my $outputmodule = "mpeg2enc,wav";
+	my $outputmodule = "mov,wav";
+	my $outputmodule = "raw";
+	my $outputmodule = "ffmpeg,wav";
+	$outputmodule = $opt_y if $opt_y;
+
+	my $outputformat = "0";			# for mpeg2enc
+	my $outputformat = "mjpa";		# for mov
+	my $outputformat = "I420";		# for raw
+	my $outputformat = "list";		# for ffmpeg, raw
+	my $outputformat = "ljpeg";		# ffmpeg, lossless, large
+	my $outputformat = "mpeg4";		# ffmpeg, lossy output by def
+	my $outputformat = "h264";		# ffmpeg, crashes transcode
+	my $outputformat = "mjpeg";		# ffmpeg
+	my $outputformat = "huffyuv";		# ffmpeg, lossless
+	$outputformat = $opt_F if $opt_F;
+
+	my $outputextension = "stable.$outputformat";
+	$outputextension = $opt_o if $opt_o;
+
+	my $probe = undef;
+	$probe = "--mplayer_probe" unless $opt_n;
+
+	# flag documentation: see 'tcmodinfo -i transform'
+#	-f		# keep black frame around unshaked video
+#	my $trafo = "transform";
+#	$trafo = "transform=crop=1:optzoom=0" if $opt_f;
+	my $trafo = "transform=crop=1:optzoom=0";
+	$trafo = "transform" if $opt_z;
+
+	# flag documentation: see 'tcmodinfo -i stabilize'
+	my $stab = "stabilize=shakiness=8:accuracy=10";
+
+	die <<X if $opt_h or $#ARGV < 0;
+Usage: $0 [<opts>] <files-or-dirs>
+
+Options:
+	-n		# use native instead of mplayer for input decoding
+	-z		# zoom or clone rather than drawing a black frame
+	-a		# analyze only, generate .trf file for transform
+	-y <modules>	# select output modules
+	-F <format>	# select output format for video module
+	-o <extension>	# output files end in .$outputextension by default
+	-h		# help!
+
+Default modules are $outputmodule.
+Default format is $outputformat.
+Available export modules for -y are in `ls /usr/lib/transcode/export_*`.
+Available export formats for some modules listable with '-F list'.
+See also: man transcode_export
+X
+
+	my $transcode = "/usr/bin/transcode";
+	$transcode = "/usr/local/bin/transcode" unless -x $transcode;
+	die <<X unless -x $transcode;
+Please install "transcode".
+X
+
+	find(\&wanted, $#ARGV >= 0 ? @ARGV : '.');
+	exit;
+
+sub wanted {
+	my $f = $_;
+	# assume this is the output of a previous run
+	return if /stable/i;
+	#eturn if /\.trf$/i;
+	# same regexp also in 'mvmatch'
+	return unless s/\.(mp4|flv|mov|avi|asf|webm|mpg|mpeg)$//i;
+
+	if (-s "$f.trf" > 12) {
+		print STDERR "*** Skipping analysis pass for $f.trf\n";
+	} else {
+		print STDERR "*** Deshake analysis of $f\n";
+		system $transcode, $probe, '-J', $stab, '-i', $f,
+		    # these parameters can be left out
+		    '-q', 0, '-y', 'null,null', '-o', '/dev/null';
+	}
+	if ( $opt_a ) {
+		print STDERR "*** Skipping transformation pass for $f\n";
+		return;
+	}
+
+	my $o = "$_.$outputextension";
+	if ( -s $o > 9999 ) {
+		print STDERR "*** Skipping $o, it already exists.\n";
+		return;
+	}
+	print STDERR "*** Outputting to $o\n";
+	system $transcode, '-q', 0, $probe, '-J', $trafo, '-i', $f,
+	    '-y', $outputmodule, '-F', $outputformat, '-o', $o;
+}
