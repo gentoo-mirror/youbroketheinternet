@@ -1,0 +1,104 @@
+#!/usr/bin/perl -w
+#
+# A better zipgrep then the shell script given in most distributions, but
+# mostly compatible to it. This one can handle filenames with spaces, it
+# can recurse into directories and search special purpose ZIPs like MAFF,
+# ODT or APK. Now also returns grep-compatible exit code.
+#
+# Originally by Ned Konz, perl@bike-nomad.com
+# Added ability to recurse and handle options, --symlynX 2012
+#
+use strict;
+
+# apt-get install libarchive-zip-perl
+use Archive::Zip qw(:CONSTANTS :ERROR_CODES);
+use File::Find;
+use Getopt::Std;
+
+if ( @ARGV < 2 ) {
+    print <<X;
+This program searches for the given Perl regular expression in Zip archives.
+Archive is assumed to contain text files. If given directories, recursion is
+applied. Usage:
+
+    $0 <options> 'pattern' <items>
+
+Options are:
+    -a(ll)	    -- check every binary file if it is a zip
+    -l(ist)	    -- show just the matching file names
+    -h(ide)	    -- show only the matching text
+    -i(gnorecase)   -- ignore case when matching
+    -q(uiet)
+    -v(erbose)
+    -w(ordmatch)    -- check for word boundaries when matching
+    -x(clusive)	    -- show only lines that match exactly the pattern
+
+If you need to learn about regular expressions, try 'man perlre'.
+It's a long read, but it stays with you for a lifetime.
+X
+    exit 1;
+}
+
+# flags are intentionally compatible to egrep
+our($opt_a, $opt_h, $opt_i, $opt_l, $opt_q, $opt_v, $opt_w, $opt_x);
+getopt;
+$|=1 if $opt_v;
+
+my $pattern = shift;
+$pattern = '\b'. $pattern .'\b' if $opt_w;
+$pattern = '^'. $pattern .'$' if $opt_x;
+$pattern = '(?i)'. $pattern if $opt_i;
+$pattern = qr{$pattern};    # compile the regular expression
+
+my $found = 0;
+File::Find::find({no_chdir => 1, wanted => \&wanted}, @ARGV);
+print STDERR "\n" if $opt_v;
+exit !$found;
+
+
+sub progress {
+	return unless $opt_v;
+	my $tx = join('', @_);
+	my $len = length $tx;
+	print STDERR "\r", $tx, ' ', '_' x (75-$len), ' ' if $len < 75;
+}
+
+sub wanted {
+	my $zipName = $File::Find::name;
+	return if -d $zipName;
+	return if $opt_a and -T $zipName;
+	return if !$opt_a and $zipName !~
+	    /\.(air|apk|fxp|fxpl|jar|maff|odf|odt|ods|swc|xpi|zip)$/i;
+
+	progress $zipName;
+	my $zip = Archive::Zip->new();
+	if ( $zip->read($zipName) != AZ_OK ) {
+		print STDERR "\n*** Skipping $zipName\n" unless $opt_q;
+		return;
+	}
+
+	foreach my $member ( $zip->members() ) {
+		my ( $bufferRef, $status, $lastChunk );
+		my $memberName = $member->fileName();
+		my $lineNumber = 1;
+		$lastChunk = '';
+		$member->desiredCompressionMethod(COMPRESSION_STORED);
+		$status = $member->rewindData();
+		die "rewind error $status" if $status != AZ_OK;
+
+		while ( !$member->readIsDone() ) {
+			( $bufferRef, $status ) = $member->readChunk();
+			die "readChunk error $status"
+			    if $status != AZ_OK && $status != AZ_STREAM_END;
+
+			my $buffer = $lastChunk . $$bufferRef;
+			while ( $buffer =~ m{(.*$pattern.*\n)}mg ) {
+				$found++;
+				print "$zipName $memberName:$1" unless $opt_l;
+				print "$zipName\n" if $opt_l;
+			}
+			$lastChunk = $$bufferRef =~ m{([^\n\r]+)\z};
+		}
+		$member->endRead();
+	}
+}
