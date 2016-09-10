@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# working habits privacy-preserving git commit command
+#	--lynX & heldensaga, 2016
+#
+# this will simply add one second to the previous commit so
+# that stupid tools that actually use the commit timestamps
+# such as redmine will still be able to handle the repository.
+
+# default for new repositories is "1984-04-04 00:44:04 GMT"
+# don't try a unixtime before 1973 as git-commit will ignore that
+#
+last=`git log -1 --pretty=%ct 2>/dev/null` || last=449887443
+
+# non-bourne method:
+#next=`echo 1 + $last | bc`
+#
+next=$(($last+1))
+
+#echo $last, $next
+
+export    GIT_AUTHOR_DATE="$next GMT"
+export GIT_COMMITTER_DATE="$next GMT"
+
+exec git commit $*
+
+# then check the results using 'git log --pretty=fuller'

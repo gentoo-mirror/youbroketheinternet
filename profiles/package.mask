@@ -1,16 +1,9 @@
-# masked for testing and potentially breaking live systems:
-=dev-scheme/guile-2.0.12-r99
-=dev-scheme/guile-2.0.11-r99
-=dev-scheme/guile-1.8.8-r3
-
-# masked for testing:
-=dev-scheme/guile-2.0.12
-
-# masked as it requires OpenRC service debugging:
+# masked as it requires OpenRC service debugging,
+# this is experimental ebuild status.
 sys-apps/guix
 sys-apps/guix-bin
 
-# masked for testing:
+# masked for testing, it is in experimental ebuild status:
 sys-apps/nix
 
 # masked for testing

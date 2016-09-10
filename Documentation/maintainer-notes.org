@@ -1,3 +1,5 @@
+qa-reports url: https://qa-reports.gentoo.org/output/repos/youbroketheinternet.html
+
 * notes on eapi 5 -> eapi 6 porting
 
 ** sources

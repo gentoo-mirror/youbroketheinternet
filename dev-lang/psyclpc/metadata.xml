@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-<herd>dev-lang</herd>
-<maintainer>
-  <email>psyc://loupsycedyglgamf.onion/~lynX</email>
-  <name>carlo von lynX</name>
-</maintainer>
-<longdescription>
-psyclpc is a programming language for intense multi-user network applications
-such as psyced. it's a fork of LDMud with some features and many bug fixes.
-We kept it compatible to LDMud, so you can run a MUD with it, too.
-It is available from <http://lpc.psyc.eu>.
+  <herd>dev-lang</herd>
+  <maintainer>
+    <email>psyc://loupsycedyglgamf.onion/~lynX</email>
+    <name>carlo von lynX</name>
+  </maintainer>
+  <longdescription>
+    psyclpc is a programming language for intense multi-user network applications
+    such as psyced. it's a fork of LDMud with some features and many bug fixes.
+    We kept it compatible to LDMud, so you can run a MUD with it, too.
+    It is available from http://lpc.psyc.eu.
 
-LDMud itself is a continuation of the Amylaar LPMud Gamedriver 3.1.2.
-See also <http://www.bearnip.com/lars/proj/ldmud.html>.
+    LDMud itself is a continuation of the Amylaar LPMud Gamedriver 3.1.2.
+    See also http://www.bearnip.com/lars/proj/ldmud.html.
 
-psyclpc is released under the GNU LIBRARY GENERAL PUBLIC LICENSE, Version 2.
-</longdescription>
+    psyclpc is released under the GNU LIBRARY GENERAL PUBLIC LICENSE, Version 2.
+  </longdescription>
 </pkgmetadata>
