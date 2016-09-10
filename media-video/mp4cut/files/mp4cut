@@ -24,7 +24,7 @@ my $MPARMS = '-quiet -fs';
 # $MPARMS .= ' -ao null' unless $opt_l;
 $MPARMS .= ' -ao null' if $opt_q;
 
-$output .= ".mp4" unless $output =~ /\.mp4$/i;
+$output .= ".mp4" unless $output =~ /\.(mp4|m4v|3gp|mov)$/i;
 
 # assumes minutes by default!
 sub timeparse {
@@ -46,24 +46,25 @@ die <<X if $excess or not $input;
 
 mp4cut, Lossless M4V Scene Extractor
 
-Usage: $0 [<options>] <input-file> <output-file> <start-time> <end-time>
+Usage: $0 [<options>] <input-file> [<output-file> <start-time> [<end-time>]]
 
-This is a UX frontend for GPAC's MP4Box -splitz function.
-Whoops, -splitz is currently broken so we are using -splitx.
+mp4cut allows you to extract pieces of an mp4 file without re-encoding
+neither video nor audio. You need to install the gpac package to use this.
 
-You need to install the gpac package to use this.
-mp4cut allows you to extract pieces of an mp4 file without
-re-encoding neither video nor audio.
+If only an input file name is given, mp4cut outputs the duration in seconds.
+If only a starting time is given, a five second excerpt is extracted. This
+is useful to find a suitable starting time for editing.
 
-It lets you specify cutting times in [<hh>:]<mm>[:<ss>]
-syntax (just like you see them on VLC), then narrow down
-the ideal values simply by re-editing the command line and
-re-running it since MP4Box can only approximate your time
-extraction requests according to the existing MP4 file
-structure. It intercepts MP4Box's automatic file name
-creation "feature" to let *you* decide the name of the file.
-The order of arguments in the command line is intentional
-to maximize usability.
+If also provided with an ending time, the video from start to end is copied
+into the new output file.
+
+Times are specified using [<hh>:]<mm>[:<ss>] syntax (just like you see them
+on VLC or 'mplayer -osdlevel 3'), then narrow down the ideal values simply
+by re-editing the command line and re-running it since gpac can only appro-
+ximate your time extraction requests according to the existing MP4 file
+structure. It intercepts gpac's automatic file name creation "feature" to
+let *you* decide the name of the file. The order of arguments in the command
+line is intentional to maximize usability.
 
 Options are:
     -v	Show verbose outputs
@@ -71,15 +72,18 @@ Options are:
 
 X
 
+unless ( $end ) {
+	$end = "9999999";	# shows the available length of the file to edit
+	$end = 5 + $start if $start;
+	$start = "9999998" unless $start;
+}
 print STDERR <<X unless $opt_q;
 *** Cutting from $start to $end into $output
 X
 
-unless ( $end ) {
-	$end = "9999999";	# shows the available length of the file to edit
-	$start = "9999998" unless $start;
-}
-die "Cannot run MP4Box: $!" unless open(P, "MP4Box -splitx $start:$end '$input' 2>&1 |");
+# The -out option doesn't actually work
+# But luckily, -splitz resumed working
+die "Cannot run MP4Box: $!" unless open(P, "MP4Box -out $output -splitz $start:$end '$input' 2>&1 |");
 while ( <P> ) {
 	if ( /xtracting chunk (.+) - duration / ) {
 		$tmp = $1;
@@ -94,7 +98,7 @@ while ( <P> ) {
 }
 close P;
 die "Apparently MP4Box created no file" unless $tmp;
-rename($tmp, $output);
+rename($tmp, $output) if $tmp ne $output;
 exit unless $opt_x;
 
 die "Cannot run mplayer: $!" unless open(P, "mplayer $MPARMS '$output' 2>&1 |");
