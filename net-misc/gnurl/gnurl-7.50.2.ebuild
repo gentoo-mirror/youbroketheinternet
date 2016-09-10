@@ -21,8 +21,7 @@ RDEPEND=">=net-libs/gnutls-3[dane?]
 	sys-libs/zlib"
 DEPEND="${RDEPEND}"
 
-DOCS=( CHANGES README docs/FEATURES docs/INTERNALS \
-	docs/MANUAL docs/FAQ docs/BUGS docs/CONTRIBUTE )
+DOCS=( CHANGES README docs/FEATURES docs/MANUAL docs/FAQ docs/BUGS )
 
 S=${WORKDIR}/${MY_P}
 
