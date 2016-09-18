@@ -79,14 +79,14 @@ I don't use it, won't fix it. Marking it as DONE as in WONTFIX.
 ** tox
 *** qtox
 *** toxic
-*** utox
+*** DONE utox
 ** ricochet
 ** onioncircuits
-** bitmessage
+** DONE bitmessage
 *** DONE pybitmessage
 ** retroshare
 ** palemoon
 ** hiawatha
-** onionshare
+** DONE onionshare
 ** DONE interrobang
 
