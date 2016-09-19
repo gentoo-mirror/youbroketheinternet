@@ -67,8 +67,8 @@ SLOT="0"
 # build environment. With current HEAD (Aug 28 2016) it seems that sudo is no
 # longer needed, neither is root. This warning must be fixed in gnunet.
 IUSE="debug +httpd +sqlite postgres mysql nls nss +X +gnutls dane +bluetooth \
-      ssl libressl experimental extra pulseaudio gstreamer qr tex test \
-      +gnurl +curl curl_ssl_gnutls"
+	  ssl libressl experimental extra pulseaudio gstreamer qr tex test \
+	  +gnurl +curl curl_ssl_gnutls"
 
 # !!! TODO: Sort run depend, required use, build time use.
 REQUIRED_USE="?? ( mysql postgres sqlite )
@@ -98,7 +98,6 @@ RDEPEND="
 		libressl? ( dev-libs/libressl:0= )
 	)
 	net-dns/libidn
-	sys-libs/ncurses:0
 	sys-libs/zlib
 	httpd? ( >=net-libs/libmicrohttpd-0.9.42[messages] )
 	nls? ( >=sys-devel/gettext-0.18.1 )
