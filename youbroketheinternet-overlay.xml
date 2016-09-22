@@ -29,10 +29,7 @@
       <source type="git">
         git://git.cheettyiapsyciew.onion/youbroketheinternet-overlay
       </source>
-      <source type="git">
-        git://git.far37qbrwiredyo5.onion/youbroketheinternet-overlay
-      </source>
-      <source type="git">https://git.n0.is/youbroketheinternet-overlay.git</source>
-      <source type="git">git://git.n0.is/youbroketheinternet-overlay</source>
+      <source type="git">https://gnunet.org/git/youbroketheinternet-overlay.git</source>
+      <source type="git">git://gnunet.org/youbroketheinternet-overlay.git</source>
    </repo>
 </repositories>
