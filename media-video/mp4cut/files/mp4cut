@@ -83,7 +83,7 @@ X
 
 # The -out option doesn't actually work
 # But luckily, -splitz resumed working
-die "Cannot run MP4Box: $!" unless open(P, "MP4Box -out $output -splitz $start:$end '$input' 2>&1 |");
+die "Cannot run MP4Box: $!" unless open(P, "MP4Box -out '$output' -splitz $start:$end '$input' 2>&1 |");
 while ( <P> ) {
 	if ( /xtracting chunk (.+) - duration / ) {
 		$tmp = $1;
@@ -98,7 +98,10 @@ while ( <P> ) {
 }
 close P;
 die "Apparently MP4Box created no file" unless $tmp;
-rename($tmp, $output) if $tmp ne $output;
+if ( $tmp ne $output ) {
+	print "MP4Box produced a file called '$tmp' instead. Trying to rename.\n";
+	rename($tmp, $output);
+}
 exit unless $opt_x;
 
 die "Cannot run mplayer: $!" unless open(P, "mplayer $MPARMS '$output' 2>&1 |");

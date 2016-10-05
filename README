@@ -38,6 +38,24 @@ app-arch/unzip. This one can handle spaces in filenames, can
 recognize ZIP compatible file formats such as ODT, APK or MAFF
 and recurses into directories by default.
 
+== app-admin/depot ==
+
+How many different Unix distributions have you tried out in the 
+past few years? How long did it take for you to get your basic 
+set of tools installed? For me it didn't take long because I have 
+been organizing my own software path independently from whatever 
+distribution's package manager. Depot manages something like a
+/usr/local generating symlinks into a /depot of directories per
+package. The depot directories can be shared between systems and
+possibly hardware architectures. It uses a nifty database system
+to ensure consistency and is much more advanced than any script 
+that would quickly spit out a bunch of symlinks. This tool was 
+essential in the systems administration of diverse Unix networks 
+in universities in the 1990s (see LISA paper from 1993 describing
+theory and practice), but it can still prove useful to anyone who 
+moves tools around on several Unix flavors today. You may even 
+find it useful to organize non-software paths like media files.
+
 == dev-perl/Net-PSYC ==
 
 Perl implementation of the PSYC protocol together with
