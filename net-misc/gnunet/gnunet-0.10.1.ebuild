@@ -1,5 +1,5 @@
-# Coypright © 2016 ng0
-# Distributed under the terms of the GNU General Public License v3 or later
+# Copyright 1999-2016 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 

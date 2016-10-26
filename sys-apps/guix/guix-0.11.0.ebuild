@@ -1,8 +1,8 @@
-# Copyright (c) 2016 ng0 <https://n0.is>
-# Distributed under the terms of the GNU General Public License v3 or later
+# Copyright 1999-2016 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
 
-# Something is horribly broken and I don't know if it's the service
-# or the way we package this. FIXME!
+# FIXME: The service is broken. Expect up to 45 minutes on halt/reboot
+# -- ng0
 
 EAPI=5
 inherit user eutils autotools

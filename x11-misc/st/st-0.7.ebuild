@@ -1,5 +1,5 @@
-# Coypright (c) 2016 ng0 <ng0@we.make.ritual.n0.is>
-# Distributed under the terms of the GNU General Public License v3
+# Copyright 1999-2016 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
