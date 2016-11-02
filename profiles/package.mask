@@ -9,6 +9,9 @@ sys-apps/nix
 # masked for testing
 =net-misc/gnurl-9999
 
+# security fixes, mask older versions of gnurl
+=net-misc/gnurl-7.50.3
+
 # It is known and intentional that 0.9, 0.10.1, and current (HEAD) are incompatible
 # GNUnet versions in gnunet-fs.  This leads to wrong assumptions about GNUnet, we
 # only provide a pin to certain HEAD version now and 0.10.2 when it is released.
