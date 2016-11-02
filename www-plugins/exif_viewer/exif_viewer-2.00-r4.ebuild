@@ -15,8 +15,10 @@ SRC_URI="http://addons.mozilla.org/downloads/file/${MOZ_FILEID} -> ${P}.xpi"
 
 LICENSE="MPL-1.1"
 SLOT="0"
-KEYWORDS="amd64 x86"
 IUSE="+symlink_all_targets target_torbrowser target_firefox target_firefox-bin"
+
+# isn't it pointless to have a list of architectures for architecture-independent packages?
+KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k mips ppc ppc64 s390 sh sparc x86 amd64-fbsd sparc-fbsd x86-fbsd"
 
 # symlink all possible target paths if this is set
 if use symlink_all_targets; then
