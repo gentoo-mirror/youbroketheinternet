@@ -1,5 +1,7 @@
 # Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
+# Written by, in historic order: vonlynX, ng0.
+# https://gnunet.org/gentoo-build is outdated, please ignore.
 
 EAPI=6
 
@@ -8,18 +10,13 @@ HOMEPAGE="https://gnunet.org/"
 LICENSE="GPL-3"
 SLOT="0"
 
-case ${PV} in
-"0.10.1_pre01021")
-	KEYWORDS="amd64"
-	;;
-"9999")
-	KEYWORDS="~amd64"
-	;;
-"0.10.1")
-	KEYWORDS="~amd64"
-	;;
-*)
-esac
+ESVN_PROJECT="gnunet-gtk"
+ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
+
+# if you're a gnunet developer, you can put a symlink to your local git here:
+EGIT_REPO_URI="/usr/local/src/gnunet-gtk
+	   https://github.com/gnunet/gnunet-gtk"
+# otherwise version "9999" means fetching it from github rather than gnunet.org
 
 IUSE="debug qr"
 
@@ -39,36 +36,41 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 #		sys-devel/automake:1.14"
 #S="${WORKDIR}/${PN}"
+
 case ${PV} in
+"9999")
+	# use latest git
+	inherit autotools git-r3
+	KEYWORDS="~amd64 ~x86"
+	;;
+"999")
+	# use latest svn
+	inherit autotools subversion
+	SRC_URI=""
+	S="${WORKDIR}/${PN}"
+	KEYWORDS="~amd64 ~x86"
+	;;
 "0.10.1")
 	inherit autotools
 	SRC_URI="mirror://gnu/gnunet/${P}.tar.gz"
 	S="${WORKDIR}/${PN}"
-	;;
-"9999")
-	inherit autotools subversion
-	SRC_URI=""
-	ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
-	ESVN_PROJECT="gnunet-gtk"
-	S="${WORKDIR}/${PN}"
+	KEYWORDS="~amd64 ~x86"
 	;;
 "0.10.1_pre01021")
 	inherit autotools subversion
 	SRC_URI=""
-	ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
-	ESVN_PROJECT="gnunet-gtk"
 	ESVN_REVISION="37273"
 	S="${WORKDIR}/${PN}"
+	KEYWORDS="amd64 ~x86"
 	;;
 *)
-# last working change
-	   inherit autotools subversion
-	   SRC_URI=""
-	   ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
-	   ESVN_PROJECT="gnunet-gtk"
-	   ESVN_REVISION="37273"
-	   S="${WORKDIR}/${PN}"
-	   ;;
+	# last working change
+	inherit autotools subversion
+	SRC_URI=""
+	ESVN_REVISION="37273"
+	S="${WORKDIR}/${PN}"
+	KEYWORDS="amd64 ~x86"
+	;;
 esac
 
 src_prepare() {

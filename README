@@ -30,6 +30,11 @@ If you need some advice on which anti-PRISM tools to install,
 have a look at our 'best current practice' recommendations at
 http://secushare.cheettyiapsyciew.onion/comparison.
 
+If you are a developer, some of the ebuilds allow you to symlink or
+put a git of the package in /usr/local/src. The ebuild will select 
+the requested git revision according to the version number you are
+emerging, but only if your git is sufficiently up to date.
+
 
 == app-arch/zipgrep ==
 

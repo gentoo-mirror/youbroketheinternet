@@ -12,8 +12,9 @@ SLOT="0"
 KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k mips ppc ppc64 s390 sh sparc x86 amd64-fbsd sparc-fbsd x86-fbsd"
 
 # our version of eclass/git-r3 supports onion gits:
-EGIT_REPO_URI="git://cheettyiapsyciew.onion/perlpsyc
-			   git://git.psyced.org/git/perlpsyc"
+EGIT_REPO_URI="/usr/local/src/perlpsyc
+       git://git.cheettyiapsyciew.onion/perlpsyc
+       git://git.psyced.org/git/perlpsyc"
 
 inherit git-r3 user
 #inherit perl-module
@@ -61,6 +62,6 @@ src_install() {
 	dodoc -r *.txt cgi contrib hooks
 	insinto /usr/lib/psyc/ion
 	doins -r lib/psycion/*
-	doman share/man/*
+	doman share/man/*/*
 	dohtml htdocs/*
 }

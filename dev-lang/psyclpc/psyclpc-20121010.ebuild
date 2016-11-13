@@ -10,7 +10,10 @@ EAPI=6
 DESCRIPTION="psycLPC is a multi-user network server programming language"
 HOMEPAGE="http://lpc.psyc.eu/"
 LICENSE="GPL-2"
-EGIT_REPO_URI="git://git.psyced.org/git/psyclpc"
+
+EGIT_REPO_URI="/usr/local/src/${PN}
+		git://git.cheettyiapsyciew.onion/git/${PN}
+		git://git.psyced.org/git/${PN}"
 
 # providing actual commit hashes protects against man in
 # the middle attacks on the way to the git repository --

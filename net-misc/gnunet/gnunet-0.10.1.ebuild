@@ -1,66 +1,66 @@
 # Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
+# Written by, in historic order: vonlynX, ng0.
+# https://gnunet.org/gentoo-build is outdated, please ignore.
 
 EAPI=6
 
 DESCRIPTION="Cryptographic GNU Mesh/Underlay Network Routing Layer"
 HOMEPAGE="https://gnunet.org/"
 LICENSE="GPL-3"
-# tests are not yet python3 compatible.
+# gnunet <= 0.10.1 uses python 2.7 for tests, HEAD uses python 3.
 PYTHON_COMPAT=( python2_7 )
 KEYWORDS="~"
+SLOT="0"
+
+ESVN_PROJECT="gnunet"
+ESVN_REPO_URI="https://gnunet.org/svn/gnunet"
+
+# if you're a gnunet developer, you can put a symlink to your local git here:
+EGIT_REPO_URI="/usr/local/src/${PN}
+	https://github.com/gnunet/${PN}"
+# otherwise version "9999" means fetching it from github rather than gnunet.org
 
 case ${PV} in
+"9999")
+	# use latest git
+	inherit autotools git-r3 user python-any-r1 flag-o-matic
+	WANT_AUTOCONF="2.5"
+	WANT_AUTOMAKE="1.11"
+	WANT_LIBTOOL="2.2"
+	AUTOTOOLS_AUTORECONF=1
+	KEYWORDS="~amd64 ~x86"
+	;;
+"999")
+	# use latest svn
+	inherit autotools subversion user python-any-r1 flag-o-matic
+	WANT_AUTOCONF="2.5"
+	WANT_AUTOMAKE="1.11"
+	WANT_LIBTOOL="2.2"
+	AUTOTOOLS_AUTORECONF=1
+	S="${WORKDIR}/${PN}"
+	KEYWORDS="~amd64 ~x86"
+	;;
 "0.10.1_pre01021")
 	inherit autotools subversion user python-any-r1 flag-o-matic
-	ESVN_REPO_URI="https://gnunet.org/svn/gnunet"
-	ESVN_PROJECT="gnunet"
 	ESVN_REVISION="37273"
 	WANT_AUTOCONF="2.5"
 	WANT_AUTOMAKE="1.11"
 	WANT_LIBTOOL="2.2"
 	AUTOTOOLS_AUTORECONF=1
 	S="${WORKDIR}/${PN}"
-	;;
-"9999")
-	inherit autotools subversion user python-any-r1 flag-o-matic
-	ESVN_REPO_URI="https://gnunet.org/svn/gnunet"
-	ESVN_PROJECT="gnunet"
-	WANT_AUTOCONF="2.5"
-	WANT_AUTOMAKE="1.11"
-	WANT_LIBTOOL="2.2"
-	AUTOTOOLS_AUTORECONF=1
-	S="${WORKDIR}/${PN}"
+	KEYWORDS="amd64 ~x86"
 	;;
 "0.10.1")
 	inherit autotools user python-any-r1 flag-o-matic
 	SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
 	S="${WORKDIR}/${PN}"
+	KEYWORDS="~amd64 ~x86"
 	;;
-*)
 esac
 #S="${WORKDIR}/${PF}/${PN}"
 
 AUTOTOOLS_IN_SOURCE_BUILD=1
-
-# TODO: Actually this builds on way more architecture, but
-# I can not make assumptions about hardware I can or have
-# currently not access to or test build it on.
-case ${PV} in
-"0.10.1_pre01021")
-	KEYWORDS="amd64"
-	;;
-"9999")
-	KEYWORDS="~amd64"
-	;;
-"0.10.1")
-	KEYWORDS="~amd64"
-	;;
-*)
-esac
-
-# XXX: Do not slot this, ever.
-SLOT="0"
 
 # XXX: There is a false warning about root or sudo required for GNS NSS library
 # installation, claiming that it will not be installed if it is missing from the

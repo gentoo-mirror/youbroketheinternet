@@ -9,8 +9,8 @@ inherit autotools eutils git-r3 toolchain-funcs
 DESCRIPTION="CLI Frontend for Tox"
 HOMEPAGE="https://wiki.tox.chat/clients/toxic"
 SRC_URI=""
-EGIT_REPO_URI="git://github.com/Tox/toxic
-	https://github.com/Tox/toxic"
+EGIT_REPO_URI="https://github.com/Tox/toxic
+	git://github.com/Tox/toxic"
 
 LICENSE="GPL-3"
 SLOT="0"

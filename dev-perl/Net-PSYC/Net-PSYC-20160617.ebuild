@@ -10,8 +10,9 @@ SLOT="0"
 KEYWORDS="~x86 ~ppc ~sparc ~amd64"		# anything, really
 
 # our version of eclass/git-r3 supports onion gits:
-EGIT_REPO_URI="git://cheettyiapsyciew.onion/perlpsyc
-			   git://git.psyced.org/git/perlpsyc"
+EGIT_REPO_URI="/usr/local/src/perlpsyc
+	   git://git.cheettyiapsyciew.onion/perlpsyc
+	   git://git.psyced.org/git/perlpsyc"
 
 inherit git-r3 user
 #inherit perl-module
@@ -36,15 +37,8 @@ case ${PV} in
 "20160701")
 	EGIT_COMMIT="a16d49ab9cb0aa969f0ede6e74686ecce5da6fb5"
 	;;
-*)
-	# last seen change
-	EGIT_COMMIT="a16d49ab9cb0aa969f0ede6e74686ecce5da6fb5"
-	# therefore, for security reasons "9999" doesn't actually
-	# emerge the latest version. please consult 'git log' and
-	# update the last EGIT_COMMIT to obtain a newer version.
-	# to obtain the commit of a particular release, execute
-	# 'git tag', 'git reset --hard <tag>', then 'git log'.
-	;;
+# do not use this ebuild for newer versions
+# as the src_install has changed
 esac
 
 # some perl library items used by some scripts.. FIXME

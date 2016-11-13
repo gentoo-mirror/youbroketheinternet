@@ -1,6 +1,6 @@
 # Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# Written by, in historic order: vonlynX, ng0.
+# Written by, in historic order: vminko, vonlynX, ng0.
 # https://gnunet.org/gentoo-build is outdated, please ignore.
 
 EAPI=6
@@ -15,7 +15,7 @@ ESVN_REPO_URI="https://gnunet.org/svn/gnunet-gtk"
 
 # if you're a gnunet developer, you can put a symlink to your local git here:
 EGIT_REPO_URI="/usr/local/src/gnunet-gtk
-	   https://github.com/gnunet/gnunet-gtk"
+       https://github.com/gnunet/gnunet-gtk"
 # otherwise version "9999" means fetching it from github rather than gnunet.org
 
 IUSE="debug qr"
