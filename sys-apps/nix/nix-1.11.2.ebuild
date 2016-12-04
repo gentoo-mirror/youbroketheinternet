@@ -99,6 +99,13 @@ pkg_postinst() {
 	einfo "Warning, this is a test package, thanks for participating"
 	einfo "in trying to get a functional Nix package manager into"
 	einfo "Gentoo."
+        einfo "!!! It is required (read: mandatory) to read the"
+        einfo "!!! documentation for further understanding."
+        einfo "!!! Failing to read the documentation will break your"
+        einfo "!!! installed nix.  This is not a package which is"
+        einfo "!!! supposed to be upgraded or maintained through Gentoo,"
+        einfo "!!! this package was just an entry point."
+
 #	if ! use etc_profile; then
 #		ewarn "${EROOT}etc/profile.d/nix.sh was removed (due to USE=-etc_profile)."
 #		ewarn "Please fix the ebuild by adding nix user/group handling."

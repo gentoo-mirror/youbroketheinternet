@@ -90,6 +90,12 @@ pkg_postinst() {
 	einfo ""
 	einfo "You also have to keep your system up to date with"
 	einfo "guix pull  and the commands needed to update"
-	einfo "your profile. It is required (read: mandatory) to to read the"
-	einfo "manual for further understanding."
+	einfo "your profile.
+        einfo ""
+        einfo "!!! It is required (read: mandatory) to read the"
+	einfo "!!! documentation for further understanding."
+        einfo "!!! Failing to read the documentation will break your"
+        einfo "!!! installed guix.  This is not a package which is"
+        einfo "!!! supposed to be upgraded or maintained through Gentoo,"
+        einfo "!!! this package was just an entry point."
 }
