@@ -113,8 +113,9 @@ if ($has_ffmpeg and not $opt_b) {
 	print STDERR "*** Start is $start, duration is ", $end - $start, "\n"
 	    if debug & 2;
 	die "Cannot run ffmpeg: $!" unless $pid = open3($W,$F,$F,
-	    $has_ffmpeg, "-ss", $start, "-t", $end - $start,
-		         "-i", $input, "-c", "copy", "-y", $output);
+	    $has_ffmpeg, "-ss", $start, "-i", $input, "-c", "copy",
+			 "-avoid_negative_ts", "make_zero", "-fflags", "+genpts",
+			 "-t", $end - $start, "-y", $output);
 } elsif ($has_mp4box) {
 	# The -out option doesn't actually work
 	# But luckily, -splitz resumed working
@@ -176,7 +177,7 @@ my $prefer_mplayer = $has_mplayer || $has_mpv;
 die "Neither mpv nor mplayer available on this system"
     unless $prefer_mpv;
 
-unless ($videosize) {
+if ($audiosize and not $videosize) {
 	# play audio: need controls on tty
 	die "Cannot run $prefer_mpv $!"
 	    unless exec $prefer_mpv, $output;
