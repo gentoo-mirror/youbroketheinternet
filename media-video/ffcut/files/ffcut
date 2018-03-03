@@ -70,10 +70,12 @@ Plan B: When ffmpeg messes up the audio sync of the resulting video or when
 it cannot handle some broken mp4/mov/3gp files, be sure to try out GPAC!
 
 Options are:
-    -v	Show verbose outputs
-    -x	Immediately play the resulting video in mpv or mplayer
-    -q	Turn off audio when playing resulting video
-    -b	Plan B: prefer MP4Box over ffmpeg
+    -v(erbose)	Show what is going on
+    -x(amine)	Immediately play the resulting video in mpv or mplayer
+    -q(uiet)	Turn off audio when playing resulting video
+    -s(ilent)	Produce output video without audio
+    -a(udio)	Produce output audio without video
+    -b(oxing)	Plan B: prefer MP4Box over ffmpeg
 
 A GUI tool by the same name and a probably similar purpose
 is available from https://github.com/wschreyer/ffcut
@@ -105,6 +107,9 @@ my $W, $F;
 my $videosize = 0;
 my $audiosize = 0;
 
+my @copy = $opt_a ? ( "-codec:a", "copy", "-vn" ) :
+	   $opt_s ? ( "-codec:v", "copy", "-an" ) : ( "-c", "copy" );
+
 if ($has_ffmpeg and not $opt_b) {
 	# Why didn't anybody tell me that ffmpeg can do this, too
 	# just with a different absurd and impractical syntax...
@@ -113,7 +118,7 @@ if ($has_ffmpeg and not $opt_b) {
 	print STDERR "*** Start is $start, duration is ", $end - $start, "\n"
 	    if debug & 2;
 	die "Cannot run ffmpeg: $!" unless $pid = open3($W,$F,$F,
-	    $has_ffmpeg, "-ss", $start, "-i", $input, "-c", "copy",
+	    $has_ffmpeg, "-ss", $start, "-i", $input, @copy,
 			 "-avoid_negative_ts", "make_zero", "-fflags", "+genpts",
 			 "-t", $end - $start, "-y", $output);
 } elsif ($has_mp4box) {
@@ -168,6 +173,9 @@ X
 Apparently conversion failed. Try -v to see details.
 X
 }
+# To check the lengths of each audio/video channel, use
+# 'ffprobe -v quiet -show_entries stream=start_time,duration'.
+# Ideally they should be identical, but they frequently aren't.
 exit unless $opt_x;
 
 my $has_mplayer = &which('mplayer');

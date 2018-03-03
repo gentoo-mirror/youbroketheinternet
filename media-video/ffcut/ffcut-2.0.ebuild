@@ -4,6 +4,8 @@
 EAPI=5
 
 DESCRIPTION="symlynX's Fast & Furious Lossless Media Cutting Tool"
+# This was previously called 'mp4cut' until it learned to use ffmpeg
+# and therefore became able to edit *any* media in a lossless way.
 
 LICENSE="AGPL"
 SLOT="0"
