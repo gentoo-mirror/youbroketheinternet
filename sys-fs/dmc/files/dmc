@@ -29,8 +29,9 @@ sub debug () { 0 }
 
 # we use undeclared global variables. that's the privilege of using
 # a rapid prototyping and scripting language and to be respected.
-$vol = shift;
-$mnt = shift;
+my $vol = shift;
+my $mnt = shift;
+my $recoll;
 
 if ($opt_d and not $vol) {
 	# blkid shows the proper dmc mapper device even if
@@ -54,7 +55,7 @@ die pod2usage unless $vol and not $opt_f;
 
 ## HELPERS
 
-sub sys3 {
+sub sysmatch {
 	my $match = shift;
 	# why can't people honestly admit that it is in fact PINK
 	print BOLD, MAGENTA, join(' ', @_), "\n", RESET unless $opt_q;
@@ -120,11 +121,25 @@ X
 	$mapper = "/dev/mapper/$map";
 }
 sub unmount {
+	if (not $opt_p and -d $recoll) {
+		my $pid = $recoll."/index.pid";
+		while (-r $pid) {
+			open(P, $pid);
+			$pid = <P>;
+			close P;
+			if ($pid) {
+				chomp $pid;
+				print "\t{shutting down recollindex $pid}\n";
+				kill 'INT', $pid;
+				sleep 1;
+			}
+		}
+	}
 	if ($opt_n or -r $mapper) {
 		# ignore if already unmounted but stop if cannot be unmounted
-		return -1 if sys3(' target is busy', '/bin/umount', $mnt);
+		return -1 if sysmatch(' target is busy', '/bin/umount', $mnt);
 		# ignore if already closed but stop if cannot be closed
-		return -1 if sys3('Device or resource busy', '/sbin/cryptsetup', 'luksClose', $map);
+		return -1 if sysmatch('Device or resource busy', '/sbin/cryptsetup', 'luksClose', $map);
 		sys2 '/bin/rmdir', $mnt;
 	} else {
 		print "\t{$mapper already dismounted}\n";
@@ -200,6 +215,7 @@ unless ($keef) {
 }
 
 $user = $opt_u || $ENV{SUDO_USER};
+$recoll = $mnt.'/.recoll';
 
 if ($opt_d) {
 	&unmount;
@@ -394,6 +410,9 @@ ADEU:
 
 sys2 '/sbin/cryptsetup', 'status', $mapper unless $opt_q;
 sys '/bin/df', '-Th', $mnt if -d $mnt;
+# -m(onitor) -(ignore)x(11) -n(oincrementalscan)
+sys '/usr/bin/recollindex', '-nmx', '-c', $recoll
+    if not $opt_p and -d $recoll and -r $recoll.'/recoll.conf';
 
 
 __END__
@@ -430,6 +449,7 @@ dmc - Command line UX frontend to dm-crypt's cryptsetup with support for multipl
 	-m <name>	# use this specific mapper nickname
 	-n		# no operation, just pretend
 	-q		# quiet, do not show commands to be executed
+	-p		# paranoid, do not act on any content of the volume
 
 =head1 DESCRIPTION
 
@@ -444,6 +464,12 @@ cryptography though!
 Reasons to use this instead of jaromil's excellent tomb(8):
 Not many, unless you need to use a file system other than ext4.
 Maybe you like my screen colors or flag UX.
+
+dmc will automatically fire up or shut down a recollindex process
+if a .recoll directory is found on the top level of the volume.
+This can be disabled with -p if you don't trust the volume. It is
+expected that no modifications were made to the volume while
+recoll wasn't running.
 
 =head1 AUTHORS
 
