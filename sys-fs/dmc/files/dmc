@@ -441,7 +441,7 @@ systems + dm-crypt behaves a bit more reliably when doing heavy duty
 storage transactions. There is nothing wrong with truecrypt's
 cryptography though!
 
-Reasons to use this instead of jaromil's excellent tomb(1):
+Reasons to use this instead of jaromil's excellent tomb(8):
 Not many, unless you need to use a file system other than ext4.
 Maybe you like my screen colors or flag UX.
 

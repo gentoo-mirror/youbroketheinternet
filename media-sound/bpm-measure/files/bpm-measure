@@ -8,12 +8,15 @@ sub debug() { 0 }
 
 use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 use Pod::Usage qw( pod2usage );
+use Getopt::Std;
+getopt();
 
 if (@ARGV) {
 	my $has_ffcut = which('ffcut');
 	my $has_aubiotrack = which('aubiotrack');
 	die "For this we need both ffcut and aubiotrack from aubio installed.\n"
 	    unless $has_ffcut and $has_aubiotrack;
+	my $has_player = which('mpv') || which('mplayer');
 
 	for $p (@ARGV) {
 		next if $p =~ /\.(asd|git)$/;
@@ -22,14 +25,19 @@ if (@ARGV) {
 		my $count = 0;
 		my $f = ($p =~ m!/([^/]+)$!) ? $1 : $p;
 		my $t = "/tmp/bpm-measure-$f";
+		my $o = "$t.wav";
 		# guesswork: skip intro and take early beats
 		# before the track gets too noisy.. just to
 		# circumvent the bug in aubiotrack
 		system($has_ffcut, '-Q', $p, $t, '.23', '.64');
 		die "ffcut failed on $f" unless -s $t > 99999;
-		# should be more accurate when used with '-s', '-20.0'
-		# but that part of the aubiotrack code is broken
-		open(I, '-|', $has_aubiotrack, $t);
+		my @abt = $opt_m ? 
+		    ( $has_aubiotrack, '-mfo', $o ):
+		    ( $has_aubiotrack );
+		# should be more accurate when used with '-s', '-50.0'
+		# but that part of the aubiotrack code may be broken
+		# in versions of libaubio prior 0.4.6
+		open(I, '-|', @abt, $t);
 		$p = <I>;
 		while (<I>) {
 			my $elapsed = $_ - $p;
@@ -43,7 +51,11 @@ if (@ARGV) {
 		if ($count) {
 			print 60 / ($sum / $count), "  \t", $f, "\n";
 		} else {
-			print STDERR "?\t\t\t", $f, "\n";
+			print STDERR "?\t\t\t", $f, "\n" unless $opt_m;
+		}
+		if ($opt_m and -s $o) {
+			system $has_player, $o;
+			unlink $o;
 		}
 	}
 	exit;
@@ -99,7 +111,10 @@ bpm-measure - a beat per minute measurement tool von lynX, 2005, 2018
 
 =head1 SYNOPSIS
 
-bpm-measure [<mediafiles>]
+ bpm-measure [<-m>] [<mediafiles>]
+
+ Options:
+    -m(onitor)	Hear how well aubio's beat detection has performed
 
 =head2 AUTO-DETECTION
 
@@ -114,11 +129,29 @@ bpm-measure [<mediafiles>]
 
 =head2 See also
 
-perldoc bpm-measure
+ perldoc bpm-measure
+
+=head1 CAVEATS
+
+This little script makes terribly naive assumptions
+about the accuracy of aubiotrack and about the typical
+structure of a dance track. It probably will not produce 
+reasonable output for non-dance-oriented music. I found 
+that aubiotrack can easily get confused between on-beat and 
+off-beat, especially if the sound excerpt contains a break,
+resulting in imprecision of the final bpm number. With the -m
+option you can check if such a confusion occurred, but then you
+might as well measure the music manually. I have an idea on how
+to improve the accuracy of this tool and may push an update in
+that regard, if successful.
+
+=head1 HISTORY
+
+Up to 2018, this script only had its 'manual mode'.
 
 =head1 AUTHORS
 
- carlo von lynX, with help from the fantastic aubio library.
+ carlo von lynX, sitting on the shoulders of the fantastic aubio library.
 
 =head1 COPYRIGHT
 
