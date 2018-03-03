@@ -9,7 +9,7 @@ sub debug() { 0 }
 use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 use Pod::Usage qw( pod2usage );
 use Getopt::Std;
-getopt('Ost');
+getopt('OstSE');
 
 if (@ARGV) {
 	my $has_ffcut = which('ffcut');
@@ -39,7 +39,7 @@ if (@ARGV) {
 	}
 
 	for $p (@ARGV) {
-		next if $p =~ /\.(asd|git)$/;
+		next if $p =~ /\.(asd|ovw|pk|txt|html|git)$/;
 		die pod2usage if not -r $p;
 		my $sum = 0;
 		my $count = 0;
@@ -48,7 +48,8 @@ if (@ARGV) {
 		# guesswork: skip intro and take early beats
 		# before the track gets too noisy.. just to
 		# circumvent the bug in aubiotrack
-		system($has_ffcut, '-Q', $p, $t, '.23', '.64');
+		system($has_ffcut, '-Q', $p, $t,
+		       $opt_S || '0:23', $opt_E || '0:64');
 		die "ffcut failed on $f" unless -s $t > 99999;
 		open(I, '-|', @aubio, $t);
 		if ($opt_x) {
@@ -78,7 +79,7 @@ if (@ARGV) {
 		}
 		close I;
 		unlink($t);
-		if ($count) {
+		if ($count and $count > 42) {
 			my $avg = $sum / $count;
 			print "Counted $count. Sum: $sum. Average: $avg\n" if $opt_v;
 			if ($opt_x) {
@@ -153,12 +154,14 @@ bpm-measure - a beat per minute measurement tool von lynX, 2005, 2018
  bpm-measure [<options>] [<mediafiles>]
 
  Options:
-  -s(ilence)	Set silence threshold in db (default is -90.0)
-  -m(onitor)	Hear how well aubio's beat detection has performed
-  -v(erbose)	Indicate how many beats were counted
-  -x(periment)	Try using custom onset calculation
-  -t(hreshold)	Threshold for onset calculation (default is 0.9)
-  -O(nsetmeth)	Onset detection method (default is 'default')
+  -s(ilence) <db>   Set silence threshold in db (default is -90.0)
+  -m(onitor)	    Hear how well aubio's beat detection has performed
+  -S(tartat) <t>    Start at a different point in the track than 0:23
+  -E(ndat) <t>	    Close the window at a different time than 1:04
+  -v(erbose)	    Show how many beats were counted
+  -x(perimental)    Try using custom guesswork from onset calculation
+  -t(hreshold) <f>  Threshold for onset calculation (default is 0.9)
+  -O(nsetmeth) <M>  Onset detection method (default is 'default')
 
 =head2 AUTO-DETECTION
 
@@ -191,6 +194,12 @@ might as well measure the music manually. The 'experimental'
 algorithm is too stupid and usually produces less accurate
 results then aubio's own, but it can be a starting point
 for experimentation.
+
+If the track you are measuring has a longer intro than
+23 seconds you should use the -S and -E options to pick a
+better slice of the track. Use -m to check. One would
+expect that 'aubioquiet' can help to skip the intro,
+but so far it isn't very smart at doing so.
 
 =head1 HISTORY
 
