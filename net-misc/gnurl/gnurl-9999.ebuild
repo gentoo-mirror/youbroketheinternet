@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -7,11 +7,10 @@ DESCRIPTION="A reliable small footprint version of Curl based on gnutls only"
 HOMEPAGE="https://gnunet.org/gnurl
 		https://www.git.taler.net/?p=gnurl.git;a=summary"
 if [[ ${PV} == "9999" ]] ; then
- 	inherit git-r3 autotools eutils prefix
- 	EGIT_REPO_URI="https://git.taler.net/gnurl
-				   https://gnunet.org/git/gnurl
+	inherit git-r3 autotools eutils prefix
+	EGIT_REPO_URI="https://git.taler.net/gnurl
 				   git://git.taler.net/gnurl"
- 	EGIT_CLONE_TYPE="shallow"
+	EGIT_CLONE_TYPE="shallow"
 else
 	inherit autotools eutils prefix
 	SRC_URI="https://gnunet.org/sites/default/files/${P}.tar.bz2"
@@ -38,33 +37,7 @@ src_prepare() {
 }
 
 src_configure() {
-	econf \
-		--enable-ipv6 \
-		--with-gnutls \
-		--without-cyassl \
-		--without-darwinssl \
-		--without-libmetalink \
-		--without-librtmp \
-		--without-libssh2 \
-		--without-nghttp2 \
-		--without-nss \
-		--without-polarssl \
-		--without-ssl \
-		--without-winidn \
-		--without-winssl \
-		--disable-dict \
-		--disable-file \
-		--disable-ftp \
-		--disable-gopher \
-		--disable-imap \
-		--disable-ldap \
-		--disable-ntlm-wb \
-		--disable-pop3 \
-		--disable-rtsp \
-		--disable-smtp \
-		--disable-sspi \
-		--disable-telnet \
-		--disable-tftp
+	econf --disable-ntlm-wb
 }
 
 src_install() {
