@@ -1,13 +1,5 @@
 #!/usr/bin/perl
-#
-# dm-crypt tool with vaguely similar command line syntax to truecrypt.
-# simplifies management of volumes with LUKS and a file system inside.
-# reasons to use LUKS instead of truecrypt are: you can resize file
-# systems + dm-crypt behaves a bit more reliably when doing heavy duty
-# storage transactions. there is nothing wrong with truecrypt's
-# cryptography though!
-#
-#   --vonlynX 2014, 2015
+# See below for documentation.
 #
 # TODO: fallocate is cool. maybe we even want an option for 'truncate'
 #	aka using sparse files that factually get allocated on the fly?
@@ -53,39 +45,12 @@ if ($opt_d and not $vol) {
 	exit $!;
 }
 
+my $kee = undef;
 my $keef = undef;
+my $keefr = undef;
 my $fs = FS;
 # just in case i use -f instead of -t
-($vol and not $opt_f) or die <<X;
-
-Usage of $0:
-
-dmc <volume> [<mountpath>]		# mount a volume
-dmc -d					# dismount all dmc volumes
-dmc -d <volume> [<mountpath>]		# dismount a volume by filename
-dmc -d <mapper> [<mountpath>]		# dismount a volume by mapper name
-dmc -c <volume> [<mountpath>]		# format and mount an existing volume
-dmc -cs <size> <volume> [<mountpath>]	# create a volume of given size
-dmc -es <size> <volume> [<mountpath>]	# enlarge a volume by given size
-dmc -e <volume> [<mountpath>]		# adapt fs to a manually resized volume
-dmc [-A|-C|-D] <volume>			# add, change or delete a password
-dmc -L <volume>				# list key slots and show status
-dmc -E <volume>				# erase some or all passwords and keys
-
-<size> may end in M for megabytes, G for gigabytes, T for terabytes...
-If <mountpath> is omitted, /dev/shm/<mapper> is created instead.
-Combining action flags such as -c, -e and -d produces unuseful effects.
-
-Options:
-	-R		# use /dev/urandom for volume creation (slow, but
-			#   hides the amount of data stored in the volume)
-	-t <fstype>	# use other file system type than $fs (only needed with -c)
-	-u <name>	# specify user to chown file system to
-	-m <name>	# use this specific mapper nickname
-	-n		# no operation, just pretend
-	-q		# quiet, do not show commands to be executed
-
-X
+die pod2usage unless $vol and not $opt_f;
 
 ## HELPERS
 
@@ -97,7 +62,11 @@ sub sys3 {
 	open3(\*I, \*O, \*U, @_) or die "$_[0]: $!";
 	$_ = <U>;
 	close I, O, U;
-	die $_ if /$match/;
+	if ( /$match/ ) {
+		print STDERR $_;
+		return -1;
+	}
+	return 0;
 }
 sub sys2 {
 	print BOLD, BLUE, join(' ', @_), "\n", RESET unless $opt_q;
@@ -153,13 +122,14 @@ X
 sub unmount {
 	if ($opt_n or -r $mapper) {
 		# ignore if already unmounted but stop if cannot be unmounted
-		sys3 ' target is busy', '/bin/umount', $mnt;
+		return -1 if sys3(' target is busy', '/bin/umount', $mnt);
 		# ignore if already closed but stop if cannot be closed
-		sys3 'Device or resource busy', '/sbin/cryptsetup', 'luksClose', $map;
+		return -1 if sys3('Device or resource busy', '/sbin/cryptsetup', 'luksClose', $map);
 		sys2 '/bin/rmdir', $mnt;
 	} else {
 		print "\t{$mapper already dismounted}\n";
 	}
+	return 0;
 }
 my %unmounted = {};
 sub findmounts {
@@ -186,7 +156,7 @@ sub wordFetch {
 	$keef = $f;
 	# double braces allow me to use 'next' locally
 	if (open (F, $f)) {{
-		$_ = <F>;
+		$kee = $_ = <F>;
 		close F;
 		die if length() < 2;
 		next unless s/\s+$//;
@@ -297,7 +267,15 @@ if ($opt_s) {
 if ($size and $opt_e) {
 	die "$vol doesn't exist. Did you mean -c instead of -e? " unless -e $vol;
 	# frequent use case, enlarge a currently mounted volume
-	&unmount;
+	die if &unmount;
+	if ($kee and not -r $keef) {
+		# when the keef was in the volume itself
+		$keefr = $keef = "/dev/shm/.keef-$$";
+		open (F, 700, ">$keef") or
+		    die "Cannot create temporary keyfile $keef";
+		print F $kee;
+		close F;
+	}
 	# fallocate does not respect -R requirements...
 	if ($opt_R or sys2 '/usr/bin/fallocate', '-o', -s $vol, '-l', $opt_s, $vol) {
 		print "Reverting to 'dd' ...\n" unless $opt_R;
@@ -332,6 +310,8 @@ if ($opt_p) {
 } else {
 	sys '/sbin/cryptsetup', 'luksOpen', $vol, $map;
 }
+
+unlink $keefr if $keefr;
 
 if ($opt_c) {
 	$fs = $opt_t || FS;
@@ -414,4 +394,75 @@ ADEU:
 
 sys2 '/sbin/cryptsetup', 'status', $mapper unless $opt_q;
 sys '/bin/df', '-Th', $mnt if -d $mnt;
+
+
+__END__
+
+=pod
+
+=head1 NAME
+
+dmc - Command line UX frontend to dm-crypt's cryptsetup with support for multiple file systems
+
+=head1 SYNOPSIS
+
+ dmc <volume> [<mountpath>]		# mount a volume
+ dmc -d					# dismount all dmc volumes
+ dmc -d <volume> [<mountpath>]		# dismount a volume by filename
+ dmc -d <mapper> [<mountpath>]		# dismount a volume by mapper name
+ dmc -c <volume> [<mountpath>]		# format and mount an existing volume
+ dmc -cs <size> <volume> [<mountpath>]	# create a volume of given size
+ dmc -es <size> <volume> [<mountpath>]	# enlarge a volume by given size
+ dmc -e <volume> [<mountpath>]		# adapt fs to a manually resized volume
+ dmc [-A|-C|-D] <volume>		# add, change or delete a password
+ dmc -L <volume>			# list key slots and show status
+ dmc -E <volume>			# erase some or all passwords and keys
+
+ <size> may end in M for megabytes, G for gigabytes, T for terabytes...
+ If <mountpath> is omitted, /dev/shm/<mapper> is created instead.
+ Combining action flags such as -c, -e and -d produces unuseful effects.
+
+ Options:
+	-R		# use /dev/urandom for volume creation (slow, but
+			#   hides the amount of data stored in the volume)
+	-t <fstype>	# use other file system type than $fs (only needed with -c)
+	-u <name>	# specify user to chown file system to
+	-m <name>	# use this specific mapper nickname
+	-n		# no operation, just pretend
+	-q		# quiet, do not show commands to be executed
+
+=head1 DESCRIPTION
+
+dm-crypt tool with vaguely similar command line syntax to truecrypt.
+Simplifies management of volumes with LUKS and a file system inside.
+
+Reasons to use LUKS instead of truecrypt are: you can resize file
+systems + dm-crypt behaves a bit more reliably when doing heavy duty
+storage transactions. There is nothing wrong with truecrypt's
+cryptography though!
+
+Reasons to use this instead of jaromil's excellent tomb(1):
+Not many, unless you need to use a file system other than ext4.
+Maybe you like my screen colors or flag UX.
+
+=head1 AUTHORS
+
+carlo von lynX.
+
+=head1 COPYRIGHT
+
+This program is free software, published under the Affero GNU Public
+License. A disclaimer isn't necessary in my country, nor do I need
+to mention the current year to assert a copyright.
+
+=head1 FUNFACTS
+
+Jaromil and I wrote very similar functionality at the same time, I
+just postponed releasing my tool since his is actually smarter for
+most purposes.
+
+=head1 UPDATES
+
+Latest version available from the youbroketheinternet overlay:
+    https://gnunet.org/git/youbroketheinternet-overlay.git/plain/sys-fs/dmc/files/dmc
 

@@ -3,7 +3,7 @@
 
 EAPI=5
 
-DESCRIPTION="Usability frontend to emerge to keep you from breaking your system"
+DESCRIPTION="Usability frontend for emerge to keep you from breaking your system"
 
 LICENSE="AGPL"
 SLOT="0"
@@ -14,10 +14,20 @@ KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k mips ppc ppc64 s390 sh sparc x86 
 
 S="${WORKDIR}/../image"
 
+src_compile() {
+    perldoc -o nroff "${FILESDIR}"/${PN} >${PN}.8
+}
+
 src_install() {
 	exeinto /usr/sbin
 	doexe "${FILESDIR}"/oneshot-help
 	cd "$S/usr/sbin" || die "Cannot chdir into '$S/usr/sbin'"
 	./oneshot-help install || die "Cannot run 'oneshot-help install'"
+    doman ${PN}.8
+}
+
+pkg_postinst() {
+	elog "Please note that only 'man ${PN}' exists,"
+	elog "not all of its calling variations."
 }
 

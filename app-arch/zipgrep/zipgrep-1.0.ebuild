@@ -3,7 +3,7 @@
 
 EAPI=5
 
-DESCRIPTION="Recursively search for regular expressions in ZIP compatible archive formats"
+DESCRIPTION="Recursively search in ZIP compatible archive formats using regular expressions"
 
 LICENSE="AGPL"
 SLOT="0"
@@ -14,6 +14,10 @@ KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k mips ppc ppc64 s390 sh sparc x86 
 
 S="$WORKDIR"
 
+src_compile() {
+    perldoc -o nroff "${FILESDIR}"/ziprgrep >ziprgrep.1
+}
+
 src_install() {
 	exeinto /usr/bin
 
@@ -21,5 +25,6 @@ src_install() {
 	# shell script. Please provide a USE flag to remove it from the
 	# unzip distribution so this one can take over its place.
 	doexe "${FILESDIR}"/ziprgrep
+    doman ziprgrep.1
 }
 

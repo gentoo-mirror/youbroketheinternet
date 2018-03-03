@@ -2,6 +2,7 @@
 #
 #   It's called oneshot, because with extra world management, 
 #   regular emerge doesn't even make sense.
+#   See below for documentation.
 
 sub debug() { 0 }
 sub verbose() { 1 }
@@ -62,6 +63,7 @@ oneshot-revdep-ask
 X
 
 use Term::ANSIColor qw(:constants);
+use Pod::Usage qw( pod2usage );
 
 my @a = @ARGV;
 my %b = undef;
@@ -139,43 +141,7 @@ MAIN:
 			}
 			exit;
 		}
-		print <<X;
-This is a tool to enhance the usability of portage and reduce
-the risk of cutting yourself bleeding with emerge's army knife.
-
-    Usage: <command> [<options>] <parameters>
-	or <command> [<options>] <matchbox>
-	or <command> [<options>] < <matchbox>
-	or <command> [<options>]
-
-Commands: Type 'oneshot' and hit the command completion to see 
-	  a list of possible commands. If only 'oneshot-help'
-	  appears you should execute 'oneshot-help install' to
-	  link the other names of this program into your system.
-	  Try also 'oneshot-help variations' to see a commented
-	  list of calling variations.
-
-Options:    Any additional options for the actual emerge.
-
-Parameters: Can be any package name or specifier that you can
-	    pass to emerge. Additionally it is permitted to 
-	    leave out the leading '=' sign so you can feed the
-	    list by name completion from within /var/db/pkg.
-	    It is also allowed to pass ebuild file names from
-	    /usr/portage. You can even have ".tbz2" appended,
-	    so you can pass binary package file names.
-
-Matchbox: An edited screen output log from a previous emerge
-execution. This program will extract package names marked with
-a leading [ebuild *] or [binary *] pattern. It will also pick
-packages that are causing slot conflicts, listings of masked
-packages or packages pulling in other packages (from depclean 
-output). This can be practical to automate the reinstall proce-
-dures that portage sometimes requires, but remember to edit that
-file to ensure the correct packages will be treated. Should you
-not want to process the entire input file, insert the word STOP
-on a line by itself.
-X
+		pod2usage;
 		exit;
 	}
 
@@ -250,4 +216,66 @@ X
 	say "Parameters: ", join(' ', @a) if verbose;
 	emerge join(' ', @a) if $#a >= 0;
 	say "Finished arguments." if debug;
+
+
+__END__
+
+=pod
+
+=head1 NAME
+
+oneshot - Usability frontend for emerge to keep you from breaking your system
+
+=head1 SYNOPSIS
+
+ This is a tool to enhance the usability of portage and reduce
+ the risk of cutting yourself bleeding with emerge's army knife.
+
+    Usage: <command> [<options>] <parameters>
+	or <command> [<options>] <matchbox>
+	or <command> [<options>] < <matchbox>
+	or <command> [<options>]
+
+ Commands: Type 'oneshot' and hit the command completion to see 
+	   a list of possible commands. If only 'oneshot-help'
+	   appears you should execute 'oneshot-help install' to
+	   link the other names of this program into your system.
+	   Try also 'oneshot-help variations' to see a commented
+	   list of calling variations.
+
+ Options:  Any additional options for the actual emerge.
+
+ Parameters: Can be any package name or specifier that you can
+	     pass to emerge. Additionally it is permitted to 
+	     leave out the leading '=' sign so you can feed the
+	     list by name completion from within /var/db/pkg.
+	     It is also allowed to pass ebuild file names from
+	     /usr/portage. You can even have ".tbz2" appended,
+	     so you can pass binary package file names.
+
+ Matchbox: An edited screen output log from a previous emerge
+ execution. This program will extract package names marked with
+ a leading [ebuild *] or [binary *] pattern. It will also pick
+ packages that are causing slot conflicts, listings of masked
+ packages or packages pulling in other packages (from depclean 
+ output). This can be practical to automate the reinstall proce-
+ dures that portage sometimes requires, but remember to edit that
+ file to ensure the correct packages will be treated. Should you
+ not want to process the entire input file, insert the word STOP
+ on a line by itself.
+
+=head1 AUTHORS
+
+ carlo von lynX.
+
+=head1 COPYRIGHT
+
+ This program is free software, published under the Affero GNU Public
+ License. A disclaimer isn't necessary in my country, nor do I need
+ to mention the current year to assert a copyright.
+
+=head1 UPDATES
+
+ Latest version available from the youbroketheinternet overlay:
+    https://gnunet.org/git/youbroketheinternet-overlay.git/plain/sys-apps/oneshot/files/oneshot-help
 

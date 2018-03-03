@@ -1,14 +1,10 @@
 #!/usr/bin/perl
 #
-# ffcut, the Fast & Furious Lossless Media Cutting Tool
-#	--symlynX 2016, 2018
-#
 # UX simplification frontend for ffmpeg and/or GPAC's MP4Box
 # to produce lossless extractions from encoded media like
 # mp3, mp4, opus, flv... you name it.
 #
-# Latest version available from the youbroketheinternet overlay:
-#	https://gnunet.org/git/youbroketheinternet-overlay.git/tree/media-video/ffcut/files/ffcut
+# Use 'perldoc ffcut' to see the documentation.
 #
 # Search engine hints: Video Editing, Audio Editing, Unix CLI
 
@@ -18,6 +14,7 @@ sub debug() { 0 }
 
 use IPC::Open3 qw( open3 );
 use Term::ANSIColor qw(:constants);
+use Pod::Usage qw( pod2usage );
 use Getopt::Std;
 getopt;
 
@@ -44,43 +41,7 @@ $start = &timeparse( $start, 0 );
   $end = &timeparse( $end, $start );
 
 # $start == 0 is legitimate...
-die <<X if $excess or not $input;
-
-symlynX's ffcut $VERSION, the Fast & Furious Lossless Media Cutting Tool
-
-Usage: $0 [<options>] <input-file> [<output-file> <start-time> [<end-time>]]
-
-ffcut allows you to extract pieces of a video or sound file without requiring
-any re-encoding. It can use both ffmpeg and the GPAC package. The order of 
-arguments in the command line is intentional to maximize usability.
-
-If only an input file name is given, ffcut outputs the duration in seconds.
-If only a starting time is given, a $DEFLEN second excerpt is extracted.
-   This is useful to find a suitable starting time for editing. 
-If also provided with an ending time, the video from start to end is copied
-   into the new output file.
-
-Times are specified using [<hh>:]<mm>[:<ss>] syntax (just like you see them
-on VLC or 'mplayer -osdlevel 3'), then narrow down the ideal values simply
-by re-editing the command line and re-running it since your time extraction
-requests can only be approximated according to the existing encoding. You
-can append a [.<fraction>] after the seconds, but it usually doesn't help.
-
-Plan B: When ffmpeg messes up the audio sync of the resulting video or when
-it cannot handle some broken mp4/mov/3gp files, be sure to try out GPAC!
-
-Options are:
-    -v(erbose)	Show what is going on
-    -x(amine)	Immediately play the resulting video in mpv or mplayer
-    -q(uiet)	Turn off audio when playing resulting video
-    -s(ilent)	Produce output video without audio
-    -a(udio)	Produce output audio without video
-    -b(oxing)	Plan B: prefer MP4Box over ffmpeg
-    -Q(uiet)	Do not produce screen output
-
-A GUI tool by the same name and a probably similar purpose
-is available from https://github.com/wschreyer/ffcut
-X
+die pod2usage if $excess or not $input;
 # ffcut intercepts GPAC's automatic file name creation "feature" to
 # let *you* decide the name of the file.
 
@@ -229,4 +190,71 @@ sub which {
 	/^(\S+)\s*$/;
 	return $1;
 }
+
+__END__
+
+=pod
+
+=head1 NAME
+
+ffcut - the Fast & Furious Lossless Media Cutting Tool
+
+=head1 SYNOPSIS
+
+ffcut [<options>] <input-file> [<output-file> <start-time> [<end-time>]]
+
+ Options are:
+    -v(erbose)	Show what is going on
+    -x(amine)	Immediately play the resulting video in mpv or mplayer
+    -q(uiet)	Turn off audio when playing resulting video
+    -s(ilent)	Produce output video without audio
+    -a(udio)	Produce output audio without video
+    -b(oxing)	Plan B: prefer MP4Box over ffmpeg
+    -Q(uiet)	Do not produce screen output
+
+=head1 DESCRIPTION
+
+ ffcut allows you to extract pieces of a video or sound file without requiring
+ any re-encoding. It can use both ffmpeg and the GPAC package. The order of 
+ arguments in the command line is intentional to maximize usability.
+
+ If only an input file name is given, ffcut outputs the duration.
+ If only a starting time is given, a $DEFLEN second excerpt is extracted.
+    This is useful to find a suitable starting time for editing. 
+ If also provided with an ending time, the video from start to end is copied
+    into the new output file.
+
+ Times are specified using [<hh>:]<mm>[:<ss>] syntax (just like you see them
+ on VLC or 'mplayer -osdlevel 3'), then narrow down the ideal values simply
+ by re-editing the command line and re-running it since your time extraction
+ requests can only be approximated according to the existing encoding. You
+ can append a [.<fraction>] after the seconds, but it usually doesn't help.
+
+ Plan B: When ffmpeg messes up the audio sync of the resulting video or when
+ it cannot handle some broken mp4/mov/3gp files, you can still try out GPAC!
+
+=head1 CAVEATS
+
+ Depending on the way the media was encoded you may not be able to cut
+ into the exact second or subsecond that you would like to edit.
+
+=head1 AUTHORS
+
+ carlo von lynX & Devan Carpenter.
+
+=head1 COPYRIGHT
+
+ This program is free software, published under the Affero GNU Public
+ License. A disclaimer isn't necessary in my country, nor do I need
+ to mention the current year to assert a copyright.
+
+=head1 UPDATES
+
+ Latest version available from the youbroketheinternet overlay:
+    https://gnunet.org/git/youbroketheinternet-overlay.git/plain/media-video/ffcut/files/ffcut
+
+=head1 FUNFACTS
+
+ A GUI tool by the same name and a probably similar purpose
+ is available from https://github.com/wschreyer/ffcut
 

@@ -118,11 +118,11 @@ perldoc bpm-measure
 
 =head1 AUTHORS
 
-carlo von lynX, with help from the fantastic aubio library.
+ carlo von lynX, with help from the fantastic aubio library.
 
 =head1 COPYRIGHT
 
-This program is free software, published under the Affero GNU Public
-License. A disclaimer isn't necessary in my country, nor do I need
-to mention the current year to assert a copyright.
+ This program is free software, published under the Affero GNU Public
+ License. A disclaimer isn't necessary in my country, nor do I need
+ to mention the current year to assert a copyright.
 

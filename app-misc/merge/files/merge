@@ -9,12 +9,15 @@
 #
 # Maybe mvmatch, mdcp, ddcp can be merged into here.
 # See also convmv.
+#
+# Use 'perldoc merge' to see the documentation.
 
 sub debug { 0 }
 
+use Cwd;
+use Pod::Usage qw( pod2usage );
 use File::Find ();
 use Getopt::Std;
-use Cwd;
 
 my $d, $s, $f;
 my $errors = 0;
@@ -22,28 +25,7 @@ my $just1file = 0;
 
 main: {
 	getopt();
-	(!$opt_h and $#ARGV >= 1) or die <<X;
-This tool merges directories in a similar way as graphical file managers do.
-'rsync' can't mv, ln, symlink or reflink files on the same file system, so
-merge is for all those use cases. The default operation is to make hardlinked
-copies of the source files into the target directories.
-
-Usage: $0 [<option>] [<operation>] <items> <target-folder>
-
-operations:
-	-m(ove)			use 'mv' instead of 'cp -l'
-	-s(ymlink)		use 'cp -s' instead of 'cp -l'
-	-r(eflink)		use 'cp --reflink' (btrfs only)
-	-c(opy)			use 'cp' instead of 'cp -l'
-
-options:
-	-h(elp)
-        -n(o operation)         just pretend and show what you would do
-        -q(uiet)		do not output commands being executed
-	-u(pdate)		copy only when the source file is newer
-        -v(erbose)		tell if a directory already exists
-
-X
+	die pod2usage unless !$opt_h and $#ARGV >= 1;
 	$d = pop @ARGV;
 	die "You can't merge into a file" if -f $d;
 	if ( $d !~ m#^/# ) {
@@ -135,4 +117,51 @@ sub sys {
 	return system @_ unless $opt_n;
 	return 0;
 }
+
+__END__
+
+=pod
+
+=head1 NAME
+
+merge - directory folder merging tool, like drag'n'drop without GUI file manager
+
+=head1 SYNOPSIS
+
+merge [<option>] [<operation>] <items> <target-folder>
+
+ Operations:
+	-m(ove)			use 'mv' instead of 'cp -l'
+	-s(ymlink)		use 'cp -s' instead of 'cp -l'
+	-r(eflink)		use 'cp --reflink' (btrfs only)
+	-c(opy)			use 'cp' instead of 'cp -l'
+
+ Options:
+	-h(elp)
+        -n(o operation)         just pretend and show what you would do
+        -q(uiet)		do not output commands being executed
+	-u(pdate)		copy only when the source file is newer
+        -v(erbose)		tell if a directory already exists
+
+=head1 DESCRIPTION
+
+ This tool merges directories in a similar way as graphical file managers do.
+ 'rsync' can't mv, ln, symlink or reflink files on the same file system, so
+ merge is for all those use cases. The default operation is to make hardlinked
+ copies of the source files into the target directories.
+
+=head1 AUTHORS
+
+ carlo von lynX.
+
+=head1 COPYRIGHT
+
+ This program is free software, published under the Affero GNU Public
+ License. A disclaimer isn't necessary in my country, nor do I need
+ to mention the current year to assert a copyright.
+
+=head1 UPDATES
+
+ Latest version available from the youbroketheinternet overlay:
+    https://gnunet.org/git/youbroketheinternet-overlay.git/plain/app-misc/merge/files/merge
 
