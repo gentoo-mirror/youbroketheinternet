@@ -313,6 +313,13 @@ is therefore legitimate to use its binary installation as
 you can check its correctness later, by rebuilding the exact
 identical binary files.
 
+== sys-apps/metastore ==
+
+Do you use git for systems administration and get tangled up with
+files having wrong ownership? Metastore keeps metadata information
+of entire directory trees in a separate file, so you can restore it
+each time you check out a git repository.
+
 == sys-apps/nix ==
 
 The package manager from Nix. Portage has added its own version
