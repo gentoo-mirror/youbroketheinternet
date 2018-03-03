@@ -211,6 +211,8 @@ sub timeparse {
 	return 3600 * $1 + 60 * $2 + $3 if /^(\d+)\D(\d+)\D(\d+)$/;
 	return $1 if /^\D(\d+)$/;
 	return 60 * $1 if /^(\d+)$/;
+	# allow +mm.ss syntax for duration instead of ending time
+	return $min + 60 * $1 + $2 if /^\+(\d*)\D(\d+)$/;
 	# guess what the user means depending on previous input
 	my $tmp = 60 * $1 + $2 if /^(\d+)\D(\d+)$/;
 	return $tmp < $min ? $tmp * 60 : $tmp;

@@ -36,13 +36,6 @@ the requested git revision according to the version number you are
 emerging, but only if your git is sufficiently up to date.
 
 
-== app-arch/zipgrep ==
-
-A replacement for the zipgrep shell script that comes with
-app-arch/unzip. This one can handle spaces in filenames, can
-recognize ZIP compatible file formats such as ODT, APK or MAFF
-and recurses into directories by default.
-
 == app-admin/depot ==
 
 How many different Unix distributions have you tried out in the 
@@ -60,6 +53,21 @@ in universities in the 1990s (see LISA paper from 1993 describing
 theory and practice), but it can still prove useful to anyone who 
 moves tools around on several Unix flavors today. You may even 
 find it useful to organize non-software paths like media files.
+
+== app-arch/zipgrep ==
+
+A replacement for the zipgrep shell script that comes with
+app-arch/unzip. This one can handle spaces in filenames, can
+recognize ZIP compatible file formats such as ODT, APK or MAFF
+and recurses into directories by default.
+
+== app-misc/merge ==
+
+A command that should be a basic unix tool or be integrated
+into 'mv' and 'cp' as -m flag. The ability to merge folders
+from command line just like you can when drag+dropping folders
+into each other with a GUI file manager. How could we exist
+without this all these years?
 
 == dev-perl/Net-PSYC ==
 
