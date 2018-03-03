@@ -9,7 +9,7 @@ sub debug() { 0 }
 use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
 use Pod::Usage qw( pod2usage );
 use Getopt::Std;
-getopt();
+getopt('Ost');
 
 if (@ARGV) {
 	my $has_ffcut = which('ffcut');
@@ -17,6 +17,26 @@ if (@ARGV) {
 	die "For this we need both ffcut and aubiotrack from aubio installed.\n"
 	    unless $has_ffcut and $has_aubiotrack;
 	my $has_player = which('mpv') || which('mplayer');
+	my $has_aubioonset = which('aubioonset');
+
+	my @aubio;
+	if ($opt_x) {
+		@aubio = ( $has_aubioonset,
+			 '-O', $opt_O || 'default',
+			 '-s', $opt_s || '-50.0',
+			 '-t', $opt_t || '.9' );
+	} else {
+		# should be more accurate when used with '-s', '-50.0'
+		# but that part of the aubiotrack code may be broken
+		# in versions of libaubio prior 0.4.6
+		@aubio = ( $has_aubiotrack );
+		push @aubio, '-s', $s if $opt_s;
+	}
+	my $tmpwav;
+	if ($opt_m) {
+		$tmpwav = "/tmp/bpm-measure-$$.wav";
+		push @aubio, '-mfo', $tmpwav;
+	}
 
 	for $p (@ARGV) {
 		next if $p =~ /\.(asd|git)$/;
@@ -25,37 +45,55 @@ if (@ARGV) {
 		my $count = 0;
 		my $f = ($p =~ m!/([^/]+)$!) ? $1 : $p;
 		my $t = "/tmp/bpm-measure-$f";
-		my $o = "$t.wav";
 		# guesswork: skip intro and take early beats
 		# before the track gets too noisy.. just to
 		# circumvent the bug in aubiotrack
 		system($has_ffcut, '-Q', $p, $t, '.23', '.64');
 		die "ffcut failed on $f" unless -s $t > 99999;
-		my @abt = $opt_m ? 
-		    ( $has_aubiotrack, '-mfo', $o ):
-		    ( $has_aubiotrack );
-		# should be more accurate when used with '-s', '-50.0'
-		# but that part of the aubiotrack code may be broken
-		# in versions of libaubio prior 0.4.6
-		open(I, '-|', @abt, $t);
-		$p = <I>;
-		while (<I>) {
-			my $elapsed = $_ - $p;
-			print "current bpm: ", 60 / $elapsed, "\n" if debug;
-			$sum += $elapsed;
-			$count++;
-			$p = $_;
+		open(I, '-|', @aubio, $t);
+		if ($opt_x) {
+			# lame algorithm using onsets
+			$_ = do { local $/; <I> };    # slurp!
+			@on = split /\n/, $_;
+			my $p = shift @on;
+			foreach (@on) {
+				my $elapsed = $_ - $p;
+				# only consider onset distances within
+				# the range of a quarter-beat
+				if ($elapsed > .16 && $elapsed < .32) {
+					$sum += $elapsed;
+					$count++;
+				}
+				$p = $_;
+			}
+		} else {
+			# naive algorithm using beat detection
+			$p = <I>;
+			while (<I>) {
+				my $elapsed = $_ - $p;
+				$sum += $elapsed;
+				$count++;
+				$p = $_;
+			}
 		}
 		close I;
 		unlink($t);
 		if ($count) {
-			print 60 / ($sum / $count), "  \t", $f, "\n";
+			my $avg = $sum / $count;
+			print "Counted $count. Sum: $sum. Average: $avg\n" if $opt_v;
+			if ($opt_x) {
+				print "possible bpm: ", 60 / (1 * $avg), "\t", $f, "\n";
+				print "possible bpm: ", 60 / (2 * $avg), "\t", $f, "\n";
+				print "possible bpm: ", 60 / (4 * $avg), "\t", $f, "\n";
+			} else {
+				print 60 / $avg, "  \t", $f, "\n";
+			}
 		} else {
 			print STDERR "?\t\t\t", $f, "\n" unless $opt_m;
 		}
-		if ($opt_m and -s $o) {
-			system $has_player, $o;
-			unlink $o;
+		if ($opt_m and $tmpwav and -s $tmpwav) {
+			system $has_player, $tmpwav;
+			unlink $tmpwav;
 		}
 	}
 	exit;
@@ -101,6 +139,7 @@ sub which {
 	return $1;
 }
 
+
 __END__
 
 =pod
@@ -111,10 +150,15 @@ bpm-measure - a beat per minute measurement tool von lynX, 2005, 2018
 
 =head1 SYNOPSIS
 
- bpm-measure [<-m>] [<mediafiles>]
+ bpm-measure [<options>] [<mediafiles>]
 
  Options:
-    -m(onitor)	Hear how well aubio's beat detection has performed
+  -s(ilence)	Set silence threshold in db (default is -90.0)
+  -m(onitor)	Hear how well aubio's beat detection has performed
+  -v(erbose)	Indicate how many beats were counted
+  -x(periment)	Try using custom onset calculation
+  -t(hreshold)	Threshold for onset calculation (default is 0.9)
+  -O(nsetmeth)	Onset detection method (default is 'default')
 
 =head2 AUTO-DETECTION
 
@@ -129,7 +173,9 @@ bpm-measure - a beat per minute measurement tool von lynX, 2005, 2018
 
 =head2 See also
 
- perldoc bpm-measure
+ 'perldoc bpm-measure' for longer description.
+ 'man aubiotrack' for info on regular beat detection.
+ 'man aubioonset' for info on onset detection methods etc.
 
 =head1 CAVEATS
 
@@ -141,9 +187,10 @@ that aubiotrack can easily get confused between on-beat and
 off-beat, especially if the sound excerpt contains a break,
 resulting in imprecision of the final bpm number. With the -m
 option you can check if such a confusion occurred, but then you
-might as well measure the music manually. I have an idea on how
-to improve the accuracy of this tool and may push an update in
-that regard, if successful.
+might as well measure the music manually. The 'experimental'
+algorithm is too stupid and usually produces less accurate
+results then aubio's own, but it can be a starting point
+for experimentation.
 
 =head1 HISTORY
 
