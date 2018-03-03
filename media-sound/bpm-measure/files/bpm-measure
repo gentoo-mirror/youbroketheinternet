@@ -1,0 +1,128 @@
+#!/usr/bin/perl
+# apparently nobody on the internet has attempted to
+# write a tool that calculates an average bpm from
+# the detected beats by aubiotrack, so here goes!
+# use 'perldoc bpm-measure' to see the documentation.
+
+sub debug() { 0 }
+
+use Time::HiRes qw( usleep ualarm gettimeofday tv_interval );
+use Pod::Usage qw( pod2usage );
+
+if (@ARGV) {
+	my $has_ffcut = which('ffcut');
+	my $has_aubiotrack = which('aubiotrack');
+	die "For this we need both ffcut and aubiotrack from aubio installed.\n"
+	    unless $has_ffcut and $has_aubiotrack;
+
+	for $p (@ARGV) {
+		next if $p =~ /\.(asd|git)$/;
+		die pod2usage if not -r $p;
+		my $sum = 0;
+		my $count = 0;
+		my $f = ($p =~ m!/([^/]+)$!) ? $1 : $p;
+		my $t = "/tmp/bpm-measure-$f";
+		# guesswork: skip intro and take early beats
+		# before the track gets too noisy.. just to
+		# circumvent the bug in aubiotrack
+		system($has_ffcut, '-Q', $p, $t, '.23', '.64');
+		die "ffcut failed on $f" unless -s $t > 99999;
+		# should be more accurate when used with '-s', '-20.0'
+		# but that part of the aubiotrack code is broken
+		open(I, '-|', $has_aubiotrack, $t);
+		$p = <I>;
+		while (<I>) {
+			my $elapsed = $_ - $p;
+			print "current bpm: ", 60 / $elapsed, "\n" if debug;
+			$sum += $elapsed;
+			$count++;
+			$p = $_;
+		}
+		close I;
+		unlink($t);
+		if ($count) {
+			print 60 / ($sum / $count), "  \t", $f, "\n";
+		} else {
+			print STDERR "?\t\t\t", $f, "\n";
+		}
+	}
+	exit;
+}
+
+while (1) {
+	print "\nHIT ENTER TO START: ";
+	$in = <stdin>;
+
+	$t0 = [gettimeofday];
+	exit if $in =~ /\S/;
+
+	print "HIT ENTER TO STOP: ";
+	$in = <stdin>;
+
+	$elapsed = tv_interval ( $t0, [gettimeofday]);
+
+	print <<X;
+
+seconds elapsed: $elapsed
+
+X
+
+#	print "possible bpm: ", 60 / $elapsed, "\n";
+#	print "possible bpm: ", 120 / $elapsed, "\n";
+#	print "possible bpm: ", 240 / $elapsed, "\n";
+	print "possible bpm: ", 480 / $elapsed, "\n";
+	print "possible bpm: ", 960 / $elapsed, "\n";
+	print "possible bpm: ", 1920 / $elapsed, "\n";
+#	print "possible bpm: ", 3840 / $elapsed, "\n";
+#	print "possible bpm: ", 7680 / $elapsed, "\n";
+
+	exit if $in =~ /\S/;
+}
+
+# if your system doesn't have "which" we're in trouble
+# even BSD has which in that place, so it is ok to use full path
+sub which {
+	my $cmd = shift;
+	$_ = `/usr/bin/which $cmd 2>&1`;
+	print STDERR "which $cmd: $_" if debug & 1;
+	/^(\S+)\s*$/;
+	return $1;
+}
+
+__END__
+
+=pod
+
+=head1 NAME
+
+bpm-measure - a beat per minute measurement tool von lynX, 2005, 2018
+
+=head1 SYNOPSIS
+
+bpm-measure [<mediafiles>]
+
+=head2 AUTO-DETECTION
+
+	Pass audio file arguments to analyze.
+
+=head2 MANUAL MODE
+
+	Hit ENTER on the first beat (start counting from zero),
+	then wait 4, 8, 16 or 32 measures (the longer the better)
+	and hit ENTER on the beat again. The tool will output
+	some possible BPM values. Hit control-c to exit the loop.
+
+=head2 See also
+
+perldoc bpm-measure
+
+=head1 AUTHORS
+
+carlo von lynX, with help from the fantastic aubio library.
+
+=head1 COPYRIGHT
+
+This program is free software, published under the Affero GNU Public
+License. A disclaimer isn't necessary in my country, nor do I need
+to mention the current year to assert a copyright.
+

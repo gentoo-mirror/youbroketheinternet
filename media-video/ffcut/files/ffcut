@@ -76,6 +76,7 @@ Options are:
     -s(ilent)	Produce output video without audio
     -a(udio)	Produce output audio without video
     -b(oxing)	Plan B: prefer MP4Box over ffmpeg
+    -Q(uiet)	Do not produce screen output
 
 A GUI tool by the same name and a probably similar purpose
 is available from https://github.com/wschreyer/ffcut
@@ -99,7 +100,7 @@ unless ( $end ) {
 		$start = "9999998";
 	}
 }
-print GREEN, <<X, RESET if $start ne "9999998" and not $opt_q;
+print GREEN, <<X, RESET if $start ne "9999998" and not $opt_q || $opt_Q;
 *** ffcutting from $start to $end into $output
 X
 
@@ -145,11 +146,12 @@ while ( <$F> ) {
 	} elsif ( /^video:(\d+)kB audio:(\d+)kB .* muxing overhead/ ) {
 		$videosize = $1;
 		$audiosize = $2;
+		next if $opt_Q;
 		print CYAN, "*** Produced ";
 		print "$1 kB of video and " if $1;
 		print "$2 kB of audio.\n", RESET;
 	} elsif ( /^(Input|Output) #/ or /\s+Duration: \d+/ ) {
-		print YELLOW, $_, RESET;
+		print YELLOW, $_, RESET unless $opt_Q;
 	} else {
 		print BLUE, $_, RESET if $opt_v;
 	}
