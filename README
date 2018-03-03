@@ -136,7 +136,7 @@ the kdenlive ebuild is missing several dependencies.
 New: lynX added his "deshake" command line tool for
 removing camera shake from video files, since kdenlive
 is such a buggy piece of software and overkill if you do
-not need to do any editing beyond what mp4cut offers.
+not need to do any editing beyond what ffcut offers.
 
 == media-sound/mumble ==
 
@@ -164,12 +164,13 @@ not as powerful as kdenlive, but doesn't crash in exchange.
 Mirrored from jorgicio's overlay, which is hosted on an
 unreliable commercial cloud offering called github.
 
-== media-video/mp4cut ==
+== media-video/ffcut ==
 
-Lossless M4V video editor (M4V = mp4, mov, 3gp and other
-mp4-based file formats), or rather, it's a a command line 
-scene extractor with a nifty practical command line UX.
-Based on GPAC, which is amazing but has terrible UX.
+Lossless audio/video editor, or rather, it's a cutting tool
+to extract video scenes or remove parts from an mp3 with a
+practical command line UX and without doing any re-encoding.
+Uses either ffmpeg or GPAC, which are both amazing but have
+terrible UX each.
 
 == net-im/qtox ==
 
