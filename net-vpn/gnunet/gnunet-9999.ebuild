@@ -72,8 +72,8 @@ IUSE="debug +httpd +sqlite postgres mysql nls +nss +X +gnutls dane +bluetooth \
 # !!! TODO: Sort run depend, required use, build time use.
 REQUIRED_USE="|| ( mysql postgres sqlite )
 		?? ( pulseaudio gstreamer )
-		|| ( curl gnurl )
-		|| ( idn idn2 )
+		^^ ( curl gnurl )
+		^^ ( idn idn2 )
 		experimental? ( || ( extra ) )
 		extra? ( || ( experimental ) )"
 
