@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # Written by, in historic order: vminko, vonlynX, ng0.
 # https://gnunet.org/gentoo-build is outdated, please ignore.
@@ -13,8 +13,7 @@ EAPI=6
 
 DESCRIPTION="Cryptographic GNU Mesh/Underlay Network Routing Layer"
 HOMEPAGE="https://gnunet.org/"
-LICENSE="GPL-3"
-# gnunet <= 0.10.1 uses python 2.7 for tests, HEAD uses python 3.
+LICENSE="AGPL-3"
 PYTHON_COMPAT=( python2_7 )
 KEYWORDS="~amd64 ~x86"
 SLOT="0"
@@ -26,9 +25,9 @@ AUTOTOOLS_AUTORECONF=1
 
 # if you're a gnunet developer, you can put a symlink to your local git here:
 EGIT_REPO_URI="/usr/local/src/${PN}
-    https://gnunet.org/git/${PN}
+	https://gnunet.org/git/${PN}
 	https://github.com/gnunet/${PN}
-    git://git.gnunet.org/${PN}"
+	git://git.gnunet.org/${PN}"
 
 case ${PV} in
 "9999")
@@ -38,19 +37,19 @@ case ${PV} in
 	;;
 "0.11.0_pre69")
 	inherit autotools git-r3 user python-any-r1 flag-o-matic
-    EGIT_COMMIT="1c0e4ab320429f11a1c5e63194643e61766aca3f"
+	EGIT_COMMIT="1c0e4ab320429f11a1c5e63194643e61766aca3f"
 	;;
 "0.10.2_rc6")
 	inherit autotools git-r3 user python-any-r1 flag-o-matic
-    EGIT_COMMIT="45140f0fd3426e9689c6d1e5e758f1b75c450e90"
+	EGIT_COMMIT="45140f0fd3426e9689c6d1e5e758f1b75c450e90"
 	;;
 "0.10.2_rc5")
 	inherit autotools git-r3 user python-any-r1 flag-o-matic
-    EGIT_COMMIT="4a92d3943554681ce35e8106ef4f889c7a3bfed3"
+	EGIT_COMMIT="4a92d3943554681ce35e8106ef4f889c7a3bfed3"
 	;;
 "0.10.2_rc4")
 	inherit autotools git-r3 user python-any-r1 flag-o-matic
-    EGIT_COMMIT="6bcc73a1cbb1d4a609884762eab1b6de761ad1d9"
+	EGIT_COMMIT="6bcc73a1cbb1d4a609884762eab1b6de761ad1d9"
 	;;
 "0.10.1")
 	inherit autotools user python-any-r1 flag-o-matic
@@ -68,17 +67,21 @@ AUTOTOOLS_IN_SOURCE_BUILD=1
 # longer needed, neither is root. This warning must be fixed in gnunet.
 IUSE="debug +httpd +sqlite postgres mysql nls +nss +X +gnutls dane +bluetooth \
 	  ssl libressl experimental extra pulseaudio gstreamer qr tex test \
-	  +gnurl +curl curl_ssl_gnutls"
+	  +gnurl curl curl_ssl_gnutls idn +idn2"
 
 # !!! TODO: Sort run depend, required use, build time use.
 REQUIRED_USE="|| ( mysql postgres sqlite )
 		?? ( pulseaudio gstreamer )
+		|| ( curl gnurl )
+		|| ( idn idn2 )
 		experimental? ( || ( extra ) )
 		extra? ( || ( experimental ) )"
 
 # XXX: We do not know if libressl is functional here, at least it does build,
 # so buildtime is safe, runtime should be too. If you find bugs, get in contact
 # with me.
+# libmicrohttpd seems to have some remaining issues with libressl according
+# to our bugtracker.
 ## Helpful notes: https://gnunet.org/bugs/view.php?id=4618#bugnotes
 RDEPEND="
 	mysql? ( >=virtual/mysql-5.1 )
@@ -91,6 +94,8 @@ RDEPEND="
 		gnurl? ( >=net-misc/gnurl-7.50.1 )
 		!gnurl? ( >=net-misc/curl-7.50.1[curl_ssl_gnutls] )
 	)
+	idn? ( net-dns/libidn )
+	idn2? ( net-dns/libidn2 )
 	gnutls? ( net-libs/gnutls[tools] )
 	dane? ( net-libs/gnutls[dane] )
 	ssl? (
