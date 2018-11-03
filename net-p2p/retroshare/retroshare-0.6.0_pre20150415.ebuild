@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/net-p2p/retroshare/retroshare-0.6.0_pre20150415.ebuild,v 1.1 2015/04/27 09:51:51 pinkbyte Exp $
 

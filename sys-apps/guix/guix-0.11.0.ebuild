@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # FIXME: The service is broken. Expect up to 45 minutes on halt/reboot
