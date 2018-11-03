@@ -12,7 +12,7 @@ SRC_URI="https://ftp.gnu.org/gnu/gnunet/${P}.tar.gz -> ${P}.tar.gz"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~"
-IUSE="dane"
+IUSE="+dane"
 
 RDEPEND=">=net-libs/gnutls-3[dane?]
 	sys-libs/zlib"
