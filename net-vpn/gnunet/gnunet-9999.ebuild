@@ -91,7 +91,7 @@ RDEPEND="
 	>=dev-libs/libgcrypt-1.6
 	>=dev-libs/libunistring-0.9.3
 	curl? (
-		gnurl? ( >=net-misc/gnurl-7.50.1 )
+		gnurl? ( >=net-misc/gnurl-7.50.1[curl_ssl_gnutls] )
 		!gnurl? ( >=net-misc/curl-7.50.1[curl_ssl_gnutls] )
 	)
 	idn? ( net-dns/libidn )
