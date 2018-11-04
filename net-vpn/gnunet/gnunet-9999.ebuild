@@ -65,9 +65,10 @@ AUTOTOOLS_IN_SOURCE_BUILD=1
 # installation, claiming that it will not be installed if it is missing from the
 # build environment. With current HEAD (Aug 28 2016) it seems that sudo is no
 # longer needed, neither is root. This warning must be fixed in gnunet.
+# TODO: "mdoc" is not a good choice.
 IUSE="debug +httpd +sqlite postgres mysql nls +nss +X +gnutls dane +bluetooth \
 	  ssl libressl experimental extra pulseaudio gstreamer qr tex test \
-	  +gnurl curl curl_ssl_gnutls idn +idn2"
+	  +gnurl curl curl_ssl_gnutls idn +idn2 +doc mdoc"
 
 # !!! TODO: Sort run depend, required use, build time use.
 REQUIRED_USE="|| ( mysql postgres sqlite )
@@ -188,6 +189,8 @@ src_configure() {
 		$(use_with sqlite ) \
 		$(use_with X x ) \
 		$(use_with gnutls ) \
+		$(use_enable doc documentation ) \
+		$(use_enable mdoc section7 ) \
 		--with-extractor
 }
 #		$(use_with sudo )
@@ -208,6 +211,7 @@ src_install() {
 	doins "${FILESDIR}/gnunet.conf"
 	keepdir /var/{lib,log}/gnunet
 	fowners gnunet:gnunet /var/lib/gnunet /var/log/gnunet
+	mv "${D}/usr/share/doc/gnunet" "${D}/usr/share/doc/${PF}"
 }
 
 pkg_postinst() {
