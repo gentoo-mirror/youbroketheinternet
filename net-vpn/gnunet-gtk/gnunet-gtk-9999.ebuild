@@ -4,6 +4,7 @@
 # https://gnunet.org/gentoo-build is outdated, please ignore.
 
 EAPI=6
+inherit gnome2-utils
 
 DESCRIPTION="Graphical front-end tools for GNUnet."
 HOMEPAGE="https://gnunet.org/"
@@ -100,4 +101,16 @@ src_compile() {
 
 src_install() {
 	default
+}
+
+pkg_preinst() {
+	gnome2_icon_savelist
+}
+
+pkg_postinst() {
+	gnome2_icon_cache_update
+}
+
+pkg_postrm() {
+	gnome2_icon_cache_update
 }
