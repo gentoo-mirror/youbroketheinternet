@@ -24,7 +24,7 @@ RDEPEND="
 		 !libressl? ( dev-libs/openssl:0= )
 		 libressl? ( dev-libs/libressl:0= )
 	)
-	>=dev-libs/boost-1.66:0=[context]
+	>=dev-libs/boost-1.65:0=[context]
 	net-misc/curl
 	sys-libs/libseccomp
 	sys-libs/zlib
