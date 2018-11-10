@@ -12,7 +12,7 @@ SRC_URI="https://ftp.gnu.org/gnu/gnunet/${P}.tar.gz -> ${P}.tar.gz"
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~"
-IUSE="+dane"
+IUSE="+dane test"
 
 RDEPEND=">=net-libs/gnutls-3[dane?]
 	sys-libs/zlib"
@@ -31,6 +31,11 @@ src_prepare() {
 
 src_configure() {
 	econf --disable-ntlm-wb
+}
+
+src_test() {
+	cd "${S}"
+	emake -C tests test
 }
 
 src_install() {
