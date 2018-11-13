@@ -59,7 +59,7 @@ src_install() {
 		doexe contrib/importers/*
 	fi
 	# FIXME: the make rule does no longer install the completions!
-	newbashcomp "${ED}"src/completion/pass.bash-completion pass
+	newbashcomp "${ED}"/src/completion/pass.bash-completion pass
 }
 
 pkg_postinst() {
