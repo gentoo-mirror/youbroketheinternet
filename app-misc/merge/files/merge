@@ -76,10 +76,12 @@ sub wanted {
 	#	$name =~ s!^\./!!;
 		$name =~ s!^$s/!! or die "Impossible: $s is not in $name";
 		print STDERR "name:\t>$name<\n" if debug;
-	#	$dir =~ s!^\./!!;
-		$dir =~ s!^$s/!! or die "Impossible: $s is not in $dir";
-		print STDERR "dir:\t>$dir<\n" if debug;
-		mkdirhier ( $d.'/'.$dir ) if $dir ne '.';
+		if ($s ne $dir) {
+		#	$dir =~ s!^\./!!;
+			$dir =~ s!^$s/!! or die "Impossible: $s is not in $dir";
+			print STDERR "dir:\t>$dir<\n" if debug;
+			mkdirhier ( $d.'/'.$dir ) if $dir ne '.';
+		}
 	}
 	if ($opt_m and $opt_u) {
 		die $! if sys('/bin/mv', '-u', $_, $d.'/'.$name);
@@ -128,7 +130,7 @@ merge - directory folder merging tool, like drag'n'drop without GUI file manager
 
 =head1 SYNOPSIS
 
-merge [<option>] [<operation>] <items> <target-folder>
+merge [<option>] [<operation>] <source-folder> <target-folder>
 
  Operations:
 	-m(ove)			use 'mv' instead of 'cp -l'
