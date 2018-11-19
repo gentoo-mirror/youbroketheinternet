@@ -8,6 +8,7 @@ inherit git-r3
 DESCRIPTION="OMEMO for libpurple - interoperable with other OMEMO clients"
 HOMEPAGE="https://github.com/gkdr/lurch"
 EGIT_REPO_URI="https://github.com/gkdr/lurch"
+EGIT_BRANCH="dev"
 
 S="${WORKDIR}"
 
