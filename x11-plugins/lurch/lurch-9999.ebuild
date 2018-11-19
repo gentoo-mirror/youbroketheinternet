@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit git-r3
+inherit git-r3 eutils
 
 DESCRIPTION="OMEMO for libpurple - interoperable with other OMEMO clients"
 HOMEPAGE="https://github.com/gkdr/lurch"
@@ -24,3 +24,7 @@ DEPEND="
 	dev-libs/mxml"
 
 RDEPEND="${DEPEND}"
+
+src_install() {
+	emake DESTDIR="${D}" install || die "email install failed"
+}
