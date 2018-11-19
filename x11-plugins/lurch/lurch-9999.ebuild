@@ -25,6 +25,10 @@ DEPEND="
 
 RDEPEND="${DEPEND}"
 
+src_compile() {
+	emake
+}
+
 src_install() {
 	emake DESTDIR="${D}" install || die "email install failed"
 }
