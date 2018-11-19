@@ -10,7 +10,7 @@ HOMEPAGE="https://github.com/gkdr/lurch"
 EGIT_REPO_URI="https://github.com/gkdr/lurch"
 EGIT_BRANCH="dev"
 
-S="${WORKDIR}"
+# S="${WORKDIR}"
 
 LICENSE="GPL-3"
 SLOT="0"
