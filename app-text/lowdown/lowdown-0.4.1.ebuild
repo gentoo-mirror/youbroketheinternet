@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit versionator
+inherit versionator toolchain-funcs
 MY_P="VERSION_"$(replace_all_version_separators "_")
 
 DESCRIPTION="simple markdown translator"
@@ -32,7 +32,7 @@ src_configure(){
 		INCLUDEDIR="${EPREFIX}/usr/include/lowdown"
 		EXAMPLEDIR="${EPREFIX}/usr/share/examples/lowdown"
 		CFLAGS="${CFLAGS} ${CPPFLAGS}"
-		LDFLAGS="${LDFLAGS} $(usex static -static '')"
+		LDFLAGS="${LDFLAGS}"
 		AR="$(tc-getAR)"
 		CC="$(tc-getCC)"
 EOF
