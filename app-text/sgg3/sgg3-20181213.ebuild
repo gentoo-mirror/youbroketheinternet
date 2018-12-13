@@ -4,6 +4,7 @@
 EAPI=7
 
 DESCRIPTION="static site generation with sh, find, grep and lowdown"
+HOMEPAGE="https://www.romanzolotarev.com/ssg.html"
 LICENSE="ISC"
 SLOT="0"
 KEYWORDS="*"
