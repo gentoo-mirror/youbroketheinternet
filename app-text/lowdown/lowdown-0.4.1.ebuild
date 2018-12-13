@@ -23,20 +23,8 @@ src_prepare(){
 }
 
 src_configure(){
-	./configure
-	cat <<EOF "Makefile.configure"
-		PREFIX="${EPREFIX}/usr"
-		BINDIR="${EPREFIX}/usr/bin"
-		SBINDIR="${EPREFIX}/usr/sbin"
-		LIBDIR="${EPREFIX}/usr/$(get_libdir)"
-		MANDIR="${EPREFIX}/usr/share/man"
-		INCLUDEDIR="${EPREFIX}/usr/include/lowdown"
-		EXAMPLEDIR="${EPREFIX}/usr/share/examples/lowdown"
-		CFLAGS="${CFLAGS} ${CPPFLAGS}"
-		LDFLAGS="${LDFLAGS}"
-		AR="$(tc-getAR)"
-		CC="$(tc-getCC)"
-EOF
+	./configure PREFIX="${EPREFIX}/usr"
+	touch "Makefile.configure"
 }
 
 src_compile(){
