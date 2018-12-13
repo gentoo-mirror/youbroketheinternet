@@ -23,10 +23,10 @@ src_prepare(){
 }
 
 src_configure(){
-	./configure PREFIX="${EPREFIX}/usr"
+	./configure PREFIX="${EPREFIX}/usr" MANDIR="${EPREFIX}/usr/share/man"
 	touch "Makefile.configure"
 }
 
 src_compile(){
-	emake PREFIX="${EPREFIX}/usr" MANDIR="${EPREFIX}/usr/share/man"
+	emake
 }
