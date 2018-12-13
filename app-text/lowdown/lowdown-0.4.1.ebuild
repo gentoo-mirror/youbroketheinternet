@@ -23,6 +23,7 @@ src_prepare(){
 }
 
 src_configure(){
+	./configure
 	cat <<EOF "Makefile.configure"
 		PREFIX="${EPREFIX}/usr"
 		BINDIR="${EPREFIX}/usr/bin"
@@ -36,7 +37,6 @@ src_configure(){
 		AR="$(tc-getAR)"
 		CC="$(tc-getCC)"
 EOF
-	./configure
 }
 
 src_compile(){
