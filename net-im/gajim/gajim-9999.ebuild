@@ -7,7 +7,7 @@ PYTHON_COMPAT=( python3_{5,6} )
 PYTHON_REQ_USE="sqlite,xml"
 DISTUTILS_SINGLE_IMPL=1
 
-inherit git-r3g python-r1 versionator
+inherit git-r3 python-r1 versionator
 
 DESCRIPTION="Jabber client written in PyGTK"
 HOMEPAGE="http://www.gajim.org/"
