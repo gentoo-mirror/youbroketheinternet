@@ -1,0 +1,8 @@
+DEFINED_PHASES=install unpack
+DEPEND=sys-apps/portage dev-lang/perl virtual/perl-Term-ANSIColor
+DESCRIPTION=Make binary packages of each installed atom in the system
+EAPI=5
+KEYWORDS=alpha amd64 arm arm64 hppa ia64 m68k mips ppc ppc64 s390 sh sparc x86 amd64-fbsd sparc-fbsd x86-fbsd
+LICENSE=AGPL
+SLOT=0
+_md5_=f70f9249b04efe0ff24422bff01e1233

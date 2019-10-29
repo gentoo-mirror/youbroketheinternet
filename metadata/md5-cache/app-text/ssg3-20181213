@@ -1,0 +1,8 @@
+DEFINED_PHASES=install
+DESCRIPTION=static site generation with sh, find, grep and lowdown
+EAPI=7
+HOMEPAGE=https://www.romanzolotarev.com/ssg.html
+KEYWORDS=*
+LICENSE=ISC
+SLOT=0
+_md5_=bca3273bc3e657d00c6f69729e7ef39f

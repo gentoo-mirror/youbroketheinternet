@@ -1,0 +1,10 @@
+DEFINED_PHASES=compile configure install postinst postrm prepare setup unpack
+DEPEND=>=virtual/emacs-23 >=dev-vcs/git-1.8.2.1[curl]
+DESCRIPTION=A tree plugin like Nerd Tree for Vim
+EAPI=5
+HOMEPAGE=https://github.com/jaypei/emacs-neotree
+LICENSE=GPL-3
+RDEPEND=>=virtual/emacs-23
+SLOT=0
+_eclasses_=elisp	11f1230b542918f2de1aef02bfbb3539	elisp-common	23f47b2e1de7abf387105eddd1318738	epatch	a1bf4756dba418a7238f3be0cb010c54	git-r3	23320ae9a580d98736f70f163b08a1eb
+_md5_=bee63bcaad5531c657e4b21de3cd8e96

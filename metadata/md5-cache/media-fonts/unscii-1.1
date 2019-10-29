@@ -1,0 +1,15 @@
+DEFINED_PHASES=compile install postinst postrm prepare setup unpack
+DEPEND=utils? ( media-libs/sdl-image ) !binary? ( dev-lang/perl font_types_otf? ( media-gfx/fontforge ) font_types_ttf? ( media-gfx/fontforge ) font_types_pcf? ( x11-apps/bdftopcf ) unicode? ( media-fonts/unifont[utils] ) ) utils? ( dev-lang/perl ) X? ( x11-apps/mkfontdir media-fonts/encodings ) sys-apps/findutils
+DESCRIPTION=A bitmapped Unicode font based on classic system fonts
+EAPI=6
+HOMEPAGE=http://pelulamu.net/unscii/
+IUSE=+binary unicode utils X font_types_otf +font_types_pcf font_types_ttf font_variants_alt font_variants_fantasy font_variants_mcr font_variants_tall font_variants_thin
+KEYWORDS=~amd64 ~x86
+LICENSE=OFL-1.1
+RDEPEND=utils? ( media-libs/sdl-image )
+REQUIRED_USE=|| ( font_types_otf font_types_pcf font_types_ttf )
+RESTRICT=primaryuri
+SLOT=0
+SRC_URI=http://pelulamu.net/unscii/unscii-1.1-src.tar.gz binary? ( unicode? ( font_types_otf? ( http://pelulamu.net/unscii/unscii-16-full.otf ) font_types_pcf? ( http://pelulamu.net/unscii/unscii-16-full.pcf ) font_types_ttf? ( http://pelulamu.net/unscii/unscii-16-full.ttf ) ) !unicode? ( font_types_otf? ( http://pelulamu.net/unscii/unscii-16.otf ) font_types_pcf? ( http://pelulamu.net/unscii/unscii-16.pcf ) font_types_ttf? ( http://pelulamu.net/unscii/unscii-16.ttf ) ) font_types_otf? ( http://pelulamu.net/unscii/unscii-8.otf font_variants_alt? ( http://pelulamu.net/unscii/unscii-8-alt.otf ) font_variants_fantasy? ( http://pelulamu.net/unscii/unscii-8-fantasy.otf ) font_variants_mcr? ( http://pelulamu.net/unscii/unscii-8-mcr.otf ) font_variants_tall? ( http://pelulamu.net/unscii/unscii-8-tall.otf ) font_variants_thin? ( http://pelulamu.net/unscii/unscii-8-thin.otf ) ) font_types_pcf? ( http://pelulamu.net/unscii/unscii-8.pcf font_variants_alt? ( http://pelulamu.net/unscii/unscii-8-alt.pcf ) font_variants_fantasy? ( http://pelulamu.net/unscii/unscii-8-fantasy.pcf ) font_variants_mcr? ( http://pelulamu.net/unscii/unscii-8-mcr.pcf ) font_variants_tall? ( http://pelulamu.net/unscii/unscii-8-tall.pcf ) font_variants_thin? ( http://pelulamu.net/unscii/unscii-8-thin.pcf ) ) font_types_ttf? ( http://pelulamu.net/unscii/unscii-8.ttf font_variants_alt? ( http://pelulamu.net/unscii/unscii-8-alt.ttf ) font_variants_fantasy? ( http://pelulamu.net/unscii/unscii-8-fantasy.ttf ) font_variants_mcr? ( http://pelulamu.net/unscii/unscii-8-mcr.ttf ) font_variants_tall? ( http://pelulamu.net/unscii/unscii-8-tall.ttf ) font_variants_thin? ( http://pelulamu.net/unscii/unscii-8-thin.ttf ) ) )
+_eclasses_=font-r1	d203902ef7c27b365f2bb374e9661f78	multilib	1d91b03d42ab6308b5f4f6b598ed110e	toolchain-funcs	2f8b8f320bee13b71a8a54cc6d09e08a
+_md5_=c328d3dd352e56d2345b49d90051ab53

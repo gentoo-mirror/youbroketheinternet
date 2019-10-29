@@ -1,0 +1,8 @@
+DEFINED_PHASES=compile install
+DEPEND=dev-lang/perl dev-perl/Archive-Zip
+DESCRIPTION=Recursively search in ZIP compatible archive formats using regular expressions
+EAPI=5
+KEYWORDS=alpha amd64 arm arm64 hppa ia64 m68k mips ppc ppc64 s390 sh sparc x86 amd64-fbsd sparc-fbsd x86-fbsd
+LICENSE=AGPL
+SLOT=0
+_md5_=f36ff4818d0a6bc036870cff88422574

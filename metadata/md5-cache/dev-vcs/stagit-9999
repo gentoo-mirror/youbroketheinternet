@@ -1,0 +1,10 @@
+DEFINED_PHASES=install postinst prepare unpack
+DEPEND=>=dev-libs/libgit2-0.22.3 >=dev-vcs/git-1.8.2.1[curl]
+DESCRIPTION=static git page generator
+EAPI=6
+HOMEPAGE=http://2f30.org
+LICENSE=MIT
+RDEPEND=>=dev-libs/libgit2-0.22.3
+SLOT=0
+_eclasses_=git-r3	23320ae9a580d98736f70f163b08a1eb
+_md5_=e1fd4887a09c189fb2085ee1e1e1123e

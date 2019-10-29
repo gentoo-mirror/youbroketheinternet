@@ -1,0 +1,10 @@
+DEFINED_PHASES=compile install unpack
+DEPEND=>=dev-vcs/git-1.8.2.1[curl]
+DESCRIPTION=A minimalist FIFO and filesystem-based IRC client (codemadness.nl branch)
+EAPI=6
+HOMEPAGE=http://tools.suckless.org/ii/
+KEYWORDS=~amd64
+LICENSE=MIT
+SLOT=0
+_eclasses_=git-r3	23320ae9a580d98736f70f163b08a1eb
+_md5_=c19e1e4968ceb2b4f104281850f02ee7

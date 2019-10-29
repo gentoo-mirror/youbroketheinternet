@@ -1,0 +1,76 @@
+app-admin/depot 5.50: Organize files from various collections into a common structure like /usr/local
+app-arch/zipgrep 1.0: Recursively search in ZIP compatible archive formats using regular expressions
+app-emacs/company-mode 0.6.14 0.7 0.9.7: In-buffer completion front-end
+app-emacs/neotree 9999: A tree plugin like Nerd Tree for Vim
+app-emacs/parinfer 9999: Simpler Lisp editing
+app-misc/merge 1.0_rc1: directory folder merging tool, like drag'n'drop without GUI file manager
+app-text/lowdown 0.4.1: simple markdown translator
+app-text/ssg3 20181213: static site generation with sh, find, grep and lowdown
+dev-db/agensgraph 1.3.1: AgensGraph, a transactional graph database based on PostgreSQL
+dev-db/cayley 0.4.1-r1 0.5.0: Cayley is a graph databse written in GoLang.
+dev-db/gstore 0.6.0: A graph-based RDF triple store
+dev-lang/psyclpc 20121010 20130927 20160211 20160417 20160821 20170107 99999999: psycLPC is a multi-user network server programming language
+dev-libs/openssl 0.9.8z_p8 0.9.8z_p8-r1 1.0.2n 1.0.2o-r3 1.0.2o-r6 1.1.0g-r2 1.1.0h-r2 1.1.1_pre7-r1: full-strength general purpose cryptography library (including SSL and TLS)
+dev-libs/sway 0.6 0.7 9999: i3-compatible Wayland window manager
+dev-perl/ExtUtils-H2PM 0.10: C Header to Perl Module converter
+dev-perl/File-Touch 0.11: Update file access and modification times, creating files if needed
+dev-perl/IO-Socket-SSL 2.24.0 2.33.0: Nearly transparent SSL encapsulation for IO::Socket::INET
+dev-perl/IPC-Run3-Simple 0.011: Make IPC::Run3 even easier to use
+dev-perl/Linux-Ext2-Attributes 0.20-r1: Attributes for Ext Filesystems
+dev-perl/Net-PSYC 20160616 20160617 20160624 20160701 20160819 20170117 20170610 20180214: Perl implementation of PSYC protocol plus psycion, psycamp, remotor etc.
+dev-perl/Unix-Mknod 0.04: mknod for Perl
+dev-qt/qzxing 9999: Qt library for QR code generation and decoding
+dev-scheme/guile-git 0.0.20171110 0.1: Guile bindings of git
+dev-vcs/gitprivacy 1.1: git commands that preserve the privacy of working habits
+dev-vcs/stagit 9999: static git page generator
+media-fonts/un-fonts 1.0.2: Un Core Korean TrueType fonts. UnBatang,UnBatangBold,UnDotum,UnDotumBold,UnGraphic,UnGraphicBold,UnPilgi,UnPilgiBold,UnGungseo
+media-fonts/unscii 1.1: A bitmapped Unicode font based on classic system fonts
+media-libs/vid-stab 0.9 0.98 1.0 1.1 9999: Martius' camera deshaking and video stabilizing library
+media-sound/bpm-measure 1.0: symlynX's beat-per-minute auto-detection or tapping tool
+media-sound/mumble 1.3.9999: Mumble is an open source, low-latency, high quality voice chat software
+media-sound/rxaudio-bin 1.0: Historic mp3 playback engine
+media-video/ffcat 2.0: symlynX's Fast & Furious Lossless Media Concatenation Tool
+media-video/ffcut 2.0: symlynX's Fast & Furious Lossless Media Cutting Tool
+media-video/ffmpeg 3.3.6 4.0.1: Complete solution to record, convert and stream audio and video. Includes libavcodec
+media-video/flowblade 1.8 1.10 9999: A multitrack non-linear video editor
+net-im/gajim 0.16.6-r1 0.16.9 1.0.3-r3 9999: Jabber client written in PyGTK
+net-im/qtox 9999: GUI for net-libs/tox using QT5 with code similarities to net-im/tox-gui-qt
+net-im/ricochet 1.0.4 1.1.0 1.1.1 1.1.2 1.1.3 1.1.4 1.1.5_alpha1 1.1.5_alpha2 1.1.5_rc0 9999: End-to-end-encrypted instant messaging UI using Tor hidden services
+net-im/telegram-cli 1.3.1 1.3.1-r1 9999: Command line interface client for Telegram
+net-im/toxic 9999: CLI Frontend for Tox
+net-im/utox 9999: Lightweight Tox client
+net-irc/hysteria 9999: ii wrapper script
+net-irc/ii 9999: A minimalist FIFO and filesystem-based IRC client (codemadness.nl branch)
+net-irc/psyced 9999 20160522 20160612: Server for Federated Messaging and Chat over PSYC, IRC, XMPP and more
+net-libs/libpsyc 20160822 20160823 20160913 20170107 99999999: library for parsing and rendering PSYC packets more efficiently
+net-misc/gnurl 7.54.0 7.56.1 7.58.0 7.60.0 7.61.1 9999: A reliable small footprint version of Curl based on gnutls only
+net-misc/powwow 1.2.17: Enhanced telnet client with automation macros for MUD interaction use
+net-misc/youtube-dl 2017.11.15 2018.08.22 2018.10.05 2018.10.29 2018.11.07 99999999: Download videos from YouTube.com (and more sites...)
+net-p2p/cjdns 17.1: Encrypted networking for regular people
+net-p2p/pybitmessage 0.4.4 0.6.0 0.6.1 9999: P2P communications protocol
+net-p2p/retroshare 0.5.5c 0.6.0_pre20150415 9999: P2P private sharing application
+net-proxy/torsocks 2.2.0: Use most socks-friendly applications with Tor
+net-vpn/gnunet 0.10.1 0.10.2_rc4 0.10.2_rc5 0.10.2_rc6 9999: Cryptographic GNU Mesh/Underlay Network Routing Layer
+net-vpn/gnunet-gtk 0.10.1_pre01021 0.10.1 9999: Graphical front-end tools for GNUnet.
+net-vpn/gnunet-meta 0.10.1_pre01021 0.10.1 9999: Meta package for GNUnet
+net-vpn/onioncircuits 0.4 9999: A GTK application to display Tor circuits and streams
+sys-apps/guix 0.11.0: The GNU Guix Package Manager.
+sys-apps/guix-bin 0.10.0: The GNU Guix Package Manager.
+sys-apps/metastore 1.1.2a: Store and restore metadata of files, directories, links in a tree
+sys-apps/nix 1.11.2 2.0.2 2.0.4 2.1.3 2.1.3-r1: A purely functional package manager
+sys-apps/oneshot 1.2: Usability frontend for emerge to keep you from breaking your system
+sys-apps/quickpkg-newer 1.0: Make binary packages of each installed atom in the system
+sys-fs/dmc 1.1: Command line UX frontend to dm-crypt's cryptsetup with support for multiple file systems
+sys-process/scron 0.3.2 9999: Simple cron daemon
+www-client/chromium 74.0.3729.169: Open-source version of Google Chrome web browser
+www-client/torbrowser 31.7.0_p451 52.4.1_p709 52.7.3_p753 52.9.0_p756 60.2.1_p802: The Tor Browser
+www-client/torbrowser-launcher 0.2.8 0.2.9: A program to download, updated, and run the Tor Browser Bundle
+www-plugins/certpatrol 2.0.14.1: Monitor and compare certificates your application adopts for encrypted HTTPS web sites
+www-plugins/cfc 0.0.2: Circumvention of Cloudflare and other anti-constitutional spy websites
+www-plugins/exif_viewer 2.00-r4: Firefox extension to display the Exif and IPTC data in local and remote JPEG images.
+www-plugins/gnash 0.8.10_p20160329-r667: GNU Flash movie player that supports many SWF v7,8,9 features
+www-servers/hiawatha 9.8 9.14 9.14-r1 9.15 10.3-r99: Advanced and secure webserver
+x11-misc/interrobang 9999: A tiny launcher menu packing a big bang (syntax)
+x11-misc/st 0.7 9999: simple terminal implementation for X
+x11-plugins/lurch 0.6.1 0.6.5 0.6.6 0.6.7 9999: OMEMO for libpurple - interoperable with other OMEMO clients
+x11-plugins/telegram-purple 1.3.0 1.3.1 1.4.0_alpha 9999: Libpurple (Pidgin) plugin for using a Telegram account

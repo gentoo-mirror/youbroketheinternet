@@ -1,0 +1,11 @@
+DEFINED_PHASES=-
+DESCRIPTION=Meta package for GNUnet
+EAPI=6
+HOMEPAGE=https://gnunet.org
+IUSE=+gtk experimental +gnurl curl qr
+KEYWORDS=~amd64
+LICENSE=GPL-3
+RDEPEND==net-vpn/gnunet-9999 experimental? ( =net-vpn/gnunet-9999[experimental,extra] ) qr? ( =net-vpn/gnunet-9999[experimental,extra,qr] =net-vpn/gnunet-9999[qr] ) gtk? ( =net-vpn/gnunet-gtk-9999 ) gnurl? ( =net-vpn/gnunet-9999[gnurl,curl] ) curl? ( =net-vpn/gnunet-9999[curl,-gnurl] )
+REQUIRED_USE=?? ( curl gnurl )
+SLOT=0
+_md5_=c519355b97cbee2f718348a871b14307

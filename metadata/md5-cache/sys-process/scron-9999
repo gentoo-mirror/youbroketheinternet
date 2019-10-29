@@ -1,0 +1,10 @@
+DEFINED_PHASES=install postinst unpack
+DEPEND=!sys-process/cronbase >=dev-vcs/git-1.8.2.1[curl]
+DESCRIPTION=Simple cron daemon
+EAPI=5
+HOMEPAGE=http://git.2f30.org/scron/
+LICENSE=MIT
+RESTRICT=strip
+SLOT=0
+_eclasses_=git-r3	23320ae9a580d98736f70f163b08a1eb
+_md5_=359ee8b64c8bf78da9da82624e753317
