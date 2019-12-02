@@ -34,8 +34,6 @@ media-video/ffcut 2.0: symlynX's Fast & Furious Lossless Media Cutting Tool
 media-video/ffmpeg 3.3.6 4.0.1: Complete solution to record, convert and stream audio and video. Includes libavcodec
 media-video/flowblade 1.8 1.10 9999: A multitrack non-linear video editor
 net-im/gajim 0.16.6-r1 0.16.9 1.0.3-r3 9999: Jabber client written in PyGTK
-net-im/qtox 9999: GUI for net-libs/tox using QT5 with code similarities to net-im/tox-gui-qt
-net-im/ricochet 1.0.4 1.1.0 1.1.1 1.1.2 1.1.3 1.1.4 1.1.5_alpha1 1.1.5_alpha2 1.1.5_rc0 9999: End-to-end-encrypted instant messaging UI using Tor hidden services
 net-im/telegram-cli 1.3.1 1.3.1-r1 9999: Command line interface client for Telegram
 net-im/toxic 9999: CLI Frontend for Tox
 net-im/utox 9999: Lightweight Tox client
@@ -48,7 +46,6 @@ net-misc/powwow 1.2.17: Enhanced telnet client with automation macros for MUD in
 net-misc/youtube-dl 2017.11.15 2018.08.22 2018.10.05 2018.10.29 2018.11.07 99999999: Download videos from YouTube.com (and more sites...)
 net-p2p/cjdns 17.1: Encrypted networking for regular people
 net-p2p/pybitmessage 0.4.4 0.6.0 0.6.1 9999: P2P communications protocol
-net-p2p/retroshare 0.5.5c 0.6.0_pre20150415 9999: P2P private sharing application
 net-proxy/torsocks 2.2.0: Use most socks-friendly applications with Tor
 net-vpn/gnunet 0.10.1 0.10.2_rc4 0.10.2_rc5 0.10.2_rc6 9999: Cryptographic GNU Mesh/Underlay Network Routing Layer
 net-vpn/gnunet-gtk 0.10.1_pre01021 0.10.1 9999: Graphical front-end tools for GNUnet.
