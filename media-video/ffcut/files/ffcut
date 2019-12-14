@@ -233,9 +233,9 @@ ffcut [<options>] <input-file> [<output-file> <start-time> [<end-time>]]
  arguments in the command line is intentional to maximize usability.
 
  If only an input file name is given, ffcut outputs the duration.
- If only a starting time is given, a $DEFLEN second excerpt is extracted.
+ If only a starting time is given, a 10 second excerpt is extracted.
     This is useful to find a suitable starting time for editing. 
- If also provided with an ending time, the video from start to end is copied
+ If also provided with an ending time, the media from start to end is copied
     into the new output file.
 
  Times are specified using [<hh>:]<mm>[:<ss>] syntax (just like you see them
@@ -270,7 +270,7 @@ ffcut [<options>] <input-file> [<output-file> <start-time> [<end-time>]]
 =head1 UPDATES
 
  Latest version available from the youbroketheinternet overlay:
-    https://gnunet.org/git/youbroketheinternet-overlay.git/plain/media-video/ffcut/files/ffcut
+    https://git.gnunet.org/youbroketheinternet-overlay.git/plain/media-video/ffcut/files/ffcut
 
 =head1 FUNFACTS
 

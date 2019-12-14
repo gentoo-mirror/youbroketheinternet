@@ -1,3 +1,6 @@
+# only useful if you want to try out pybitmessage
+dev-libs/openssl
+
 # masked as it requires OpenRC service debugging,
 # this is experimental ebuild status.
 sys-apps/guix
@@ -26,3 +29,10 @@ net-im/cutegram
 # unfinished
 www-client/hardzilla
 # =www-plugins/gnash-9999
+
+# using unsupported EAPI=5, according to
+# pmaint regen --use-local-desc --pkg-desc-index -t 1 youbroketheinternet
+net-im/qtox
+net-im/ricochet
+net-p2p/retroshare
+# who has these in updated form?
