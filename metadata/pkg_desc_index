@@ -10,7 +10,7 @@ dev-db/agensgraph 1.3.1: AgensGraph, a transactional graph database based on Pos
 dev-db/cayley 0.4.1-r1 0.5.0: Cayley is a graph databse written in GoLang.
 dev-db/gstore 0.6.0: A graph-based RDF triple store
 dev-lang/psyclpc 20121010 20130927 20160211 20160417 20160821 20170107 99999999: psycLPC is a multi-user network server programming language
-dev-libs/openssl 0.9.8z_p8 0.9.8z_p8-r1 1.0.2n 1.0.2o-r3 1.0.2o-r6 1.1.0g-r2 1.1.0h-r2 1.1.1_pre7-r1: full-strength general purpose cryptography library (including SSL and TLS)
+dev-libs/openssl 1.0.2u 1.1.0l 1.1.1d-r3: full-strength general purpose cryptography library (including SSL and TLS)
 dev-libs/sway 0.6 0.7 9999: i3-compatible Wayland window manager
 dev-perl/ExtUtils-H2PM 0.10: C Header to Perl Module converter
 dev-perl/File-Touch 0.11: Update file access and modification times, creating files if needed
