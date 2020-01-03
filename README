@@ -251,13 +251,11 @@ Multi-protocol messenger app.
 
 == net-im/qtox ==
 
-Person-to-person encrypted telephony application.
+[migrated to gentoo portage]
 
 == net-im/ricochet ==
 
-Metadata protecting Instant Messenger tool operating
-peer-to-peer over Tor Hidden Services without using
-servers.
+[migrated to gentoo portage]
 
 == net-im/telegram-cli ==
 
@@ -307,23 +305,6 @@ as a text-based messaging client with psyced's telnet access.
 That's why we also provide a 'cmdsep' flag to avoid making ";"
 a command separator symbol as it would keep you from winking.
 
-== net-vpn/gnunet ==
-
-GNUnet is a mesh network routing system not limited to peer-
-to-peer usage. It explicitly provides VPN functionality among
-the many other things like censorship-resistant anonymous file
-publication and sharing.
-
-== net-vpn/gnunet-gtk ==
-
-While compiling from source works great, the ebuilds produce
-some mysterious error messages. Please help to figure out
-what the problem is. Luckily this package is optional.
-
-== net-vpn/onioncircuits ==
-
-Another fine item from MeisterP's torbrowser overlay.
-
 == net-p2p/cjdns ==
 
 An Internet overlay based on deterministic DHT-powered routing,
@@ -352,16 +333,29 @@ overlay for pybitmessage to build successfully.
 
 == net-p2p/retroshare ==
 
-With the new 0.6 series RetroShare finally has built-in Tor
-support. Still, it is far too complicated to configure. This
-needs to get a lot simpler. RetroShare is lightweight and
-reasonably safe if used in Tor-only mode with DHT disabled.
-For generic file sharing it's better to use GNUnet.
+[migrated to gentoo portage]
 
 == net-proxy/torsocks ==
 
 Make proxy-unaware applications access the Internet through
 Tor. Includes the notorious 'torify' command.
+
+== net-vpn/gnunet ==
+
+GNUnet is a mesh network routing system not limited to peer-
+to-peer usage. It explicitly provides VPN functionality among
+the many other things like censorship-resistant anonymous file
+publication and sharing.
+
+== net-vpn/gnunet-gtk ==
+
+While compiling from source works great, the ebuilds produce
+some mysterious error messages. Please help to figure out
+what the problem is. Luckily this package is optional.
+
+== net-vpn/onioncircuits ==
+
+Another fine item from MeisterP's torbrowser overlay.
 
 == sys-apps/guix ==
 
