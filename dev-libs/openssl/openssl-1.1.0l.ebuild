@@ -1,29 +1,39 @@
-# Copyright 1999-2018 Gentoo Authors
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="6"
+EAPI="7"
 
-inherit eutils flag-o-matic toolchain-funcs multilib multilib-minimal
+inherit flag-o-matic toolchain-funcs multilib multilib-minimal
 
-PATCH_SET="openssl-1.0.2-patches-1.0"
 MY_P=${P/_/-}
+
+# This patch set is based on the following files from Fedora 28,
+# see https://src.fedoraproject.org/rpms/openssl/blob/f28/f/openssl.spec
+# for more details:
+# - hobble-openssl (SOURCE1)
+# - ec_curve.c (SOURCE12) -- MODIFIED
+# - ectest.c (SOURCE13)
+# - openssl-1.1.0-ec-curves.patch (PATCH37) -- MODIFIED
+BINDIST_PATCH_SET="openssl-1.1.0l-bindist-1.0.tar.xz"
+
 DESCRIPTION="full-strength general purpose cryptography library (including SSL and TLS)"
 HOMEPAGE="https://www.openssl.org/"
 SRC_URI="mirror://openssl/source/${MY_P}.tar.gz
-	mirror://gentoo/${PATCH_SET}.tar.xz
-	https://dev.gentoo.org/~whissi/dist/${PN}/${PATCH_SET}.tar.xz"
+	bindist? (
+		mirror://gentoo/${BINDIST_PATCH_SET}
+		https://dev.gentoo.org/~whissi/dist/openssl/${BINDIST_PATCH_SET}
+	)"
 
 LICENSE="openssl"
-SLOT="0"
-KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd ~arm-linux ~x86-linux"
-IUSE="+asm bindist gmp kerberos rfc3779 sctp cpu_flags_x86_sse2 sslv2 +sslv3 static-libs test +tls-heartbeat vanilla zlib"
-# RESTRICT="!bindist? ( bindist )"
+SLOT="0/1.1" # .so version of libssl/libcrypto
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sh ~sparc ~x86 ~x86-linux"
+IUSE="+asm bindist elibc_musl rfc3779 sctp cpu_flags_x86_sse2 sslv3 static-libs test tls-heartbeat vanilla zlib"
+RESTRICT="!test? ( test )"
 
 RDEPEND=">=app-misc/c_rehash-1.7-r1
-	gmp? ( >=dev-libs/gmp-5.1.3-r1[static-libs(+)?,${MULTILIB_USEDEP}] )
-	zlib? ( >=sys-libs/zlib-1.2.8-r1[static-libs(+)?,${MULTILIB_USEDEP}] )
-	kerberos? ( >=app-crypt/mit-krb5-1.11.4[${MULTILIB_USEDEP}] )"
-DEPEND="${RDEPEND}
+	zlib? ( >=sys-libs/zlib-1.2.8-r1[static-libs(+)?,${MULTILIB_USEDEP}] )"
+DEPEND="${RDEPEND}"
+BDEPEND="
 	>=dev-lang/perl-5
 	sctp? ( >=net-misc/lksctp-tools-1.0.12 )
 	test? (
@@ -32,6 +42,12 @@ DEPEND="${RDEPEND}
 	)"
 PDEPEND="app-misc/ca-certificates"
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-1.0.2a-x32-asm.patch #542618
+	"${FILESDIR}"/${PN}-1.1.0j-parallel_install_fix.patch #671602
+	"${FILESDIR}"/${PN}-1.1.0k-fix-test_fuzz.patch
+)
+
 S="${WORKDIR}/${MY_P}"
 
 MULTILIB_WRAPPED_HEADERS=(
@@ -39,6 +55,30 @@ MULTILIB_WRAPPED_HEADERS=(
 )
 
 src_prepare() {
+	if use bindist; then
+		mv "${WORKDIR}"/bindist-patches/hobble-openssl "${WORKDIR}" || die
+		bash "${WORKDIR}"/hobble-openssl || die
+
+		cp -f "${WORKDIR}"/bindist-patches/ec_curve.c "${S}"/crypto/ec/ || die
+		cp -f "${WORKDIR}"/bindist-patches/ectest.c "${S}"/test/ || die
+
+		eapply "${WORKDIR}"/bindist-patches/ec-curves.patch
+
+		local known_failing_test
+		for known_failing_test in \
+			30-test_evp_extra.t \
+			80-test_ssl_new.t \
+		; do
+			ebegin "Disabling test '${known_failing_test}' which is known to fail with USE=bindist"
+			rm test/recipes/${known_failing_test} || die
+			eend $?
+		done
+
+		# Also see the configure parts below:
+		# enable-ec \
+		# $(use_ssl !bindist ec2m) \
+	fi
+
 	# keep this in sync with app-misc/c_rehash
 	SSL_CNF_DIR="/etc/ssl"
 
@@ -47,30 +87,30 @@ src_prepare() {
 	rm -f Makefile
 
 	if ! use vanilla ; then
-		eapply "${WORKDIR}"/patch/*.patch
+		if [[ $(declare -p PATCHES 2>/dev/null) == "declare -a"* ]] ; then
+			[[ ${#PATCHES[@]} -gt 0 ]] && eapply "${PATCHES[@]}"
+		fi
+
+		use bindist || eapply "${FILESDIR}"/${PN}-1.1.0l-fix-no-ec2m-in-ec_curve.c.patch
 	fi
 
-	eapply_user
+	eapply_user #332661
 
-	# disable fips in the build
 	# make sure the man pages are suffixed #302165
 	# don't bother building man pages if they're disabled
+	# Make DOCDIR Gentoo compliant
 	sed -i \
-		-e '/DIRS/s: fips : :g' \
 		-e '/^MANSUFFIX/s:=.*:=ssl:' \
 		-e '/^MAKEDEPPROG/s:=.*:=$(CC):' \
 		-e $(has noman FEATURES \
 			&& echo '/^install:/s:install_docs::' \
 			|| echo '/^MANDIR=/s:=.*:='${EPREFIX}'/usr/share/man:') \
-		Makefile.org \
+		-e "/^DOCDIR/s@\$(BASENAME)@&-${PVR}@" \
+		Configurations/unix-Makefile.tmpl \
 		|| die
-	# show the actual commands in the log
-	sed -i '/^SET_X/s:=.*:=set -x:' Makefile.shared
 
-	# since we're forcing $(CC) as makedep anyway, just fix
-	# the conditional as always-on
-	# helps clang (#417795), and versioned gcc (#499818)
-	sed -i 's/expr.*MAKEDEPEND.*;/true;/' util/domd || die
+	# show the actual commands in the log
+	sed -i '/^SET_X/s@=.*@=set -x@' Makefile.shared || die
 
 	# quiet out unknown driver argument warnings since openssl
 	# doesn't have well-split CFLAGS and we're making it even worse
@@ -85,7 +125,16 @@ src_prepare() {
 	append-flags $(test-flags-CC -Wa,--noexecstack)
 	append-cppflags -DOPENSSL_NO_BUF_FREELISTS
 
-	sed -i '1s,^:$,#!'${EPREFIX}'/usr/bin/perl,' Configure #141906
+	# Prefixify Configure shebang (#141906)
+	sed \
+		-e "1s,/usr/bin/env,${EPREFIX}&," \
+		-i Configure || die
+	# Remove test target when FEATURES=test isn't set
+	if ! use test ; then
+		sed \
+			-e '/^$config{dirs}/s@ "test",@@' \
+			-i Configure || die
+	fi
 	# The config script does stupid stuff to prompt the user.  Kill it.
 	sed -i '/stty -icanon min 0 time 50; read waste/d' config || die
 	./config --test-sanity || die "I AM NOT SANE"
@@ -101,11 +150,11 @@ multilib_src_configure() {
 	tc-export CC AR RANLIB RC
 
 	# Clean out patent-or-otherwise-encumbered code
-	# Camellia: Royalty Free            http://en.wikipedia.org/wiki/Camellia_(cipher)
-	# IDEA:     Expired                 http://en.wikipedia.org/wiki/International_Data_Encryption_Algorithm
-	# EC:       ????????? ??/??/2015    http://en.wikipedia.org/wiki/Elliptic_Curve_Cryptography
-	# MDC2:     Expired                 http://en.wikipedia.org/wiki/MDC-2
-	# RC5:      Expired                 http://en.wikipedia.org/wiki/RC5
+	# Camellia: Royalty Free            https://en.wikipedia.org/wiki/Camellia_(cipher)
+	# IDEA:     Expired                 https://en.wikipedia.org/wiki/International_Data_Encryption_Algorithm
+	# EC:       ????????? ??/??/2015    https://en.wikipedia.org/wiki/Elliptic_Curve_Cryptography
+	# MDC2:     Expired                 https://en.wikipedia.org/wiki/MDC-2
+	# RC5:      Expired                 https://en.wikipedia.org/wiki/RC5
 
 	use_ssl() { usex $1 "enable-${2:-$1}" "no-${2:-$1}" " ${*:3}" ; }
 	echoit() { echo "$@" ; "$@" ; }
@@ -123,35 +172,35 @@ multilib_src_configure() {
 	#	fi
 	#fi
 
-	# https://github.com/openssl/openssl/issues/2286
-	if use ia64 ; then
-		replace-flags -g3 -g2
-		replace-flags -ggdb3 -ggdb2
-	fi
-
 	local sslout=$(./gentoo.config)
 	einfo "Use configuration ${sslout:-(openssl knows best)}"
 	local config="Configure"
 	[[ -z ${sslout} ]] && config="config"
 
-	echoit \
+	# Fedora hobbled-EC needs 'no-ec2m'
+	# 'srp' was restricted until early 2017 as well.
+	# "disable-deprecated" option breaks too many consumers.
+	# Don't set it without thorough revdeps testing.
+	# Make sure user flags don't get added *yet* to avoid duplicated
+	# flags.
+	CFLAGS= LDFLAGS= echoit \
 	./${config} \
 		${sslout} \
 		$(use cpu_flags_x86_sse2 || echo "no-sse2") \
 		enable-camellia \
-		$(use_ssl !bindist ec) \
+		enable-ec \
+		$(use_ssl !bindist ec2m) \
+		enable-srp \
+		$(use elibc_musl && echo "no-async") \
 		${ec_nistp_64_gcc_128} \
 		enable-idea \
 		enable-mdc2 \
 		enable-rc5 \
-		enable-tlsext \
+		$(use_ssl sslv3 ssl3) \
+		$(use_ssl sslv3 ssl3-method) \
 		$(use_ssl asm) \
-		$(use_ssl gmp gmp -lgmp) \
-		$(use_ssl kerberos krb5 --with-krb5-flavor=${krb5}) \
 		$(use_ssl rfc3779) \
 		$(use_ssl sctp) \
-		$(use_ssl sslv2 ssl2) \
-		$(use_ssl sslv3 ssl3) \
 		$(use_ssl tls-heartbeat heartbeats) \
 		$(use_ssl zlib) \
 		--prefix="${EPREFIX}"/usr \
@@ -161,17 +210,23 @@ multilib_src_configure() {
 		|| die
 
 	# Clean out hardcoded flags that openssl uses
-	local CFLAG=$(grep ^CFLAG= Makefile | LC_ALL=C sed \
-		-e 's:^CFLAG=::' \
-		-e 's:-fomit-frame-pointer ::g' \
-		-e 's:-O[0-9] ::g' \
-		-e 's:-march=[-a-z0-9]* ::g' \
-		-e 's:-mcpu=[-a-z0-9]* ::g' \
-		-e 's:-m[a-z0-9]* ::g' \
+	local DEFAULT_CFLAGS=$(grep ^CFLAGS= Makefile | LC_ALL=C sed \
+		-e 's:^CFLAGS=::' \
+		-e 's:\(^\| \)-fomit-frame-pointer::g' \
+		-e 's:\(^\| \)-O[^ ]*::g' \
+		-e 's:\(^\| \)-march=[^ ]*::g' \
+		-e 's:\(^\| \)-mcpu=[^ ]*::g' \
+		-e 's:\(^\| \)-m[^ ]*::g' \
+		-e 's:^ *::' \
+		-e 's: *$::' \
+		-e 's: \+: :g' \
+		-e 's:\\:\\\\:g'
 	)
+
+	# Now insert clean default flags with user flags
 	sed -i \
-		-e "/^CFLAG/s|=.*|=${CFLAG} ${CFLAGS}|" \
-		-e "/^SHARED_LDFLAGS=/s|$| ${LDFLAGS}|" \
+		-e "/^CFLAGS=/s|=.*|=${DEFAULT_CFLAGS} ${CFLAGS}|" \
+		-e "/^LDFLAGS=/s|=[[:space:]]*$|=${LDFLAGS}|" \
 		Makefile || die
 }
 
@@ -180,9 +235,6 @@ multilib_src_compile() {
 	# that it's -j1 as the code itself serializes subdirs
 	emake -j1 depend
 	emake all
-	# rehash is needed to prep the certs/ dir; do this
-	# separately to avoid parallel build issues.
-	emake rehash
 }
 
 multilib_src_test() {
@@ -190,7 +242,13 @@ multilib_src_test() {
 }
 
 multilib_src_install() {
-	emake INSTALL_PREFIX="${D}" install
+	# We need to create $ED/usr on our own to avoid a race condition #665130
+	if [[ ! -d "${ED}/usr" ]]; then
+		# We can only create this directory once
+		mkdir "${ED}"/usr || die
+	fi
+
+	emake DESTDIR="${D}" install
 }
 
 multilib_src_install_all() {
@@ -198,10 +256,7 @@ multilib_src_install_all() {
 	# we provide a shell version via app-misc/c_rehash
 	rm "${ED}"/usr/bin/c_rehash || die
 
-	local -a DOCS=( CHANGES* FAQ NEWS README doc/*.txt doc/c-indentation.el )
-	einstalldocs
-
-	use rfc3779 && dodoc engines/ccgost/README.gost
+	dodoc CHANGES* FAQ NEWS README doc/*.txt doc/${PN}-c-indent.el
 
 	# This is crappy in that the static archives are still built even
 	# when USE=static-libs.  But this is due to a failing in the openssl
@@ -211,12 +266,10 @@ multilib_src_install_all() {
 	use static-libs || rm -f "${ED}"/usr/lib*/lib*.a
 
 	# create the certs directory
-	dodir ${SSL_CNF_DIR}/certs
-	cp -RP certs/* "${ED}"${SSL_CNF_DIR}/certs/ || die
-	rm -r "${ED}"${SSL_CNF_DIR}/certs/{demo,expired}
+	keepdir ${SSL_CNF_DIR}/certs
 
 	# Namespace openssl programs to prevent conflicts with other man pages
-	cd "${ED}"/usr/share/man
+	cd "${ED}"/usr/share/man || die
 	local m d s
 	for m in $(find . -type f | xargs grep -L '#include') ; do
 		d=${m%/*} ; d=${d#./} ; m=${m##*/}
@@ -231,6 +284,7 @@ multilib_src_install_all() {
 		for s in $(find -L ${d} -type l) ; do
 			s=${s##*/}
 			rm -f ${d}/${s}
+			# We don't want to "|| die" here
 			ln -s ssl-${m} ${d}/ssl-${s}
 			ln -s ssl-${s} ${d}/openssl-${s}
 		done
@@ -245,7 +299,7 @@ multilib_src_install_all() {
 }
 
 pkg_postinst() {
-	ebegin "Running 'c_rehash ${EROOT%/}${SSL_CNF_DIR}/certs/' to rebuild hashes #333069"
-	c_rehash "${EROOT%/}${SSL_CNF_DIR}/certs" >/dev/null
+	ebegin "Running 'c_rehash ${EROOT}${SSL_CNF_DIR}/certs/' to rebuild hashes #333069"
+	c_rehash "${EROOT}${SSL_CNF_DIR}/certs" >/dev/null
 	eend $?
 }
