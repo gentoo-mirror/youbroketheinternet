@@ -20,9 +20,6 @@ media-fonts/unscii:utils - Install bm2uns util to convert a bitmap image to unsc
 net-im/gajim:idle - Enable idle module
 net-im/gajim:srv - SRV capabilities
 net-im/gajim:xhtml - Enable XHTML support
-net-im/qtox:X - Adds support for X11
-net-im/qtox:filter_audio - Adds support for filtering audio input
-net-im/qtox:gtk - Adds support for GTK and Status Notifier tray backends
 net-im/toxic:X - Adds support for X11
 net-im/toxic:av - Enable audio support
 net-im/toxic:libnotify - Enable desktop notification support.
@@ -31,11 +28,6 @@ net-im/utox:dbus - Adds dbus support for desktop notifications
 net-im/utox:filter_audio - Adds support for filtering audio input
 net-misc/gnurl:dane - dane
 net-misc/powwow:cmdsep - patch the command separator character from ; to \\ (winking is essential to any fine chat)
-net-p2p/retroshare:cli - Enables the CLI version of RetroShare
-net-p2p/retroshare:feedreader - Enables the Feedreader plugin
-net-p2p/retroshare:links-cloud - Enables LinkClouds plugin
-net-p2p/retroshare:qt4 - Enables the GUI using qt4
-net-p2p/retroshare:voip - Enables VOIP plugin
 net-vpn/gnunet:X - X11 features
 net-vpn/gnunet:bluetooth - bluetooth
 net-vpn/gnunet:dane - build with gnutls + dane
