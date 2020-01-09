@@ -10,7 +10,7 @@ sub verbose() { 1 }
 my $variations = <<X;
 oneshot-quick - Emerge package versions without considering dependencies, use binary packages when available
 oneshot-quick-ask
-oneshot-deep - Emerge packages versions with dependencies, use binary packages when available
+oneshot-deep - Emerge package versions with dependencies, use binary packages when available
 oneshot-deep-ask
 oneshot-quick-any - Emerge packages without considering dependencies, use binary packages when available
 oneshot-quick-any-ask
@@ -56,6 +56,8 @@ oneshot-update-any-quick - Update packages without considering dependencies, use
 oneshot-update-any-quick-ask
 oneshot-update-any-deep - Update packages and dependencies, use binary packages when available
 oneshot-update-any-deep-ask
+oneshot-update-python - Call python-updater with a useful set of emerge presets
+oneshot-update-python-ask
 oneshot-perlcleaner - Call perlcleaner with a useful set of emerge presets
 oneshot-perlcleaner-ask
 oneshot-persist - Show packages that you may want to persist by adding them to the 'world' file
@@ -172,7 +174,7 @@ MAIN:
 	exec '/usr/bin/emerge', '--depclean' if $0 =~ /oneshot-clean$/;
 	$emerge = '/usr/bin/revdep-rebuild --' if $0 =~ /\brevdep\b/;
 	$emerge = '/usr/bin/perl-cleaner --all --' if $0 =~ /\bperl/;
-	$emerge = '/usr/bin/python-updater --all --' if $0 =~ /\bperl/;
+	$emerge = '/usr/bin/python-updater --all --' if $0 =~ /\bpython/;
 	if ( $0 =~ /\bunmerge\b/ ) {
 		$emerge .= " --rage-clean" if $0 =~ /\bquick\b/;	# like --unmerge, but without counting the seconds
 		$emerge .= " --depclean" if $0 =~ /\bdeep\b/;	# --depclean-lib-check=n ?
