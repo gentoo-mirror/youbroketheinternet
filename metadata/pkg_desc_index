@@ -36,7 +36,6 @@ media-video/flowblade 1.8 1.10 9999: A multitrack non-linear video editor
 net-im/gajim 0.16.6-r1 0.16.9 1.0.3-r3 9999: Jabber client written in PyGTK
 net-im/telegram-cli 1.3.1 1.3.1-r1 9999: Command line interface client for Telegram
 net-im/toxic 9999: CLI Frontend for Tox
-net-im/utox 9999: Lightweight Tox client
 net-irc/hysteria 9999: ii wrapper script
 net-irc/ii 9999: A minimalist FIFO and filesystem-based IRC client (codemadness.nl branch)
 net-irc/psyced 9999 20160522 20160612: Server for Federated Messaging and Chat over PSYC, IRC, XMPP and more
@@ -67,7 +66,6 @@ www-plugins/cfc 0.0.2: Circumvention of Cloudflare and other anti-constitutional
 www-plugins/exif_viewer 2.00-r4: Firefox extension to display the Exif and IPTC data in local and remote JPEG images.
 www-plugins/gnash 0.8.10_p20160329-r667: GNU Flash movie player that supports many SWF v7,8,9 features
 www-servers/hiawatha 9.8 9.14 9.14-r1 9.15 10.3-r99: Advanced and secure webserver
-x11-misc/interrobang 9999: A tiny launcher menu packing a big bang (syntax)
 x11-misc/st 0.7 9999: simple terminal implementation for X
 x11-plugins/lurch 0.6.1 0.6.5 0.6.6 0.6.7 9999: OMEMO for libpurple - interoperable with other OMEMO clients
 x11-plugins/telegram-purple 1.3.0 1.3.1 1.4.0_alpha 9999: Libpurple (Pidgin) plugin for using a Telegram account
