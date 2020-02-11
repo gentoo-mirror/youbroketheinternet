@@ -22,7 +22,7 @@ TOR_COMMIT="tor-browser-${MOZ_PV}-${TOR_PV%.*}-1-build1"
 PATCH="${MY_PN}-60.0-patches-03"
 
 inherit check-reqs flag-o-matic toolchain-funcs eutils gnome2-utils llvm \
-		mozconfig-v6.60 pax-utils autotools
+		mozcoreconf-v6 pax-utils autotools
 
 DESCRIPTION="The Tor Browser"
 HOMEPAGE="https://www.torproject.org/projects/torbrowser.html

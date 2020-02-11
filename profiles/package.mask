@@ -27,6 +27,7 @@ x11-plugins/telegram-purple
 net-im/cutegram
 
 # unfinished
+dev-db/gstore
 www-client/hardzilla
 # =www-plugins/gnash-9999
 
