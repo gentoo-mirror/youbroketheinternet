@@ -96,5 +96,6 @@ www-servers/hiawatha:rproxy - Enable reverse proxy support
 www-servers/hiawatha:ssl - Enable TLS support via net-libs/mbedtls
 www-servers/hiawatha:tomahawk - Enable Tomahawk control server
 www-servers/hiawatha:xslt - Enable XSLT support. This is also needed for directory listings
+www-servers/onionshare:nautilus - Add support for the nautilus menu integration
 x11-misc/interrobang:examples - Install examples, usually source code
 x11-misc/interrobang:percontation - Alternative to compgen for tab default
