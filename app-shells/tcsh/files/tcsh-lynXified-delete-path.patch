@@ -1,0 +1,33 @@
+--- ed.chared.c-orig	2020-02-21 10:46:54.518972312 +0100
++++ ed.chared.c	2020-02-21 12:47:14.091944771 +0100
+@@ -2632,9 +2632,28 @@
+ CCRETVAL
+ e_killregion(Char c)
+ {
++    Char *cp;
++
+     USE(c);
+-    if (!Mark)
+-	return(CC_ERROR);
++    if (!Mark || Mark == InputBuf || Mark == Cursor) {
++	/*
++	 * proposed default behavior: backward-delete of a file path
++	 * accepting either double quote or backslash syntaxes
++	 *	--symlynX 2020
++	 */
++	for (cp = Cursor-2; cp >= InputBuf && *cp != '"'; cp--) {
++//	    xprintf("Looking at '%c'\n", *cp);
++	}
++	if (cp > InputBuf) Mark = cp;
++	else {
++	    for (cp = Cursor-3; cp >= InputBuf && (cp[1] != ' ' || *cp == '\\'); cp--) {
++//		xprintf("Then at '%c'\n", *cp);
++	    }
++	    if (++cp > InputBuf) Mark = cp+1;
++	    else return(CC_ERROR);
++	}
++//	xprintf("Mark set at '%c'\n", *Mark);
++    }
+ 
+     if (Mark > Cursor) {
+ 	c_push_kill(Cursor, Mark); /* copy it */
