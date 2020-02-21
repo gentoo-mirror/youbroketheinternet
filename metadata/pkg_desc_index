@@ -4,6 +4,7 @@ app-emacs/company-mode 0.6.14 0.7 0.9.7: In-buffer completion front-end
 app-emacs/neotree 9999: A tree plugin like Nerd Tree for Vim
 app-emacs/parinfer 9999: Simpler Lisp editing
 app-misc/merge 1.0_rc1: directory folder merging tool, like drag'n'drop without GUI file manager
+app-shells/tcsh 6.20.00 6.21.00-r1: Enhanced version of the Berkeley C shell (csh)
 app-text/lowdown 0.4.1: simple markdown translator
 app-text/ssg3 20181213: static site generation with sh, find, grep and lowdown
 dev-db/agensgraph 1.3.1: AgensGraph, a transactional graph database based on PostgreSQL
