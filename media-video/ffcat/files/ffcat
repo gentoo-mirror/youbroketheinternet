@@ -85,7 +85,7 @@ while ( <$F> ) {
 		print RED, $_, RESET;
 		print "$start% of $1 = ", $start * $1 / 100, "...\n" if $start < 100;
 		exit;
-	} elsif ( /error/i ) {
+	} elsif ( /error|Unsafe|permitted/i ) {
 		die $_;
 	## ffmpeg
 	} elsif ( /^video:(\d+)kB audio:(\d+)kB .* muxing overhead/ ) {
