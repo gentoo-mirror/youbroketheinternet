@@ -9,5 +9,5 @@ LICENSE=GPL-2
 RDEPEND=zlib? ( sys-libs/zlib ) ldap? ( net-nds/openldap ) berkdb? ( sys-libs/db:= ) mysql? ( dev-db/mysql ) postgres? ( dev-db/postgresql:= ) ssl? ( !libressl? ( dev-libs/openssl:0= ) libressl? ( dev-libs/libressl:0= ) ) vim-syntax? ( >=app-editors/vim-core-7 ) emacs? ( virtual/emacs )
 SLOT=0
 SRC_URI=http://www.psyced.org/files/psyclpc-20160417.tar.xz
-_eclasses_=eapi7-ver	f9ec87e93172b25ce65a85303dc06964	elisp-common	848a95b01913ff6374bcb5eae09c52ba
+_eclasses_=eapi7-ver	f9ec87e93172b25ce65a85303dc06964	elisp-common	34cc2b6f6d8914019a353fe39cff43ce
 _md5_=c0da615d9ad1e39ffe22f5bf11365acb
