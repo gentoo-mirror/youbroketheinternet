@@ -24,8 +24,6 @@ net-im/toxic:X - Adds support for X11
 net-im/toxic:av - Enable audio support
 net-im/toxic:libnotify - Enable desktop notification support.
 net-im/toxic:sound-notify - Adds support for sound notifications.
-net-im/utox:dbus - Adds dbus support for desktop notifications
-net-im/utox:filter_audio - Adds support for filtering audio input
 net-misc/gnurl:dane - dane
 net-misc/powwow:cmdsep - patch the command separator character from ; to \\ (winking is essential to any fine chat)
 net-vpn/gnunet:X - X11 features
