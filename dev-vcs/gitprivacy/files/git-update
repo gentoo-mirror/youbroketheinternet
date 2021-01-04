@@ -29,6 +29,12 @@ fi
 url=`git remote get-url $branch` || exit
 
 case $url in
+http://*.onion/*)
+	torify=""
+	# it's a bug in git that it tries to upgrade an onion circuit
+	export GIT_SSL_NO_VERIFY=true
+	echo "*** Disabling cert check for $url via web proxy"
+	;;
 http*)
 	torify=""
 	echo "*** Fetching from $url via web proxy"

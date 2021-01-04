@@ -146,11 +146,6 @@ Perl implementation of the PSYC protocol together with
 and several more nifty tools for automation of
 notification and messaging.
 
-== dev-qt/qzxing ==
-
-Qt library for QR code generation and decoding. Broken with
-QT-5.7.
-
 == dev-vcs/gitprivacy ==
 
 Probably just a beginning: git-commit-privacy is a tiny
@@ -209,14 +204,6 @@ not need to do any editing beyond what ffcut offers.
 A little tool to auto-detect or 'tap' the beats per
 minute of music media files.
 
-== media-sound/mumble ==
-
-From mva's overlay, an ebuild that produces a Qt5
-compatible prerelease of mumble 1.3.0 from the 
-current git. Unfortunately it fetches many submodules
-that cannot be pinned down to a cryptographic hash,
-therefore this ebuild is not safe from MITM attacks.
-
 == media-sound/rxaudio-bin ==
 
 A *shareware* from 1998: A remote controllable MP3 engine
@@ -227,13 +214,6 @@ Internet access, so there is no reason to expect it to
 contain malware now. The reason it is here is because it
 has a pretty good control API and no-one cared to rewrite
 the powerful psycmp3 player to use a free software API.
-
-== media-video/flowblade ==
-
-Multitrack video editor with straightforward UI. Probably
-not as powerful as kdenlive, but doesn't crash in exchange.
-Mirrored from jorgicio's overlay, which is hosted on an
-unreliable commercial cloud offering called github.
 
 == media-video/ffcat ==
 
@@ -292,10 +272,6 @@ for this one, too.
 == net-im/toxic ==
 
 Person-to-person encrypted telephony application with CLI-UI.
-
-== net-im/utox ==
-
-Person-to-person encrypted telephony application.
 
 == net-irc/psyced ==
 

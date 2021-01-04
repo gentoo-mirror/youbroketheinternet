@@ -73,7 +73,6 @@ I don't use it, won't fix it. Marking it as DONE as in WONTFIX.
 *** perl-net-psyc
 *** perl-unix-mknod
 ** DONE qt
-*** qzxing -> impossible, broken with latest (5.7) QT.
 ** vid-stab
 ** miro
 ** tox
