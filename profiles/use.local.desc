@@ -17,9 +17,6 @@ dev-libs/sway:swaylock - Build 'swaylock': sway's screen locker.
 dev-libs/sway:swaymsg - Build 'swaymsg': tool for communicating with a running sway instance.
 dev-libs/sway:wallpapers - Install sway's default wallpaper image.
 media-fonts/unscii:utils - Install bm2uns util to convert a bitmap image to unscii art
-net-im/gajim:idle - Enable idle module
-net-im/gajim:srv - SRV capabilities
-net-im/gajim:xhtml - Enable XHTML support
 net-im/toxic:X - Adds support for X11
 net-im/toxic:av - Enable audio support
 net-im/toxic:libnotify - Enable desktop notification support.
@@ -74,6 +71,7 @@ www-client/torbrowser:system-jpeg - Use the system-wide media-libs/libjpeg-turbo
 www-client/torbrowser:system-libevent - Use the system-wide dev-libs/libevent instead of bundled.
 www-client/torbrowser:system-libvpx - Use the system-wide media-libs/libvpx instead of bundled.
 www-client/torbrowser:system-webp - Use the system-wide media-libs/libwebp instead of bundled.
+www-client/torbrowser-launcher:apparmor - Enable AppArmor support
 www-plugins/gnash:agg - Rendering based on the Anti-Grain Geometry Rendering Engine library
 www-plugins/gnash:cygnal - Enable building of the cygnal server
 www-plugins/gnash:dump - Enable dump output module for creating video from SWF

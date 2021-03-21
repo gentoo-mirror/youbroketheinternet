@@ -7,6 +7,7 @@ app-misc/merge 1.0_rc1: directory folder merging tool, like drag'n'drop without 
 app-shells/tcsh 6.20.00 6.21.00-r1: Enhanced version of the Berkeley C shell (csh)
 app-text/lowdown 0.4.1: simple markdown translator
 app-text/ssg3 20181213: static site generation with sh, find, grep and lowdown
+dev-db/agensgraph 1.3.1: AgensGraph, a transactional graph database based on PostgreSQL
 dev-db/cayley 0.4.1-r1 0.5.0: Cayley is a graph databse written in GoLang.
 dev-db/gstore 0.6.0: A graph-based RDF triple store
 dev-lang/psyclpc 20121010 20130927 20160211 20160417 20160821 20170107 99999999: psycLPC is a multi-user network server programming language
@@ -31,6 +32,7 @@ media-sound/rxaudio-bin 1.0: Historic mp3 playback engine
 media-video/ffcat 2.0: symlynX's Fast & Furious Lossless Media Concatenation Tool
 media-video/ffcut 2.0: symlynX's Fast & Furious Lossless Media Cutting Tool
 media-video/ffmpeg 3.3.6 4.0.1: Complete solution to record, convert and stream audio and video. Includes libavcodec
+net-im/telegram-cli 1.3.1 1.3.1-r1 9999: Command line interface client for Telegram
 net-im/toxic 9999: CLI Frontend for Tox
 net-irc/hysteria 9999: ii wrapper script
 net-irc/ii 9999: A minimalist FIFO and filesystem-based IRC client (codemadness.nl branch)
@@ -51,13 +53,14 @@ sys-apps/quickpkg-newer 1.0: Make binary packages of each installed atom in the 
 sys-fs/dmc 1.1: Command line UX frontend to dm-crypt's cryptsetup with support for multiple file systems
 sys-process/scron 0.3.2 9999: Simple cron daemon
 www-client/chromium 74.0.3729.169: Open-source version of Google Chrome web browser
-www-client/torbrowser 31.7.0_p451 78.7.0_p1009: Private browsing without tracking, surveillance, or censorship
+www-client/torbrowser 31.7.0_p451 78.7.0_p1009 78.8.0_p10012: Private browsing without tracking, surveillance, or censorship
+www-client/torbrowser-launcher 0.3.3: A program to download, updated, and run the Tor Browser Bundle
 www-plugins/certpatrol 2.0.14.1: Monitor and compare certificates your application adopts for encrypted HTTPS web sites
 www-plugins/cfc 0.0.2: Circumvention of Cloudflare and other anti-constitutional spy websites
 www-plugins/exif_viewer 2.00-r4: Firefox extension to display the Exif and IPTC data in local and remote JPEG images.
 www-plugins/gnash 0.8.10_p20160329-r667: GNU Flash movie player that supports many SWF v7,8,9 features
 www-servers/hiawatha 9.8 9.14 9.14-r1 9.15 10.3-r99: Advanced and secure webserver
-www-servers/onionshare 2.2: Securely and anonymously send and receive files over Tor
+www-servers/onionshare 2.2-r1 2.3.1: Share files, host websites, and chat with friends using the Tor network.
 x11-misc/interrobang 9999: A tiny launcher menu packing a big bang (syntax)
 x11-misc/st 0.7 9999: simple terminal implementation for X
 x11-plugins/lurch 0.6.1 0.6.5 0.6.6 0.6.7 9999: OMEMO for libpurple - interoperable with other OMEMO clients

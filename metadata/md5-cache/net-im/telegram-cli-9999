@@ -1,0 +1,12 @@
+DEFINED_PHASES=compile configure install unpack
+DEPEND=sys-libs/zlib sys-libs/readline dev-libs/libconfig dev-libs/openssl dev-libs/libevent lua? ( dev-lang/lua ) json? ( dev-libs/jansson ) python_targets_python3_7? ( dev-lang/python:3.7 ) python_targets_python3_8? ( dev-lang/python:3.8 ) >=dev-lang/python-exec-2:=[python_targets_python3_7(-)?,python_targets_python3_8(-)?,-python_single_target_python3_7(-),-python_single_target_python3_8(-)] >=dev-vcs/git-1.8.2.1[curl]
+DESCRIPTION=Command line interface client for Telegram
+EAPI=6
+HOMEPAGE=https://github.com/vysheng/tg
+INHERIT=eutils python-r1 git-r3
+IUSE=+lua +json python_targets_python3_7 python_targets_python3_8
+LICENSE=GPL-2 LGPL-2.1
+RDEPEND=sys-libs/zlib sys-libs/readline dev-libs/libconfig dev-libs/openssl dev-libs/libevent lua? ( dev-lang/lua ) json? ( dev-libs/jansson ) python_targets_python3_7? ( dev-lang/python:3.7 ) python_targets_python3_8? ( dev-lang/python:3.8 ) >=dev-lang/python-exec-2:=[python_targets_python3_7(-)?,python_targets_python3_8(-)?,-python_single_target_python3_7(-),-python_single_target_python3_8(-)]
+SLOT=0
+_eclasses_=desktop	c0d27bf73aa08ca05b663dbd31fbef28	edos2unix	33e347e171066657f91f8b0c72ec8773	estack	055c42df72f76a4f45ec92b35e83cd56	epatch	e8f1ec13660dc2f44b32775765d85e42	l10n	8cdd85e169b835d518bc2fd59f780d8e	toolchain-funcs	24921b57d6561d87cbef4916a296ada4	multilib	d410501a125f99ffb560b0c523cd3d1e	ltprune	4f3f2db5ce3ccbeeacdf3f94954043aa	preserve-libs	ef207dc62baddfddfd39a164d9797648	vcs-clean	2a0f74a496fa2b1552c4f3398258b7bf	wrapper	4251d4c84c25f59094fd557e0063a974	eutils	2d5b3f4b315094768576b6799e4f926e	multibuild	6b3d5ee849dafe6cdfd7b859c211fb01	python-utils-r1	2dc8e06a3429719b43e9140f7292a425	python-r1	6d099888c5b4dd4868c26508df307e95	git-r3	23320ae9a580d98736f70f163b08a1eb
+_md5_=c4a32de9ce1f4968cb3d3d7644ff8b96
