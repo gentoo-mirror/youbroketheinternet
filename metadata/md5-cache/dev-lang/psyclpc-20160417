@@ -3,11 +3,12 @@ DEPEND=zlib? ( sys-libs/zlib ) ldap? ( net-nds/openldap ) berkdb? ( sys-libs/db:
 DESCRIPTION=psycLPC is a multi-user network server programming language
 EAPI=6
 HOMEPAGE=http://lpc.psyc.eu/
+INHERIT=elisp-common
 IUSE=debug ssl libressl static zlib ldap ipv6 mysql postgres berkdb vim-syntax emacs
 KEYWORDS=x86 ~ppc ~amd64
 LICENSE=GPL-2
 RDEPEND=zlib? ( sys-libs/zlib ) ldap? ( net-nds/openldap ) berkdb? ( sys-libs/db:= ) mysql? ( dev-db/mysql ) postgres? ( dev-db/postgresql:= ) ssl? ( !libressl? ( dev-libs/openssl:0= ) libressl? ( dev-libs/libressl:0= ) ) vim-syntax? ( >=app-editors/vim-core-7 ) emacs? ( virtual/emacs )
 SLOT=0
 SRC_URI=http://www.psyced.org/files/psyclpc-20160417.tar.xz
-_eclasses_=eapi7-ver	f9ec87e93172b25ce65a85303dc06964	elisp-common	d4b53ec63c580b993ed19445f411e1d2
+_eclasses_=eapi7-ver	f9ec87e93172b25ce65a85303dc06964	elisp-common	36f97076abd90f943a34f8bcd58b5bcc
 _md5_=c0da615d9ad1e39ffe22f5bf11365acb

@@ -3,9 +3,10 @@ DEPEND=>=app-editors/emacs-23.1:* >=dev-vcs/git-1.8.2.1[curl]
 DESCRIPTION=Simpler Lisp editing
 EAPI=5
 HOMEPAGE=https://github.com/DogLooksGood/parinfer-mode
+INHERIT=elisp git-r3
 KEYWORDS=~amd64 ~x86
 LICENSE=GPL-3+
 RDEPEND=>=app-editors/emacs-23.1:*
 SLOT=0
-_eclasses_=eapi7-ver	f9ec87e93172b25ce65a85303dc06964	elisp	00840e1f4eb277c757dbfa5abf73c4c7	elisp-common	d4b53ec63c580b993ed19445f411e1d2	epatch	e8f1ec13660dc2f44b32775765d85e42	estack	055c42df72f76a4f45ec92b35e83cd56	git-r3	23320ae9a580d98736f70f163b08a1eb
+_eclasses_=eapi7-ver	f9ec87e93172b25ce65a85303dc06964	elisp-common	36f97076abd90f943a34f8bcd58b5bcc	estack	055c42df72f76a4f45ec92b35e83cd56	epatch	e8f1ec13660dc2f44b32775765d85e42	elisp	00840e1f4eb277c757dbfa5abf73c4c7	git-r3	23320ae9a580d98736f70f163b08a1eb
 _md5_=9567bd5a62c033506c6f550cc06fcbd4
