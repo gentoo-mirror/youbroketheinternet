@@ -24,7 +24,6 @@ dev-perl/Unix-Mknod 0.04: mknod for Perl
 dev-scheme/guile-git 0.0.20171110 0.1: Guile bindings of git
 dev-vcs/gitprivacy 1.1: git commands that preserve the privacy of working habits
 dev-vcs/stagit 9999: static git page generator
-media-fonts/un-fonts 1.0.2: Un Core Korean TrueType fonts. UnBatang,UnBatangBold,UnDotum,UnDotumBold,UnGraphic,UnGraphicBold,UnPilgi,UnPilgiBold,UnGungseo
 media-fonts/unscii 1.1: A bitmapped Unicode font based on classic system fonts
 media-libs/vid-stab 0.9 0.98 1.0 1.1 9999: Martius' camera deshaking and video stabilizing library
 media-sound/bpm-measure 1.0: symlynX's beat-per-minute auto-detection or tapping tool
