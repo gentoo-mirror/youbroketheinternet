@@ -3,6 +3,7 @@ DEPEND=!sys-process/cronbase >=dev-vcs/git-1.8.2.1[curl]
 DESCRIPTION=Simple cron daemon
 EAPI=5
 HOMEPAGE=http://git.2f30.org/scron/
+INHERIT=git-r3
 LICENSE=MIT
 RESTRICT=strip
 SLOT=0

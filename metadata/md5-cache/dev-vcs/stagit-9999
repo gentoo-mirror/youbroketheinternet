@@ -3,6 +3,7 @@ DEPEND=>=dev-libs/libgit2-0.22.3 >=dev-vcs/git-1.8.2.1[curl]
 DESCRIPTION=static git page generator
 EAPI=6
 HOMEPAGE=http://2f30.org
+INHERIT=git-r3
 LICENSE=MIT
 RDEPEND=>=dev-libs/libgit2-0.22.3
 SLOT=0

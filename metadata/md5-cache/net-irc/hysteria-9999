@@ -3,6 +3,7 @@ DEPEND=>=dev-vcs/git-1.8.2.1[curl]
 DESCRIPTION=ii wrapper script
 EAPI=6
 HOMEPAGE=http://git.2f30.org
+INHERIT=git-r3
 KEYWORDS=~amd64
 LICENSE=MIT
 SLOT=0
