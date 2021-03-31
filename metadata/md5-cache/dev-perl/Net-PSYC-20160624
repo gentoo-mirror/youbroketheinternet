@@ -3,10 +3,11 @@ DEPEND=dev-lang/perl dev-perl/TimeDate dev-perl/Curses >=dev-vcs/git-1.8.2.1[cur
 DESCRIPTION=Perl implementation of PSYC protocol plus psycion, remotor, psycmp3 etc.
 EAPI=6
 HOMEPAGE=http://perlpsyc.pages.de
+INHERIT=git-r3 user
 IUSE=rxaudio
 KEYWORDS=~x86 ~ppc ~sparc ~amd64
 LICENSE=GPL-2+ Artistic
 RDEPEND=rxaudio? ( media-sound/rxaudio-bin )
 SLOT=0
-_eclasses_=git-r3	23320ae9a580d98736f70f163b08a1eb	user	b0a0d4ca9e3f79c38f8f4143b8d5a2d8	user-info	a2abd4e2f4c3b9b06d64bf1329359a02
+_eclasses_=git-r3	23320ae9a580d98736f70f163b08a1eb	user-info	a2abd4e2f4c3b9b06d64bf1329359a02	user	26d8ce6329c43cbac965617f1c0627e2
 _md5_=03633538edda3bd3abfc84a9de704983
