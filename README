@@ -296,6 +296,13 @@ as a text-based messaging client with psyced's telnet access.
 That's why we also provide a 'cmdsep' flag to avoid making ";"
 a command separator symbol as it would keep you from winking.
 
+== net-news/rssget ==
+
+A trivial RSS fetching tool for Perl hackers to modify and
+customize. This one specifically skips some unwanted items
+and knows how to remove the annoying trailer from certain
+podcasts using ffcut.
+
 == net-p2p/cjdns ==
 
 [would need an update from emery]

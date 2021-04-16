@@ -1,0 +1,135 @@
+#!/usr/bin/perl
+# modified from https://stackoverflow.com/questions/21654059/how-to-extract-data-from-an-rss-feed-using-perl-with-xmlfeed
+# rudimentary! highly optimised for special needs! at least they are commented...
+# only makes sense to use for perl hackers that would tweak this further with special needs.
+# check out 'eix -y podcast' for serious tools.
+#
+#	--symlynX, since 2018 or so
+
+#use warnings;
+use Term::ANSIColor qw(:constants);
+use XML::XPath;
+use Date::Parse;
+use Date::Format;
+use Getopt::Std;
+#use LWP::Simple 'get';
+
+#se utf8;	# means that source code may contain utf8 chars
+#se Encode;	# functions we need if we don't specify encoding on all descriptors
+#		# but we're better off if we do:
+binmode STDERR, ":encoding(UTF-8)";
+#		# for whatever reason this script produces no stdout
+#inmode STDOUT, ":encoding(UTF-8)";
+
+#my $rssurl = 'http://librivox.org/rss/4273';
+#my $xml    = get $rssurl;
+
+getopt('t');
+my $stamp = (stat($opt_t))[9] if $opt_t;
+# migrating to using .lastdl stamps
+$stamp = (stat('.lastdl'))[9] if (-e '.lastdl');
+
+print STDERR YELLOW, $stamp ? "Last fetch was on $stamp.\n\n" : "No time stamp given. Will fetch all.\n\n", RESET;
+
+# here's how we slurp the file directly as utf8
+open(X, '<:encoding(UTF-8)', shift) or die "Usage: $0 <file.rss>";
+my $xml = &slurp(*X);
+close X;
+
+my $xp     = XML::XPath->new(xml => $xml);
+
+my $chan;  # assuming we're going to work with only one channel
+
+for my $channel ($xp->findnodes('/rss/channel')) {
+	$chan = $channel->find('title');
+	if ($opt_v) {
+		printf STDERR "%sChannel:     %s%s%s\n", RED, CYAN, $chan, RESET;
+		printf STDERR "%sDescription: %s%s%s\n", RED, MAGENTA, $channel->find('description'), RESET;
+	}
+}
+
+# print STDERR BLUE, "\nITEMS\n", RESET;
+for my $item ($xp->findnodes('/rss/channel/item')) {
+	my $pubDate = $item->find('pubDate');
+	my $utim = Date::Parse::str2time( $pubDate ) if $pubDate;
+	my $title = $item->find('title');
+	my $dura = $item->find('itunes:duration');
+	$dura = $1 if $dura =~ /^00:(.*)/;
+
+	printf STDERR "%sChannel:     %s%s%s\n", RED, CYAN, $chan, RESET;
+	printf STDERR "%s   Item:     %s%s%s\n", RED, YELLOW, $title, RESET;
+	if ($opt_v) {
+		printf STDERR "%s   Date:     %s%s%s\n", RED, GREEN, $utim, RESET if $utim;
+		printf STDERR "%s   Link:     %s%s%s\n", RED, BLUE, $item->find('link'), RESET;
+	}
+	unless ($opt_a) {
+		print STDERR RED, "   New?      ", CYAN, "$utim > $stamp ?\t", YELLOW, $utim > $stamp ? "yes" : "no", ".\n", RESET;
+		exit if $utim < $stamp;
+	}
+	printf STDERR "%s   Duration: %s%s%s\n", RED, GREEN, $dura, RESET;
+
+	# SPECIAL NEED: By a very unelegant selection logic we skip text-only items
+	$_ = $item->find('link');
+	$_ = $item->find('guid') unless /\.(mp4|webm|opus|ogg|m4a|aac|mp3)$/;
+	$_ = $item->find('enclosure/@url') unless /\.(mp4|webm|opus|ogg|m4a|aac|mp3)$/;
+	warn "No file or unknown file type encountered" unless /\.(mp4|webm|opus|ogg|m4a|aac|mp3)$/;
+	my $ft = $1;
+	printf STDERR "%s   URL:      %s%s%s\n", RED, YELLOW, $_, RESET if $opt_v;
+	die "Could not find URL to fetch" unless $_;
+
+	# SPECIAL NEED: skipping certain items that are known to be of little interest
+	#
+	# of course this string could come from a configuration file, but then this RSS tool
+	# starts getting complicated like all the others...
+	if (/(sternzeit|logbuch|podcastkritik|computerspiel|spielekonsole|boersenbericht|boerse_aus_frankfurt|auslese.kompakt)/) {
+		print STDERR MAGENTA, "\t... skipping ...\n", RESET;
+		next;
+	}
+
+	# SPECIAL NEED: refuse to download a specific show if duration is too short
+	#
+	# a clear case where perl itself is the configuration tool as nothing simpler would do...
+	if ($chan =~ /Tagesthemen/i and $dura < "15:00") {
+		print STDERR MAGENTA, "Lame short edition. Get yourself a Tagesschau instead.\n", RESET;
+		next;
+	}
+
+	my $isodate = Date::Format::time2str('%Y%m%d-%H%M', ($utim || time) - 60*60);
+	my $t = $title; $t =~ s/\W+/_/g; $t = $isodate.'-'.$t.'.'.$ft;
+	# why don't they provide file size and checksum in RSS?
+	if (-s $t > 99999 and not $opt_c) {
+		print STDERR CYAN, $t, " already downloaded.\n", RESET;
+		next;
+	}
+	sleep 2;
+	if ( open(T, '>.lastdl') ) {
+		print T $_, "\n";
+		close T;
+	}
+	print STDERR BOLD, BLACK;
+	# ok, this is NOT elegant either.. should be using LWP
+	system( "/usr/bin/wget", '--no-hsts', '-c', $_, '-O', $t ) unless $opt_n;
+	print STDERR RESET, "\n";
+
+	# SPECIAL NEED: removing the annoying initial trailer
+	#
+	# again only makes sense if you know which shows and how many seconds...
+	# also, some have a trailing trailer instead... FIXME
+	if ( !$opt_n and $chan =~ /(Forschung|Hielscher|Haase|Computer)/ ) {
+		print STDERR RED "Cutting first four seconds.\n";
+		system("ffcut", $t, "$$.$ft", ".4", "9999999");
+		rename("$$.$ft", $t) or die "ffcut failed for $t";
+		print STDERR "\n";
+	}
+}
+
+# reads a file from a stream into a variable all at once
+sub slurp {
+	local(*IN) = @_;
+	my $save = $/;
+	undef $/;
+	my $data = <IN>;
+	$/ = $save;
+	return $data;
+}
+
