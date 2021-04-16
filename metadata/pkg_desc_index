@@ -52,7 +52,7 @@ sys-apps/quickpkg-newer 1.0: Make binary packages of each installed atom in the 
 sys-fs/dmc 1.1: Command line UX frontend to dm-crypt's cryptsetup with support for multiple file systems
 sys-process/scron 0.3.2 9999: Simple cron daemon
 www-client/chromium 74.0.3729.169: Open-source version of Google Chrome web browser
-www-client/torbrowser 31.7.0_p451 78.7.0_p1009 78.8.0_p10012: Private browsing without tracking, surveillance, or censorship
+www-client/torbrowser 78.7.0_p1009 78.9.0_p10015: Private browsing without tracking, surveillance, or censorship
 www-client/torbrowser-launcher 0.3.3: A program to download, updated, and run the Tor Browser Bundle
 www-plugins/certpatrol 2.0.14.1: Monitor and compare certificates your application adopts for encrypted HTTPS web sites
 www-plugins/cfc 0.0.2: Circumvention of Cloudflare and other anti-constitutional spy websites
