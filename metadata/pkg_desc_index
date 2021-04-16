@@ -39,6 +39,7 @@ net-irc/psyced 9999 20160522 20160612: Server for Federated Messaging and Chat o
 net-libs/libpsyc 20160822 20160823 20160913 20170107 99999999: library for parsing and rendering PSYC packets more efficiently
 net-misc/gnurl 7.54.0 7.56.1 7.58.0 7.60.0 7.61.1 9999: A reliable small footprint version of Curl based on gnutls only
 net-misc/powwow 1.2.17: Enhanced telnet client with automation macros for MUD interaction use
+net-news/rssget 1.0: symlynX's highly customized RSS fetching tool for perl hackers
 net-proxy/torsocks 2.2.0: Use most socks-friendly applications with Tor
 net-vpn/gnunet 0.10.1 0.10.2_rc4 0.10.2_rc5 0.10.2_rc6 9999: Cryptographic GNU Mesh/Underlay Network Routing Layer
 net-vpn/gnunet-gtk 0.10.1_pre01021 0.10.1 9999: Graphical front-end tools for GNUnet.
