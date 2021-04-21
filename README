@@ -61,11 +61,6 @@ app-arch/unzip. This one can handle spaces in filenames, can
 recognize ZIP compatible file formats such as ODT, APK or MAFF
 and recurses into directories by default.
 
-== app-emacs/company-mode ==
-== app-emacs/parinfer ==
-
-[ask ng0]
-
 == app-misc/merge ==
 
 A command that should be a basic unix tool or be integrated
