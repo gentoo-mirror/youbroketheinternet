@@ -94,12 +94,15 @@ if ($has_ffmpeg and not $opt_b) {
 			 "-avoid_negative_ts", "make_zero", "-fflags", "+genpts",
 			 "-t", $end - $start, "-y", $output );
 	print MAGENTA, join(' ', @args), RESET, "\n" if $opt_v;
-	die "Cannot run ffmpeg: $!" unless $pid = open3($W,$F,$F, @args);u
+	die "Cannot run ffmpeg: $!" unless $pid = open3($W,$F,$F, @args);
 } elsif ($has_mp4box) {
-	# The -out option doesn't actually work
-	# But luckily, -splitz resumed working
-	die "Cannot run MP4Box: $!" unless $pid = open3($W,$F,$F,
-	    $has_mp4box, "-out", $output, "-splitz", "$start:$end", $input);
+	# Version 0.6.x of GPAC had an -out option that didn't actually
+	# work and a -splitz option that did what -split-chunk is supposed
+	# to do. With GPAC 1.0.x both of that is fixed apparently. Thanks.
+	my @args = ( $has_mp4box, "-out", $output,
+			 "-split-chunk", "$start:$end", $input );
+	print MAGENTA, join(' ', @args), RESET, "\n" if $opt_v;
+	die "Cannot run MP4Box: $!" unless $pid = open3($W,$F,$F, @args);
 } else {
 	die "Need either ffmpeg or MP4Box to do my job.\n";
 }
@@ -145,7 +148,7 @@ X
 		print RED, "MP4Box produced '$tmp'. Renaming.\n", RESET;
 		rename($tmp, $output);
 	}
-} else {
+} elsif (not -s $output) {
 	die BOLD, RED, <<X, RESET unless $audiosize or $videosize;
 Apparently conversion failed. Try -v to see details.
 X
