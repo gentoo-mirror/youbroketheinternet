@@ -56,7 +56,6 @@ www-client/torbrowser-launcher 0.3.3: A program to download, updated, and run th
 www-plugins/certpatrol 2.0.14.1: Monitor and compare certificates your application adopts for encrypted HTTPS web sites
 www-plugins/cfc 0.0.2: Circumvention of Cloudflare and other anti-constitutional spy websites
 www-plugins/exif_viewer 2.00-r4: Firefox extension to display the Exif and IPTC data in local and remote JPEG images.
-www-plugins/gnash 0.8.10_p20160329-r667: GNU Flash movie player that supports many SWF v7,8,9 features
 www-servers/hiawatha 9.8 9.14 9.14-r1 9.15 10.3-r99: Advanced and secure webserver
 www-servers/onionshare 2.2-r1 2.3.1: Share files, host websites, and chat with friends using the Tor network.
 x11-misc/interrobang 9999: A tiny launcher menu packing a big bang (syntax)
