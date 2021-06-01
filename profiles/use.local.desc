@@ -71,17 +71,6 @@ www-client/torbrowser:system-libevent - Use the system-wide dev-libs/libevent in
 www-client/torbrowser:system-libvpx - Use the system-wide media-libs/libvpx instead of bundled.
 www-client/torbrowser:system-webp - Use the system-wide media-libs/libwebp instead of bundled.
 www-client/torbrowser-launcher:apparmor - Enable AppArmor support
-www-plugins/gnash:agg - Rendering based on the Anti-Grain Geometry Rendering Engine library
-www-plugins/gnash:cygnal - Enable building of the cygnal server
-www-plugins/gnash:dump - Enable dump output module for creating video from SWF
-www-plugins/gnash:egl - Enable EGL support for the OpenVG, OpenGL and X11 renderers
-www-plugins/gnash:gconf - Enable GConf configuration backend
-www-plugins/gnash:harden - Enable upstream recommended hardening build flags (may conflict with system ones)
-www-plugins/gnash:jemalloc - Use dev-libs/jemalloc for allocations
-www-plugins/gnash:openvg - Rendering based on the OpenVG graphics acceleration API
-www-plugins/gnash:sdl-sound - Enable SDL audio output for the standalone player
-www-plugins/gnash:ssh - Enable using SSH for network authentication in libnet
-www-plugins/gnash:ssl - Enable directly using OpenSSL in libnet (not needed for nsplugin ssl support)
 www-servers/hiawatha:cache - Enable caching of content
 www-servers/hiawatha:monitor - Pull in www-apps/hiawatha-monitor
 www-servers/hiawatha:rewrite - Enable the rewrite toolkit
