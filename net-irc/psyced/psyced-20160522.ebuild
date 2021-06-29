@@ -9,7 +9,7 @@ LICENSE="GPL-2"
 
 # if you have a local copy of the git already, you can put it here:
 EGIT_REPO_URI="/usr/local/src/${PN}
-			   git://git.cheettyiapsyciew.onion/${PN}
+			   git://git.psyciumunsqarzsehz5xlgsi2mg4dkvntwf5bwj5kwbcbazwiuhna2ad.onion/${PN}
 			   git://git.psyced.org/git/${PN}"
 
 # providing actual commit hashes protects against man in

@@ -11,7 +11,7 @@ KEYWORDS="~x86 ~ppc ~sparc ~amd64"		# anything, really
 
 # our version of eclass/git-r3 supports onion gits:
 EGIT_REPO_URI="/usr/local/src/perlpsyc
-	   git://git.cheettyiapsyciew.onion/perlpsyc
+	   git://git.psyciumunsqarzsehz5xlgsi2mg4dkvntwf5bwj5kwbcbazwiuhna2ad.onion/perlpsyc
 	   git://git.psyced.org/git/perlpsyc"
 
 inherit git-r3 user

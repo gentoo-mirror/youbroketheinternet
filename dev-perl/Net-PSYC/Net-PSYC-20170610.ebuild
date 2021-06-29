@@ -4,7 +4,7 @@
 EAPI=6
 
 DESCRIPTION="Perl implementation of PSYC protocol plus psycion, psycamp, remotor etc."
-HOMEPAGE="http://perlpsyc.cheettyiapsyciew.onion http://perl.psyc.eu http://perlpsyc.pages.de"
+HOMEPAGE="http://perlpsyc.psyciumunsqarzsehz5xlgsi2mg4dkvntwf5bwj5kwbcbazwiuhna2ad.onion http://perl.psyc.eu http://perlpsyc.pages.de"
 LICENSE="GPL-2+ Artistic"
 SLOT="0"
 
@@ -13,7 +13,7 @@ KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k mips ppc ppc64 s390 sh sparc x86 
 
 # our version of eclass/git-r3 supports onion gits:
 EGIT_REPO_URI="/usr/local/src/perlpsyc
-       git://git.cheettyiapsyciew.onion/perlpsyc
+       git://git.psyciumunsqarzsehz5xlgsi2mg4dkvntwf5bwj5kwbcbazwiuhna2ad.onion/perlpsyc
        git://git.psyced.org/git/perlpsyc"
 
 inherit git-r3 user perl-module
