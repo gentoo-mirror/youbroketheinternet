@@ -11,4 +11,4 @@ RDEPEND=zlib? ( sys-libs/zlib ) ldap? ( net-nds/openldap ) berkdb? ( sys-libs/db
 SLOT=0
 SRC_URI=http://www.psyced.org/files/psyclpc-20160821.tar.xz
 _eclasses_=eapi7-ver	1a0a60ad07c8b32d2faba2d085dc0f24	elisp-common	cf4fd1b0835b9f3e638724840468064a
-_md5_=c0da615d9ad1e39ffe22f5bf11365acb
+_md5_=16e1490ae97080d7b6bbcd409e11f03a

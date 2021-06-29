@@ -10,4 +10,4 @@ LICENSE=GPL-2+ Artistic
 RDEPEND=rxaudio? ( media-sound/rxaudio-bin )
 SLOT=0
 _eclasses_=git-r3	23320ae9a580d98736f70f163b08a1eb	user-info	2e75eaea3582b052ec16d9d5aa74ced3	user	1033b6bed7cf367c4507ea9a3ff503d0
-_md5_=03633538edda3bd3abfc84a9de704983
+_md5_=be05e8645abe35b3f70c2797502c730b
