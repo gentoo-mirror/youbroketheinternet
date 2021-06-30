@@ -26,6 +26,7 @@ media-fonts/unscii 1.1: A bitmapped Unicode font based on classic system fonts
 media-libs/vid-stab 0.9 0.98 1.0 1.1 9999: Martius' camera deshaking and video stabilizing library
 media-sound/bpm-measure 1.0: symlynX's beat-per-minute auto-detection or tapping tool
 media-sound/rxaudio-bin 1.0: Historic mp3 playback engine
+media-sound/ttymidi 0.60: MIDI for your Serial Devices
 media-video/ffcat 2.0: symlynX's Fast & Furious Lossless Media Concatenation Tool
 media-video/ffcut 2.0: symlynX's Fast & Furious Lossless Media Cutting Tool
 media-video/ffmpeg 3.3.6 4.0.1: Complete solution to record, convert and stream audio and video. Includes libavcodec
