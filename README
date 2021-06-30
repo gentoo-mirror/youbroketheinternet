@@ -218,6 +218,13 @@ contain malware now. The reason it is here is because it
 has a pretty good control API and no-one cared to rewrite
 the powerful psycmp3 player to use a free software API.
 
+== media-sound/ttymidi ==
+
+Some exotic hardware and specifically Arduino-based tools
+do not support MIDI signaling out of the box but rather
+transmit MIDI via serial interface. This tiny tool provides
+conversion from USB to MIDI signals.
+
 == media-video/ffcat ==
 
 Lossless audio/video concatenation tool. After cutting out
