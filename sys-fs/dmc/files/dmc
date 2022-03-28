@@ -111,8 +111,14 @@ X
 	# /media is a good idea because the desktop environments will show
 	# device icons for it and make it easy to use for GUI users.
 	# unfortunately it stops the automounter from doing its job. why?
-	if ( -w "/dev/shm" ) {
-		$media = "/dev/shm";
+	#
+	# /dev/shm seemed like a good idea to not litter /mnt with lots
+	# of mount points, but then some process decided to delete files
+	# from RAM without paying attention to file system boundaries. WTF
+	# (apparently the sandbox rules excempt shm from protection...)
+	#
+	if ( -w "/mnt" ) {
+		$media = "/mnt";
 	} else {
 		$media = "/tmp";
 	}
@@ -445,7 +451,7 @@ dmc - Command line UX frontend to dm-crypt's cryptsetup with support for multipl
  dmc -E <volume>			# erase some or all passwords and keys
 
  <size> may end in M for megabytes, G for gigabytes, T for terabytes...
- If <mountpath> is omitted, /dev/shm/<mapper> is created instead.
+ If <mountpath> is omitted, /mnt/<mapper> is created instead.
  Combining action flags such as -c, -e and -d produces unuseful effects.
 
  Options:

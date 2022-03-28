@@ -63,7 +63,7 @@ X
 	close L;
 
 	die "Cannot run ffmpeg: $!" unless $pid = open3($W,$F,$F,
-	    $has_ffmpeg, "-f", 'concat', "-i", $list, @copy, '-y', $output);
+	    $has_ffmpeg, '-f', 'concat', '-safe', '0', '-i', $list, @copy, '-y', $output);
 } elsif ($has_mp4box) {
 	my @args = ();
 	for ( @ARGV ) {
