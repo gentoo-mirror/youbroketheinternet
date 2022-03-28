@@ -25,7 +25,6 @@ dev-vcs/stagit 9999: static git page generator
 media-fonts/unscii 1.1: A bitmapped Unicode font based on classic system fonts
 media-libs/vid-stab 0.9 0.98 1.0 1.1 9999: Martius' camera deshaking and video stabilizing library
 media-sound/bpm-measure 1.0: symlynX's beat-per-minute auto-detection or tapping tool
-media-sound/rxaudio-bin 1.0: Historic mp3 playback engine
 media-sound/ttymidi 0.60: MIDI for your Serial Devices
 media-video/ffcat 2.0: symlynX's Fast & Furious Lossless Media Concatenation Tool
 media-video/ffcut 2.0: symlynX's Fast & Furious Lossless Media Cutting Tool
@@ -43,8 +42,6 @@ net-proxy/torsocks 2.2.0: Use most socks-friendly applications with Tor
 net-vpn/gnunet 0.10.1 0.10.2_rc4 0.10.2_rc5 0.10.2_rc6 9999: Cryptographic GNU Mesh/Underlay Network Routing Layer
 net-vpn/gnunet-gtk 0.10.1_pre01021 0.10.1 9999: Graphical front-end tools for GNUnet.
 net-vpn/gnunet-meta 0.10.1_pre01021 0.10.1 9999: Meta package for GNUnet
-sys-apps/guix 0.11.0: The GNU Guix Package Manager.
-sys-apps/guix-bin 0.10.0: The GNU Guix Package Manager.
 sys-apps/metastore 1.1.2a: Store and restore metadata of files, directories, links in a tree
 sys-apps/nix 1.11.2 2.0.2 2.0.4 2.1.3 2.1.3-r1: A purely functional package manager
 sys-apps/oneshot 1.2: Usability frontend for emerge to keep you from breaking your system
@@ -57,7 +54,6 @@ www-client/torbrowser-launcher 0.3.3: A program to download, updated, and run th
 www-plugins/certpatrol 2.0.14.1: Monitor and compare certificates your application adopts for encrypted HTTPS web sites
 www-plugins/cfc 0.0.2: Circumvention of Cloudflare and other anti-constitutional spy websites
 www-plugins/exif_viewer 2.00-r4: Firefox extension to display the Exif and IPTC data in local and remote JPEG images.
-www-servers/hiawatha 9.8 9.14 9.14-r1 9.15 10.3-r99: Advanced and secure webserver
 www-servers/onionshare 2.2-r1 2.3.1: Share files, host websites, and chat with friends using the Tor network.
 x11-misc/interrobang 9999: A tiny launcher menu packing a big bang (syntax)
 x11-misc/st 0.7 9999: simple terminal implementation for X
