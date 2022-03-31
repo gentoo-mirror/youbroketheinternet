@@ -207,17 +207,6 @@ not need to do any editing beyond what ffcut offers.
 A little tool to auto-detect or 'tap' the beats per
 minute of music media files.
 
-== media-sound/rxaudio-bin ==
-
-A *shareware* from 1998: A remote controllable MP3 engine
-used by psycmp3 from dev-perl/Net-PSYC. Source code was never
-released. Original website has disappeared. But it works.
-In almost twenty years it never exhibited non-consensual
-Internet access, so there is no reason to expect it to
-contain malware now. The reason it is here is because it
-has a pretty good control API and no-one cared to rewrite
-the powerful psycmp3 player to use a free software API.
-
 == media-sound/ttymidi ==
 
 Some exotic hardware and specifically Arduino-based tools
@@ -363,32 +352,12 @@ While compiling from source works great, the ebuilds produce
 some mysterious error messages. Please help to figure out
 what the problem is. Luckily this package is optional.
 
-== sys-apps/guix ==
-
-GNU Guix is a package manager. It's also an operating system
-(GNU GuixSD). Guix might provide updates via a distributed network
-in the future. Currently this ebuild and sys-apps/guix-binary are
-open for debugging here, please provide us with input.
-(* sys-apps/guix is functional, the OpenRC service needs debugging.)
-
-== sys-apps/guix-bin ==
-
-GNU Guix is a package manager for reproducible building. It
-is therefore legitimate to use its binary installation as
-you can check its correctness later, by rebuilding the exact
-identical binary files.
-
 == sys-apps/metastore ==
 
 Do you use git for systems administration and get tangled up with
 files having wrong ownership? Metastore keeps metadata information
 of entire directory trees in a separate file, so you can restore it
 each time you check out a git repository.
-
-== sys-apps/nix ==
-
-The package manager from Nix. Portage has added its own version
-without credit to us. Ts!
 
 == sys-apps/quickpkg-newer ==
 
