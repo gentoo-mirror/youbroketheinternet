@@ -47,9 +47,6 @@ net-vpn/gnunet-meta:experimental - Install experimental features which are not y
 net-vpn/gnunet-meta:gnurl - Build gnunet with libgnurl instead of libcurl
 net-vpn/gnunet-meta:gtk - Install gtk gui tools for GNUnet
 net-vpn/gnunet-meta:qr - qr stuff.
-sys-apps/nix:etc_profile - Install /etc/profile.d/ entry to inject nix support for all users.
-sys-apps/nix:gc - Enable garbage collection in the Nix expression evaluator (use dev-libs/boehm-gc).
-sys-apps/nix:sodium - Use dev-libs/libsodium for cryptography
 www-client/chromium:closure-compile - Enable closure type-checking for Chrome's web technology-based UI. Requires Java.
 www-client/chromium:component-build - Split build into more shared libraries to speed up linking. Mostly intended for debugging and development, NOT RECOMMENDED for general use.
 www-client/chromium:hangouts - Enable support for Google Hangouts features such as screen sharing
@@ -71,13 +68,6 @@ www-client/torbrowser:system-libevent - Use the system-wide dev-libs/libevent in
 www-client/torbrowser:system-libvpx - Use the system-wide media-libs/libvpx instead of bundled.
 www-client/torbrowser:system-webp - Use the system-wide media-libs/libwebp instead of bundled.
 www-client/torbrowser-launcher:apparmor - Enable AppArmor support
-www-servers/hiawatha:cache - Enable caching of content
-www-servers/hiawatha:monitor - Pull in www-apps/hiawatha-monitor
-www-servers/hiawatha:rewrite - Enable the rewrite toolkit
-www-servers/hiawatha:rproxy - Enable reverse proxy support
-www-servers/hiawatha:ssl - Enable TLS support via net-libs/mbedtls
-www-servers/hiawatha:tomahawk - Enable Tomahawk control server
-www-servers/hiawatha:xslt - Enable XSLT support. This is also needed for directory listings
 www-servers/onionshare:nautilus - Add support for the nautilus menu integration
 x11-misc/interrobang:examples - Install examples, usually source code
 x11-misc/interrobang:percontation - Alternative to compgen for tab default
