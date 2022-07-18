@@ -10,8 +10,7 @@ dev-db/gstore 0.6.0: A graph-based RDF triple store
 dev-lang/psyclpc 20121010 20130927 20160211 20160417 20160821 20170107 99999999: psycLPC is a multi-user network server programming language
 dev-libs/openssl 1.0.2u 1.1.0l 1.1.1d-r3 1.1.1g: full-strength general purpose cryptography library (including SSL and TLS)
 dev-libs/sway 0.6 0.7 9999: i3-compatible Wayland window manager
-dev-perl/IPC-Run3-Simple 0.011: Make IPC::Run3 even easier to use
-dev-perl/Net-PSYC 20160616 20160617 20160624 20160701 20160819 20170117 20170610 20180214: Perl implementation of PSYC protocol plus psycion, psycamp, remotor etc.
+dev-perl/Net-PSYC 20160616 20160617 20160624 20160701 20160819 20170117 20170610 20180214: Perl implementation of PSYC protocol plus psycion, remotor, psycmp3 etc.
 dev-scheme/guile-git 0.0.20171110 0.1: Guile bindings of git
 dev-vcs/gitprivacy 1.1: git commands that preserve the privacy of working habits
 dev-vcs/stagit 9999: static git page generator
