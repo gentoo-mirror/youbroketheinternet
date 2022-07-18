@@ -15,14 +15,12 @@ dev-scheme/guile-git 0.0.20171110 0.1: Guile bindings of git
 dev-vcs/gitprivacy 1.1: git commands that preserve the privacy of working habits
 dev-vcs/stagit 9999: static git page generator
 media-fonts/unscii 1.1: A bitmapped Unicode font based on classic system fonts
-media-libs/vid-stab 0.9 0.98 1.0 1.1 9999: Martius' camera deshaking and video stabilizing library
 media-sound/bpm-measure 1.0: symlynX's beat-per-minute auto-detection or tapping tool
 media-sound/ttymidi 0.60: MIDI for your Serial Devices
 media-video/ffcat 2.0: symlynX's Fast & Furious Lossless Media Concatenation Tool
 media-video/ffcut 2.0: symlynX's Fast & Furious Lossless Media Cutting Tool
 media-video/ffmpeg 3.3.6 4.0.1: Complete solution to record, convert and stream audio and video. Includes libavcodec
 net-im/telegram-cli 1.3.1 1.3.1-r1 9999: Command line interface client for Telegram
-net-im/toxic 9999: CLI Frontend for Tox
 net-irc/hysteria 9999: ii wrapper script
 net-irc/ii 9999: A minimalist FIFO and filesystem-based IRC client (codemadness.nl branch)
 net-irc/psyced 9999 20160522 20160612: Server for Federated Messaging and Chat over PSYC, IRC, XMPP and more
@@ -42,10 +40,5 @@ sys-process/scron 0.3.2 9999: Simple cron daemon
 www-client/chromium 74.0.3729.169: Open-source version of Google Chrome web browser
 www-client/torbrowser 78.10.0_p10016: Private browsing without tracking, surveillance, or censorship
 www-client/torbrowser-launcher 0.3.3: A program to download, updated, and run the Tor Browser Bundle
-www-plugins/certpatrol 2.0.14.1: Monitor and compare certificates your application adopts for encrypted HTTPS web sites
-www-plugins/cfc 0.0.2: Circumvention of Cloudflare and other anti-constitutional spy websites
-www-plugins/exif_viewer 2.00-r4: Firefox extension to display the Exif and IPTC data in local and remote JPEG images.
 www-servers/onionshare 2.2-r1 2.3.1: Share files, host websites, and chat with friends using the Tor network.
-x11-misc/interrobang 9999: A tiny launcher menu packing a big bang (syntax)
-x11-misc/st 0.7 9999: simple terminal implementation for X
 x11-plugins/lurch 0.6.1 0.6.5 0.6.6 0.6.7 9999: OMEMO for libpurple - interoperable with other OMEMO clients
