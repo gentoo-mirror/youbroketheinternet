@@ -9,5 +9,5 @@ KEYWORDS=~x86 ~ppc ~sparc ~amd64
 LICENSE=GPL-2+ Artistic
 RDEPEND=rxaudio? ( media-sound/rxaudio-bin )
 SLOT=0
-_eclasses_=git-r3	23320ae9a580d98736f70f163b08a1eb	user-info	69a1ed744ec33cf2c910ff2bd6084d11	user	1f6dd43c7e925ba0272de52bcd326972
+_eclasses_=git-r3	23320ae9a580d98736f70f163b08a1eb	user-info	69a1ed744ec33cf2c910ff2bd6084d11	user	ee8b59cbe68b390f981e3ee247ed908f
 _md5_=be05e8645abe35b3f70c2797502c730b
