@@ -17,7 +17,6 @@ media-sound/ttymidi 0.60: MIDI for your Serial Devices
 media-video/ffcat 2.0: symlynX's Fast & Furious Lossless Media Concatenation Tool
 media-video/ffcut 2.0: symlynX's Fast & Furious Lossless Media Cutting Tool
 media-video/ffmpeg 3.3.6 4.0.1: Complete solution to record, convert and stream audio and video. Includes libavcodec
-net-im/telegram-cli 1.3.1 1.3.1-r1 9999: Command line interface client for Telegram
 net-irc/hysteria 9999: ii wrapper script
 net-irc/ii 9999: A minimalist FIFO and filesystem-based IRC client (codemadness.nl branch)
 net-libs/libpsyc 20160822 20160823 20160913 20170107 99999999: library for parsing and rendering PSYC packets more efficiently
